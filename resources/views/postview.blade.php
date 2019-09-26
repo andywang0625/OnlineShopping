@@ -1,9 +1,3 @@
-/**
- * Created by PhpStorm.
- * User: andy_
- * Date: 2019-09-26
- * Time: 17:41
- */
 <html>
 <head>
     <title>Posts View</title>
@@ -11,7 +5,8 @@
 <body>
 <ul>
     @foreach($posts as $post)
-        <li>{{$post}}</li>
+        <li>{{$post->title." ".$post->price." ".$post->number}}</li>
+    @endforeach
 </ul>
 
 

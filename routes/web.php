@@ -11,4 +11,4 @@
 |
 */
 
-Route::get('/posts', 'PostViewController@show');
+Route::get('posts/{name?}', 'PostViewController@show');
