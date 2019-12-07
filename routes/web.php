@@ -10,5 +10,5 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+\Illuminate\Support\Facades\Route::view('/{path?}','welcome');
 Route::get('posts/{name?}', 'PostViewController@show');
