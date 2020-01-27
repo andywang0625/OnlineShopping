@@ -6,11 +6,12 @@ import {Switch, BrowserRouter, Route} from 'react-router-dom';
 import HomePage from './HomePage';
 import {LocalizeProvider} from "react-localize-redux";
 import LoginPage from './LoginPage';
+import Container from "@material-ui/core/Container";
 
 class App extends Component{
     render(){
         return(
-            <div>
+            <Container fixed>
                 <LocalizeProvider>
                     <BrowserRouter>
                         <Header />
@@ -20,7 +21,7 @@ class App extends Component{
                         </Route>
                     </BrowserRouter>
                 </LocalizeProvider>
-            </div>
+            </Container>
         )
     }
 }

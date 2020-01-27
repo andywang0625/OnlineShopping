@@ -96,9 +96,10 @@ function Header() {
     //     setAnchorEl(event.currentTarget);
     // };
     var handleClick = function (index) { return function (event) {
-        if (index == 2) {
-            window.location.href = "login";
-        }
+        console.log(index);
+        // if(index==2){
+        //     window.location.href = "login";
+        // }
         //return <Redirect to="/login" />;
         //return;
     }; };

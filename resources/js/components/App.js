@@ -12,22 +12,33 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
+var React = __importStar(require("react"));
 var react_1 = require("react");
-var ReactDOM = require("react-dom");
-var Header_1 = require("./Header");
+var ReactDOM = __importStar(require("react-dom"));
+var Header_1 = __importDefault(require("./Header"));
 var react_router_dom_1 = require("react-router-dom");
-var HomePage_1 = require("./HomePage");
+var HomePage_1 = __importDefault(require("./HomePage"));
 var react_localize_redux_1 = require("react-localize-redux");
-var LoginPage_1 = require("./LoginPage");
+var LoginPage_1 = __importDefault(require("./LoginPage"));
+var Container_1 = __importDefault(require("@material-ui/core/Container"));
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return (React.createElement("div", null,
+        return (React.createElement(Container_1.default, { fixed: true },
             React.createElement(react_localize_redux_1.LocalizeProvider, null,
                 React.createElement(react_router_dom_1.BrowserRouter, null,
                     React.createElement(Header_1.default, null),
@@ -37,4 +48,3 @@ var App = /** @class */ (function (_super) {
     return App;
 }(react_1.Component));
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
-//# sourceMappingURL=App.js.map

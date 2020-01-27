@@ -87,11 +87,11 @@ export default function Header() {
     //     setAnchorEl(event.currentTarget);
     // };
     const handleClick = (index:number)=> (event: React.MouseEvent<HTMLElement>) => {
-        // if(index==2){
-        //     window.location.href = "login";
-        // }
-            //return <Redirect to="/login" />;
-        //return;
+        if(index==2){
+            window.location.href = "login";
+        }else if(index==0){
+            window.location.href = "/";
+        }
     };
     const handleClose = () => {
         setAnchorEl(null);

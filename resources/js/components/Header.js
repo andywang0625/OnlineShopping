@@ -10,22 +10,31 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
-var AppBar_1 = require("@material-ui/core/AppBar");
-var Toolbar_1 = require("@material-ui/core/Toolbar");
-var IconButton_1 = require("@material-ui/core/IconButton");
-var Typography_1 = require("@material-ui/core/Typography");
-var InputBase_1 = require("@material-ui/core/InputBase");
+var React = __importStar(require("react"));
+var AppBar_1 = __importDefault(require("@material-ui/core/AppBar"));
+var Toolbar_1 = __importDefault(require("@material-ui/core/Toolbar"));
+var IconButton_1 = __importDefault(require("@material-ui/core/IconButton"));
+var Typography_1 = __importDefault(require("@material-ui/core/Typography"));
+var InputBase_1 = __importDefault(require("@material-ui/core/InputBase"));
 var styles_1 = require("@material-ui/core/styles");
-var Menu_1 = require("@material-ui/icons/Menu");
-var Search_1 = require("@material-ui/icons/Search");
-var Drawer_1 = require("@material-ui/core/Drawer");
-var Divider_1 = require("@material-ui/core/Divider");
-var List_1 = require("@material-ui/core/List");
-var ListItem_1 = require("@material-ui/core/ListItem");
-var ListItemText_1 = require("@material-ui/core/ListItemText");
-var react_router_dom_1 = require("react-router-dom");
+var Menu_1 = __importDefault(require("@material-ui/icons/Menu"));
+var Search_1 = __importDefault(require("@material-ui/icons/Search"));
+var Drawer_1 = __importDefault(require("@material-ui/core/Drawer"));
+var Divider_1 = __importDefault(require("@material-ui/core/Divider"));
+var List_1 = __importDefault(require("@material-ui/core/List"));
+var ListItem_1 = __importDefault(require("@material-ui/core/ListItem"));
+var ListItemText_1 = __importDefault(require("@material-ui/core/ListItemText"));
 var useStyles = styles_1.makeStyles(function (theme) {
     var _a, _b, _c;
     return styles_1.createStyles({
@@ -97,9 +106,12 @@ function Header() {
     //     setAnchorEl(event.currentTarget);
     // };
     var handleClick = function (index) { return function (event) {
-        if (index == 2)
-            return React.createElement(react_router_dom_1.Redirect, { to: "/login" });
-        return;
+        if (index == 2) {
+            window.location.href = "login";
+        }
+        else if (index == 0) {
+            window.location.href = "/";
+        }
     }; };
     var handleClose = function () {
         setAnchorEl(null);
@@ -150,4 +162,3 @@ function Header() {
                         }, inputProps: { 'aria-label': 'search' } }))))));
 }
 exports.default = Header;
-//# sourceMappingURL=Header.js.map
