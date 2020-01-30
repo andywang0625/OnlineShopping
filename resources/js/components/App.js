@@ -32,6 +32,7 @@ var HomePage_1 = __importDefault(require("./HomePage"));
 var react_localize_redux_1 = require("react-localize-redux");
 var LoginPage_1 = __importDefault(require("./LoginPage"));
 var Container_1 = __importDefault(require("@material-ui/core/Container"));
+var Register_1 = __importDefault(require("./Register"));
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
@@ -43,7 +44,8 @@ var App = /** @class */ (function (_super) {
                 React.createElement(react_router_dom_1.BrowserRouter, null,
                     React.createElement(Header_1.default, null),
                     React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: HomePage_1.default }),
-                    React.createElement(react_router_dom_1.Route, { path: "/login", component: LoginPage_1.default })))));
+                    React.createElement(react_router_dom_1.Route, { path: "/login", component: LoginPage_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/register", component: Register_1.default })))));
     };
     return App;
 }(react_1.Component));

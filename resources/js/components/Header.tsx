@@ -91,6 +91,8 @@ export default function Header() {
             window.location.href = "login";
         }else if(index==0){
             window.location.href = "/";
+        }else if(index==1){
+            window.location.href = "register";
         }
     };
     const handleClose = () => {
@@ -134,56 +136,41 @@ export default function Header() {
             </List>
         </div>
     );
-    // const renderMenu = (
-    //     <Menu
-    //         id="simple-menu"
-    //         anchorEl={anchorEl}
-    //         keepMounted
-    //         open={isMenuOpen}
-    //         onClose={handleClose}
-    //     >
-    //         <MenuItem component={Link} to="/" className={classes.menuItems} onClick={handleClose}>Home</MenuItem>
-    //         <MenuItem component={Link} to="/" className={classes.menuItems} onClick={handleClose}>Register</MenuItem>
-    //         <MenuItem component={Link} to="/login" className={classes.menuItems} onClick={handleClose}>Login</MenuItem>
-    //     </Menu>
-    // );
-
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        onClick={toggleDrawer(true)}
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Drawer open={state.drawer} onClose={toggleDrawer(false)}>
-                        {sideList()}
-                    </Drawer>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        BuyTown Online
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
+        <React.Fragment>
+        <AppBar>
+            <Toolbar>
+                <IconButton
+                    onClick={toggleDrawer(true)}
+                    edge="start"
+                    className={classes.menuButton}
+                    color="inherit"
+                    aria-label="open drawer"
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Drawer open={state.drawer} onClose={toggleDrawer(false)}>
+                    {sideList()}
+                </Drawer>
+                <Typography className={classes.title} variant="h6" noWrap>
+                    BuyTown Online
+                </Typography>
+                <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon />
                     </div>
-                </Toolbar>
-            </AppBar>
-        </div>
-
-
+                    <InputBase
+                        placeholder="Search..."
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                    />
+                </div>
+            </Toolbar>
+        </AppBar>
+        <Toolbar />
+        </React.Fragment>
     );
 }

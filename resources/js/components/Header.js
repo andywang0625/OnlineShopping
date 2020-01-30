@@ -112,6 +112,9 @@ function Header() {
         else if (index == 0) {
             window.location.href = "/";
         }
+        else if (index == 1) {
+            window.location.href = "register";
+        }
     }; };
     var handleClose = function () {
         setAnchorEl(null);
@@ -133,21 +136,8 @@ function Header() {
         React.createElement(Divider_1.default, null),
         React.createElement(List_1.default, null, ['All Categories', 'Daily', 'Tech', 'Babies'].map(function (text, index) { return (React.createElement(ListItem_1.default, { button: true, key: text },
             React.createElement(ListItemText_1.default, { primary: text }))); })))); };
-    // const renderMenu = (
-    //     <Menu
-    //         id="simple-menu"
-    //         anchorEl={anchorEl}
-    //         keepMounted
-    //         open={isMenuOpen}
-    //         onClose={handleClose}
-    //     >
-    //         <MenuItem component={Link} to="/" className={classes.menuItems} onClick={handleClose}>Home</MenuItem>
-    //         <MenuItem component={Link} to="/" className={classes.menuItems} onClick={handleClose}>Register</MenuItem>
-    //         <MenuItem component={Link} to="/login" className={classes.menuItems} onClick={handleClose}>Login</MenuItem>
-    //     </Menu>
-    // );
-    return (React.createElement("div", { className: classes.root },
-        React.createElement(AppBar_1.default, { position: "static" },
+    return (React.createElement(React.Fragment, null,
+        React.createElement(AppBar_1.default, null,
             React.createElement(Toolbar_1.default, null,
                 React.createElement(IconButton_1.default, { onClick: toggleDrawer(true), edge: "start", className: classes.menuButton, color: "inherit", "aria-label": "open drawer" },
                     React.createElement(Menu_1.default, null)),
@@ -156,9 +146,10 @@ function Header() {
                 React.createElement("div", { className: classes.search },
                     React.createElement("div", { className: classes.searchIcon },
                         React.createElement(Search_1.default, null)),
-                    React.createElement(InputBase_1.default, { placeholder: "Search\u2026", classes: {
+                    React.createElement(InputBase_1.default, { placeholder: "Search...", classes: {
                             root: classes.inputRoot,
                             input: classes.inputInput,
-                        }, inputProps: { 'aria-label': 'search' } }))))));
+                        }, inputProps: { 'aria-label': 'search' } })))),
+        React.createElement(Toolbar_1.default, null)));
 }
 exports.default = Header;

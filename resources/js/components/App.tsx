@@ -7,6 +7,8 @@ import HomePage from './HomePage';
 import {LocalizeProvider} from "react-localize-redux";
 import LoginPage from './LoginPage';
 import Container from "@material-ui/core/Container";
+import Register from './Register';
+import { positions } from '@material-ui/system';
 
 class App extends Component{
     render(){
@@ -15,10 +17,9 @@ class App extends Component{
                 <LocalizeProvider>
                     <BrowserRouter>
                         <Header />
-                        <Route exact path="/" component={HomePage}>
-                        </Route>
-                        <Route path="/login" component={LoginPage}>
-                        </Route>
+                        <Route exact path="/" component={HomePage}></Route>
+                        <Route path="/login" component={LoginPage}></Route>
+                        <Route path="/register" component={Register}></Route>
                     </BrowserRouter>
                 </LocalizeProvider>
             </Container>
