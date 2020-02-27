@@ -60,4 +60,5 @@ typings/
 .yarn-integrity
 # dotenv environment variables file
 .env
-./resources/js/*.js
+resources/js/components/*.js
+public/js/app.js
