@@ -15,15 +15,20 @@ interface RegState{
     errorMessage?: string;
     regdia?: any;
     dialogMessage?: string;
+    dialogReason?: string;
 }
 
 const styles = (theme:Theme) => ({
     margin:{
-        margin: theme.spacing(1),
+        marginTop: theme.spacing(2),
+        width: "100%",
+    },
+    submitbtn:{
+        marginTop: theme.spacing(4),
         width: "100%",
     },
     paper:{
-        padding: theme.spacing(3, 2),
+        padding: theme.spacing(3),
         marginTop: "10%",
     },
 });
@@ -59,6 +64,7 @@ class Register extends Component<any, RegState>{
     handleClose(e: any){
         this.setState({regdia:false});
         //console.log("closed!");
+        this.setState({dialogReason:undefined});
     }
 
     handleSubmit(e: React.FormEvent<HTMLFormElement>){
@@ -74,7 +80,8 @@ class Register extends Component<any, RegState>{
                 this.setState({dialogMessage:"You have successfully registered!"})
             }).catch(error => {
                 this.setState({regdia:true});
-                this.setState({dialogMessage:"Oops, an error occurred!"})
+                this.setState({dialogMessage:"Oops, an error occurred!"});
+                this.setState({dialogReason:error.response.data});
             });
         }else{
             //console.log("Error");
@@ -94,6 +101,8 @@ class Register extends Component<any, RegState>{
                 <DialogContent>
                     <DialogContentText>
                     {this.state.dialogMessage}
+                    <br></br>
+                    {this.state.dialogReason}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -102,9 +111,10 @@ class Register extends Component<any, RegState>{
                     </Button>
                 </DialogActions>
                 </Dialog>
-                <Grid container style={{marginTop: 20, alignItems:"center", display:"flex"}}>
+                <Grid container spacing={0} direction="column" justify="center" alignItems="center">
                 <Paper className={classes.paper}>
-                <form onSubmit={this.handleSubmit}>
+                <div style={{width:"100%"}}>
+                    <form onSubmit={this.handleSubmit}>
                         <TextField
                             className={classes.margin}
                             id="userNameText"
@@ -174,11 +184,14 @@ class Register extends Component<any, RegState>{
                         {this.state.errorMessage !== undefined ?(
                             <FormErrorMessage theMessage={this.state.errorMessage}></FormErrorMessage>
                         ):null}
-                        <Button className={classes.margin} type="submit" variant="contained" color="primary">Register</Button>
+                        <Button className={classes.submitbtn} type="submit" variant="contained" color="primary">Register</Button>
                     </form>
-                    </Paper>
+                </div>
+                </Paper>
                 </Grid>
             </Container>
+
+
         );
     }
 }
