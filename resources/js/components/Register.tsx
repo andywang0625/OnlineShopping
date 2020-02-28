@@ -141,6 +141,7 @@ class Register extends Component<any, RegState>{
                             className={classes.margin}
                             id="userPasswd1"
                             name="userPasswd1"
+                            type="password"
                             placeholder="Password"
                             label="Password"
                             value={this.state.userPasswd1}
@@ -157,6 +158,7 @@ class Register extends Component<any, RegState>{
                             className={classes.margin}
                             id="userPasswd2"
                             name="userPasswd2"
+                            type="password"
                             placeholder="Password Verification"
                             label="Password Verification"
                             value={this.state.userPasswd2}
