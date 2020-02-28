@@ -1,6 +1,6 @@
 import { Component, HtmlHTMLAttributes } from "react";
 import React from "react";
-import { TextField, Container, Grid, createStyles, makeStyles, Theme, withStyles, InputAdornment, Button } from "@material-ui/core";
+import { TextField, Container, Grid, createStyles, makeStyles, Theme, withStyles, InputAdornment, Button, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, useMediaQuery, useTheme, Paper } from "@material-ui/core";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import LockRoundedIcon from '@material-ui/icons/LockRounded';
@@ -13,13 +13,19 @@ interface RegState{
     userPasswd2?: string;
     userEmail?: string;
     errorMessage?: string;
+    regdia?: any;
+    dialogMessage?: string;
 }
 
 const styles = (theme:Theme) => ({
     margin:{
         margin: theme.spacing(1),
         width: "100%",
-    }
+    },
+    paper:{
+        padding: theme.spacing(3, 2),
+        marginTop: "10%",
+    },
 });
 
 class Register extends Component<any, RegState>{
@@ -31,9 +37,11 @@ class Register extends Component<any, RegState>{
             userPasswd2:"",
             userEmail:"",
             errorMessage:undefined,
+            regdia:false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     handleChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -48,23 +56,55 @@ class Register extends Component<any, RegState>{
         });
     }
 
+    handleClose(e: any){
+        this.setState({regdia:false});
+        //console.log("closed!");
+    }
+
     handleSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
         if(this.state.userPasswd1==this.state.userPasswd2){
             const {userEmail, userName, userPasswd1} = this.state;
-            console.log("form submitted");
+            axios.post("api/register_request", {
+                    user_email: this.state.userEmail,
+                    user_name: this.state.userName,
+                    user_password: this.state.userPasswd1,
+            }, {withCredentials: true}).then(response => {
+                this.setState({regdia:true});
+                this.setState({dialogMessage:"You have successfully registered!"})
+            }).catch(error => {
+                this.setState({regdia:true});
+                this.setState({dialogMessage:"Oops, an error occurred!"})
+            });
         }else{
-            console.log("Error");
+            //console.log("Error");
         }
 
     }
-
     render(){
         const {classes} = this.props;
         return(
             <Container maxWidth="md">
+            <Dialog
+                open={this.state.regdia}
+                onClose={this.handleClose}
+                aria-labelledby="dtitle"
+                >
+                <DialogTitle id="dtitle">{"Registration"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                    {this.state.dialogMessage}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={this.handleClose} color="primary">
+                        Got it
+                    </Button>
+                </DialogActions>
+                </Dialog>
                 <Grid container style={{marginTop: 20, alignItems:"center", display:"flex"}}>
-                    <form onSubmit={this.handleSubmit}>
+                <Paper className={classes.paper}>
+                <form onSubmit={this.handleSubmit}>
                         <TextField
                             className={classes.margin}
                             id="userNameText"
@@ -134,8 +174,7 @@ class Register extends Component<any, RegState>{
                         ):null}
                         <Button className={classes.margin} type="submit" variant="contained" color="primary">Register</Button>
                     </form>
-
-
+                    </Paper>
                 </Grid>
             </Container>
         );

@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import Register from './Register';
 import { positions } from '@material-ui/system';
 
+
 class App extends Component{
     render(){
         return(
