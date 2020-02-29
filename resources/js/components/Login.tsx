@@ -15,6 +15,7 @@ interface LoginState{
     logdia?: any;
     dialogMessage?: string;
     dialogReason?: string;
+    loggedin?: boolean;
 }
 
 const styles = (theme:Theme) => ({
@@ -41,6 +42,7 @@ class Login extends Component<any, LoginState>{
             userPasswd:"",
             errorMessage:undefined,
             logdia:false,
+            loggedin:false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,7 +65,8 @@ class Login extends Component<any, LoginState>{
         this.setState({logdia:false});
         //console.log("closed!");
         this.setState({dialogReason:undefined});
-        return window.location.href = "/";
+        if(this.state.loggedin)
+            return window.location.href = "/";
     }
 
     handleSubmit(e: React.FormEvent<HTMLFormElement>){
@@ -78,7 +81,8 @@ class Login extends Component<any, LoginState>{
                     const cookies = new Cookies();
                     cookies.set('token',response.data["token"]);
                     this.setState({logdia:true});
-                    this.setState({dialogMessage:"Welcome back "+this.state.userName+"!"})
+                    this.setState({loggedin:true});
+                    this.setState({dialogMessage:"Welcome back "+this.state.userName+"!"});
                 }else{
                     this.setState({logdia:true});
                     this.setState({dialogMessage:"Oops, an error occurred!"});
