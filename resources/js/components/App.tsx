@@ -5,7 +5,7 @@ import Header from './Header';
 import {Switch, BrowserRouter, Route} from 'react-router-dom';
 import HomePage from './HomePage';
 import {LocalizeProvider} from "react-localize-redux";
-import LoginPage from './LoginPage';
+import Login from './Login';
 import Container from "@material-ui/core/Container";
 import Register from './Register';
 import { positions } from '@material-ui/system';
@@ -19,7 +19,7 @@ class App extends Component{
                     <BrowserRouter>
                         <Header />
                         <Route exact path="/" component={HomePage}></Route>
-                        <Route path="/login" component={LoginPage}></Route>
+                        <Route path="/login" component={Login}></Route>
                         <Route path="/register" component={Register}></Route>
                     </BrowserRouter>
                 </LocalizeProvider>
