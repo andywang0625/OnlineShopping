@@ -63,6 +63,7 @@ class Login extends Component<any, LoginState>{
         this.setState({logdia:false});
         //console.log("closed!");
         this.setState({dialogReason:undefined});
+        return window.location.href = "/";
     }
 
     handleSubmit(e: React.FormEvent<HTMLFormElement>){

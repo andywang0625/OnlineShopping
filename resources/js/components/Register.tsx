@@ -97,7 +97,7 @@ class Register extends Component<any, RegState>{
                 onClose={this.handleClose}
                 aria-labelledby="dtitle"
                 >
-                <DialogTitle id="dtitle">{"Registration"}</DialogTitle>
+                <DialogTitle id="dtitle">{"Login"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                     {this.state.dialogMessage}
