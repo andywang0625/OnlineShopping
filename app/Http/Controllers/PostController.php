@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
+use App\Http\Controllers\UserController;
 
 class PostController extends Controller
 {
@@ -11,10 +13,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        //$data = Post::all();
+        error_log(UserController::logedin(request("token")));
+        $data = Post::all();
+        return response()->json($data, 200);
     }
 
     /**

@@ -36,6 +36,7 @@
         "react-router-transition": "^2.0.0",
         "tsconfig": "^7.0.0",
         "typescript": "^3.7.5",
+        "universal-cookie": "^4.0.3",
         "yarn": "^1.21.1"
     }
 }

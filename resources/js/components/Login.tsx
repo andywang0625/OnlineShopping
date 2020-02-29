@@ -6,6 +6,7 @@ import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import LockRoundedIcon from '@material-ui/icons/LockRounded';
 import FormErrorMessage from './FormErrorMessage';
 import axios from "axios";
+import Cookies from 'universal-cookie';
 
 interface LoginState{
     userName?: string;
@@ -28,6 +29,7 @@ const styles = (theme:Theme) => ({
     paper:{
         padding: theme.spacing(3),
         marginTop: "10%",
+        width:"80%"
     },
 });
 
@@ -49,7 +51,7 @@ class Login extends Component<any, LoginState>{
         const itemName = e.target.name;
         const itemValue = e.target.value;
         this.setState({[itemName]: itemValue}, ()=>{
-            if(this.state.userPasswd){
+            if(!this.state.userPasswd){
                 this.setState({errorMessage: "Passwords Cannot be Empty"});
             }else{
                 this.setState({errorMessage: undefined});
@@ -67,16 +69,24 @@ class Login extends Component<any, LoginState>{
         e.preventDefault();
         if(this.state.userPasswd){
             const {userName, userPasswd} = this.state;
-            axios.post("api/sessions", {
-                    user_name: this.state.userName,
-                    user_password: this.state.userPasswd,
+            axios.post("api/login_request", {
+                    name: this.state.userName,
+                    password: this.state.userPasswd,
             }, {withCredentials: true}).then(response => {
-                this.setState({logdia:true});
-                this.setState({dialogMessage:"Welcome back "+this.state.userName+"!"})
+                if(!response.data["error"]){
+                    const cookies = new Cookies();
+                    cookies.set('token',response.data["token"]);
+                    this.setState({logdia:true});
+                    this.setState({dialogMessage:"Welcome back "+this.state.userName+"!"})
+                }else{
+                    this.setState({logdia:true});
+                    this.setState({dialogMessage:"Oops, an error occurred!"});
+                    this.setState({dialogReason:"Please contact support group :("});
+                }
             }).catch(error => {
                 this.setState({logdia:true});
                 this.setState({dialogMessage:"Oops, an error occurred!"});
-                this.setState({dialogReason:error.response.data});
+                this.setState({dialogReason:error.response.data["error"]});
             });
         }else{
             //console.log("Error");
@@ -106,9 +116,11 @@ class Login extends Component<any, LoginState>{
                     </Button>
                 </DialogActions>
                 </Dialog>
-                <Grid container spacing={0} direction="column" justify="center" alignItems="center">
+
+                <Grid container direction="column" justify="center" alignItems="center">
                 <Paper className={classes.paper}>
                 <div style={{width:"100%"}}>
+
                     <form onSubmit={this.handleSubmit}>
                         <TextField
                             className={classes.margin}
@@ -126,10 +138,11 @@ class Login extends Component<any, LoginState>{
                                 ),
                             }}
                             required></TextField>
+
                         <TextField
                             className={classes.margin}
-                            id="userPasswd1"
-                            name="userPasswd1"
+                            id="userPasswd"
+                            name="userPasswd"
                             type="password"
                             placeholder="Password"
                             label="Password"
@@ -143,6 +156,7 @@ class Login extends Component<any, LoginState>{
                                 )
                             }}
                             required></TextField>
+
                         {this.state.errorMessage !== undefined ?(
                             <FormErrorMessage theMessage={this.state.errorMessage}></FormErrorMessage>
                         ):null}

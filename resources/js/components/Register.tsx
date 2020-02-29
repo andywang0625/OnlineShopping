@@ -30,6 +30,7 @@ const styles = (theme:Theme) => ({
     paper:{
         padding: theme.spacing(3),
         marginTop: "10%",
+        width:"80%"
     },
 });
 
@@ -66,15 +67,14 @@ class Register extends Component<any, RegState>{
         //console.log("closed!");
         this.setState({dialogReason:undefined});
     }
-
     handleSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
         if(this.state.userPasswd1==this.state.userPasswd2){
             const {userEmail, userName, userPasswd1} = this.state;
             axios.post("api/register_request", {
-                    user_email: this.state.userEmail,
-                    user_name: this.state.userName,
-                    user_password: this.state.userPasswd1,
+                    email: this.state.userEmail,
+                    name: this.state.userName,
+                    password: this.state.userPasswd1,
             }, {withCredentials: true}).then(response => {
                 this.setState({regdia:true});
                 this.setState({dialogMessage:"You have successfully registered!"})

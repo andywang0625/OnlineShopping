@@ -80,12 +80,86 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function Header() {
+export default function Header(props:any) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     //     setAnchorEl(event.currentTarget);
     // };
+    let sideList;
+    if(props.user&&props.email){
+        sideList = () =>(
+            <div
+            className={classes.list}
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}>
+                <List>
+                    <ListItem>
+                        <ListItemText>
+                        Welcome, {props.user}
+                        </ListItemText>
+                    </ListItem>
+                </List>
+                <Divider />
+                <List>
+                    {
+                        ['Home Page','My Carts', 'Logout', 'Contact Us'].map((text, index)=>(
+                            <ListItem button key={text} onClick={handleClickLogin(index)}>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))
+                    }
+                </List>
+                <Divider />
+                <List>
+                    {['All Categories', 'Daily', 'Tech'].map((text, index)=>(
+                        <ListItem button key={text}>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                        ))}
+                </List>
+            </div>
+        );
+    }else{
+        sideList = () =>(
+            <div
+            className={classes.list}
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}>
+                <List>
+                    {
+                        ['Home Page','Register', 'Login to Your Account', 'Contact Us'].map((text, index)=>(
+                            <ListItem button key={text} onClick={handleClick(index)}>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))
+                    }
+                </List>
+                <Divider />
+                <List>
+                    {['All Categories', 'Daily', 'Tech'].map((text, index)=>(
+                        <ListItem button key={text}>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                        ))}
+                </List>
+            </div>
+        );
+    }
+
+
+    const handleClickLogin = (index:number)=> (event: React.MouseEvent<HTMLElement>) => {
+        if(index==2){
+            window.location.href = "logout";
+        }else if(index==0){
+            window.location.href = "/";
+        }else if(index==1){
+            window.location.href = "carts";
+        }else if(index==3){
+            window.location.href = "support"
+        }
+    };
+
     const handleClick = (index:number)=> (event: React.MouseEvent<HTMLElement>) => {
         if(index==2){
             window.location.href = "login";
@@ -93,8 +167,11 @@ export default function Header() {
             window.location.href = "/";
         }else if(index==1){
             window.location.href = "register";
+        }else if(index==3){
+            window.location.href = "support"
         }
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -104,6 +181,7 @@ export default function Header() {
        drawer: false,
     });
 
+
     const toggleDrawer = (open: boolean) => (
         event: React.KeyboardEvent | React.MouseEvent,
     ) =>{
@@ -111,31 +189,6 @@ export default function Header() {
             return;
         setState({...state, ["drawer"]: open});
     }
-
-    const sideList = () =>(
-        <div
-        className={classes.list}
-        onClick={toggleDrawer(false)}
-        onKeyDown={toggleDrawer(false)}>
-            <List>
-                {
-                    ['Home Page','Register', 'Login to Your Account', 'Contact Us'].map((text, index)=>(
-                        <ListItem button key={text} onClick={handleClick(index)}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))
-                }
-            </List>
-            <Divider />
-            <List>
-                {['All Categories', 'Daily', 'Tech', 'Babies'].map((text, index)=>(
-                    <ListItem button key={text}>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                    ))}
-            </List>
-        </div>
-    );
     return (
         <React.Fragment>
         <AppBar>
