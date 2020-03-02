@@ -1,11 +1,25 @@
 import * as React from 'react';
 
 import {Component} from 'react';
+import Posts from './Posts';
 
-class HomePage extends Component{
+interface HomeState{
+    token?:string;
+}
+
+class HomePage extends Component<any, HomeState>{
+    constructor(props:any){
+        super(props);
+        this.state={
+            token:props.token
+        }
+    }
     render(){
         return (
-            <div>HomePage</div>
+            <div>
+                <div>HomePage</div>
+                <Posts token={this.state.token} />
+            </div>
         );
     }
 }

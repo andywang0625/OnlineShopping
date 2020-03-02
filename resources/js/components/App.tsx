@@ -68,7 +68,7 @@ class App extends Component<any, AppState>{
                 <Router>
                 <Header user={this.state.user} email={this.state.email} />
                     <Route exact path="/">
-                        <HomePage />
+                        <HomePage token={this.state.token} />
                     </Route>
                     <Route path="/login">
                         <Login />
