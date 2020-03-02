@@ -54,13 +54,17 @@ class Posts extends Component<any, PostsState>{
           });
     }
 
+    clickHandler = (event:React.MouseEvent<HTMLDivElement, MouseEvent>,id:string) => {
+        window.location.href = "/post/"+id;
+    }
+
     createList = (classes:any) =>{
         let list:any = [];
         console.log(this.state.posts.data["data"]);
         this.state.posts.data["data"].forEach((item:any)=>{
             list.push(
             <div className={classes.rootdiv}>
-                <ListItem button className={classes.listItem}>
+                <ListItem button onClick={event => this.clickHandler(event, item["id"])} className={classes.listItem}>
                 <ListItemAvatar><Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} /> </ListItemAvatar>
                     <ListItemText primary={item["title"]} secondary={
                                 <React.Fragment>
