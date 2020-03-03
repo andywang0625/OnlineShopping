@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import axios from "axios";
-import { Theme, withStyles, List, ListItemAvatar, Avatar, ListItem, ListItemText, Typography, Divider } from '@material-ui/core';
+import { Theme, withStyles, List, ListItemAvatar, Avatar, ListItem, ListItemText, Typography, Divider, Card, CardHeader, CardContent } from '@material-ui/core';
 import { stat } from 'fs';
 import color from '@material-ui/core/colors/amber';
 import { lightBlue, grey } from '@material-ui/core/colors';
@@ -31,8 +31,21 @@ const styles = (theme:Theme) =>({
     },
     listItem:{
         width: "95%",
-        backgroundColor: grey[100],
     },
+    description:{
+        width: "100%",
+        overflow : 'hidden',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        webkitLineClamp: 2,
+        webkitBoxOrient: 'vertical',
+    },
+    avatar:{
+        top:0,
+    },
+    cardBody:{
+        backgroundColor: grey[100],
+    }
 });
 
 class Posts extends Component<any, PostsState>{
@@ -65,21 +78,22 @@ class Posts extends Component<any, PostsState>{
             list.push(
             <div className={classes.rootdiv}>
                 <ListItem button onClick={event => this.clickHandler(event, item["id"])} className={classes.listItem}>
-                <ListItemAvatar><Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} /> </ListItemAvatar>
-                    <ListItemText primary={item["title"]} secondary={
-                                <React.Fragment>
-                                <Divider></Divider>
-                                    <Typography
-                                        component="span"
-                                        variant="body2"
-                                        className={classes.inline}
-                                        color="textPrimary">{"$"+item["price"]}
-                                    </Typography>
-                                    <br></br>
-                                    {item["description"]}
-                                </React.Fragment>
-                            }>
-                    </ListItemText>
+                <Card>
+                    <CardHeader
+                        avatar={
+                            <Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} />
+                        }
+                        title={item["title"]}
+                        subheader={item["number"]+" left"+" Created by "+item["userid"]+" on "+item["updated_at"]}
+                    >
+                    </CardHeader>
+                    <Divider></Divider>
+                    <CardContent className={classes.cardBody}>
+                        <div className={classes.description}>
+                            {item["description"]}
+                        </div>
+                    </CardContent>
+                </Card>
                 </ListItem>
             </div>
             )

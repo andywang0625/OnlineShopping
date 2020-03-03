@@ -20,6 +20,8 @@ class CreatePostsTable extends Migration
             $table->double("price",2)->nullable(false);
             $table->unsignedBigInteger("number")->nullable(false);
             $table->timestamps();
+            $table->bigInteger('userid')->unsigned();
+            $table->foreign('userid')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

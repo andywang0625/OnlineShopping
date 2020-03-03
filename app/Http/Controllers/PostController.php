@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\User;
 use App\Http\Controllers\UserController;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PostController extends Controller
 {
@@ -42,6 +44,11 @@ class PostController extends Controller
         //
     }
 
+
+    public function getAuthorName($id){
+        $user = User::where('id',$id)->first();
+        return $user->name;
+    }
     /**
      * Display the specified resource.
      *
@@ -51,6 +58,10 @@ class PostController extends Controller
     public function showList(Request $request)
     {
         $data["data"] = Post::all();
+        foreach($data["data"] as $r){
+            $uid = $r["userid"];
+            $r["userid"] = $this->getAuthorName($uid);
+        }
         return response()->json($data, 200);
     }
 
