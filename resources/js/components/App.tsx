@@ -18,11 +18,14 @@ import Register from './Register';
 import { positions } from '@material-ui/system';
 import Cookies from 'universal-cookie';
 import axios from "axios";
+import HomeBar from './HomeBar';
+import Loading from './Loading';
 
 interface AppState{
     token?:string;
     user?:string;
     email?:string;
+    isLoading?:boolean;
 }
 
 class App extends Component<any, AppState>{
@@ -32,7 +35,11 @@ class App extends Component<any, AppState>{
             token:undefined,
             user:undefined,
             email:undefined,
+            isLoading:true,
         }
+    }
+
+    componentDidMount(){
         const cookies = new Cookies();
         const token = cookies.get("token");
         if(token){
@@ -47,6 +54,7 @@ class App extends Component<any, AppState>{
                             token:cookies.get("token"),
                             user:message["name"],
                             email:message["email"],
+                            isLoading:false,
                         });
                     }else{
                         throw new Error("Your session has expired");
@@ -55,14 +63,21 @@ class App extends Component<any, AppState>{
             }).catch(error=>{
                 return error;
             });
+        }else{
+            this.setState({
+                isLoading:false,
+            });
         }
     }
 
-    componentDidMount(){
-
+    changeLoadingState = (isLoading:boolean=true) =>{
+        this.setState({
+            isLoading:isLoading
+        });
     }
 
     render(){
+        if(this.state.isLoading) return (<Loading></Loading>)
         return(
             <Container fixed>
                 <Router>
@@ -78,6 +93,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/logout">
                         <Logout msg={this.state.token} />
+                    </Route>
+                    <Route path="/" exact>
+                        <HomeBar token={this.state.token}></HomeBar>
                     </Route>
                 </Router>
             </Container>

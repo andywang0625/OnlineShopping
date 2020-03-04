@@ -78,11 +78,16 @@ class UserController extends Controller
     }
 
     public function isLogin(Request $request){
+        if(!request("token")){
+            $message["status"] = false;
+            return response()->json($message, 200);
+        }
         $user = User::where('api_token', request("token"))->first();
         if($user){
             $message["status"] = true;
             $message["name"] = $user["name"];
             $message["email"] = $user["email"];
+            $message["id"] = $user["id"];
             return response()->json($message,200);
         }else{
             $message["status"] = false;
