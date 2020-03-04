@@ -5,6 +5,7 @@ import { Theme, withStyles, List, ListItemAvatar, Avatar, ListItem, ListItemText
 import { stat } from 'fs';
 import color from '@material-ui/core/colors/amber';
 import { lightBlue, grey } from '@material-ui/core/colors';
+import Loading from './Loading';
 
 interface PostsState{
     token?:string;
@@ -102,7 +103,7 @@ class Posts extends Component<any, PostsState>{
     }
 
     render(){
-        if(this.state.isFetching) return <div>Loading....</div>;
+        if(this.state.isFetching) return <Loading />;
         const {classes} = this.props;
         return(
                 <List className={classes.root}>
