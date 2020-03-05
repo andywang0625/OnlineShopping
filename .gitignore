@@ -62,3 +62,4 @@ typings/
 .env
 resources/js/components/*.js
 public/js/app.js
+*.map

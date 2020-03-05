@@ -82,7 +82,7 @@ class HomeBar extends React.Component<any, AppBarState>{
             this.setState({
                 isFetching:false,
             });
-            console.log(error);
+            //console.log(error);
         })
     }
     userProfile = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, id:string|undefined) =>{
@@ -90,7 +90,6 @@ class HomeBar extends React.Component<any, AppBarState>{
     }
 
     render(){
-        console.log(this.state.userId);
         const {classes} = this.props;
         if(this.state.isFetching){
             return (<div></div>);

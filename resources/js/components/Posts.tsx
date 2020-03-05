@@ -74,7 +74,6 @@ class Posts extends Component<any, PostsState>{
 
     createList = (classes:any) =>{
         let list:any = [];
-        console.log(this.state.posts.data["data"]);
         this.state.posts.data["data"].forEach((item:any)=>{
             list.push(
             <div className={classes.rootdiv}>

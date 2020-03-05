@@ -20,6 +20,7 @@ import Cookies from 'universal-cookie';
 import axios from "axios";
 import HomeBar from './HomeBar';
 import Loading from './Loading';
+import Create from './Create';
 
 interface AppState{
     token?:string;
@@ -62,6 +63,8 @@ class App extends Component<any, AppState>{
                 }
             }).catch(error=>{
                 return error;
+            }).finally(()=>{
+                this.setState({isLoading:false});
             });
         }else{
             this.setState({
@@ -93,6 +96,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/logout">
                         <Logout msg={this.state.token} />
+                    </Route>
+                    <Route path="/create">
+                        <Create token={this.state.token}></Create>
                     </Route>
                     <Route path="/" exact>
                         <HomeBar token={this.state.token}></HomeBar>
