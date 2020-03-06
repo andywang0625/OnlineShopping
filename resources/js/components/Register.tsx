@@ -1,6 +1,6 @@
 import { Component, HtmlHTMLAttributes } from "react";
 import React from "react";
-import { TextField, Container, Grid, createStyles, makeStyles, Theme, withStyles, InputAdornment, Button, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, useMediaQuery, useTheme, Paper } from "@material-ui/core";
+import { TextField, Container, Grid, createStyles, makeStyles, Theme, withStyles, InputAdornment, Button, DialogTitle, Dialog, DialogContent, DialogContentText, DialogActions, useMediaQuery, useTheme, Paper, Grow } from "@material-ui/core";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import LockRoundedIcon from '@material-ui/icons/LockRounded';
@@ -112,82 +112,84 @@ class Register extends Component<any, RegState>{
                 </DialogActions>
                 </Dialog>
                 <Grid container spacing={0} direction="column" justify="center" alignItems="center">
-                <Paper className={classes.paper}>
-                <div style={{width:"100%"}}>
-                    <form onSubmit={this.handleSubmit}>
-                        <TextField
-                            className={classes.margin}
-                            id="userNameText"
-                            name="userName"
-                            label="User Name"
-                            placeholder="User Name"
-                            onChange={this.handleChange}
-                            value={this.state.userName}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <AccountCircle></AccountCircle>
-                                    </InputAdornment>
-                                ),
-                            }}
-                            required></TextField>
-                        <TextField
-                            className={classes.margin}
-                            id="userEmail"
-                            placeholder="Email"
-                            name="userEmail"
-                            label="Email"
-                            onChange={this.handleChange}
-                            value={this.state.userEmail}
-                            InputProps={{
-                                startAdornment:(
-                                    <InputAdornment position="start">
-                                        <EmailRoundedIcon></EmailRoundedIcon>
-                                    </InputAdornment>
-                                )
-                            }}
-                            required></TextField>
-                        <TextField
-                            className={classes.margin}
-                            id="userPasswd1"
-                            name="userPasswd1"
-                            type="password"
-                            placeholder="Password"
-                            label="Password"
-                            value={this.state.userPasswd1}
-                            onChange={this.handleChange}
-                            InputProps={{
-                                startAdornment:(
-                                    <InputAdornment position="start">
-                                    <LockRoundedIcon></LockRoundedIcon>
-                                    </InputAdornment>
-                                )
-                            }}
-                            required></TextField>
+                <Grow in>
+                    <Paper className={classes.paper}>
+                    <div style={{width:"100%"}}>
+                        <form onSubmit={this.handleSubmit}>
                             <TextField
-                            className={classes.margin}
-                            id="userPasswd2"
-                            name="userPasswd2"
-                            type="password"
-                            placeholder="Password Verification"
-                            label="Password Verification"
-                            value={this.state.userPasswd2}
-                            onChange={this.handleChange}
-                            InputProps={{
-                                startAdornment:(
-                                    <InputAdornment position="start">
+                                className={classes.margin}
+                                id="userNameText"
+                                name="userName"
+                                label="User Name"
+                                placeholder="User Name"
+                                onChange={this.handleChange}
+                                value={this.state.userName}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <AccountCircle></AccountCircle>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                required></TextField>
+                            <TextField
+                                className={classes.margin}
+                                id="userEmail"
+                                placeholder="Email"
+                                name="userEmail"
+                                label="Email"
+                                onChange={this.handleChange}
+                                value={this.state.userEmail}
+                                InputProps={{
+                                    startAdornment:(
+                                        <InputAdornment position="start">
+                                            <EmailRoundedIcon></EmailRoundedIcon>
+                                        </InputAdornment>
+                                    )
+                                }}
+                                required></TextField>
+                            <TextField
+                                className={classes.margin}
+                                id="userPasswd1"
+                                name="userPasswd1"
+                                type="password"
+                                placeholder="Password"
+                                label="Password"
+                                value={this.state.userPasswd1}
+                                onChange={this.handleChange}
+                                InputProps={{
+                                    startAdornment:(
+                                        <InputAdornment position="start">
                                         <LockRoundedIcon></LockRoundedIcon>
-                                    </InputAdornment>
-                                )
-                            }}
-                            required></TextField>
-                        {this.state.errorMessage !== undefined ?(
-                            <FormErrorMessage theMessage={this.state.errorMessage}></FormErrorMessage>
-                        ):null}
-                        <Button className={classes.submitbtn} type="submit" variant="contained" color="primary">Register</Button>
-                    </form>
-                </div>
-                </Paper>
+                                        </InputAdornment>
+                                    )
+                                }}
+                                required></TextField>
+                                <TextField
+                                className={classes.margin}
+                                id="userPasswd2"
+                                name="userPasswd2"
+                                type="password"
+                                placeholder="Password Verification"
+                                label="Password Verification"
+                                value={this.state.userPasswd2}
+                                onChange={this.handleChange}
+                                InputProps={{
+                                    startAdornment:(
+                                        <InputAdornment position="start">
+                                            <LockRoundedIcon></LockRoundedIcon>
+                                        </InputAdornment>
+                                    )
+                                }}
+                                required></TextField>
+                            {this.state.errorMessage !== undefined ?(
+                                <FormErrorMessage theMessage={this.state.errorMessage}></FormErrorMessage>
+                            ):null}
+                            <Button className={classes.submitbtn} type="submit" variant="contained" color="primary">Register</Button>
+                        </form>
+                    </div>
+                    </Paper>
+                </Grow>
                 </Grid>
             </Container>
 

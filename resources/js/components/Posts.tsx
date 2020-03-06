@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import axios from "axios";
-import { Theme, withStyles, List, ListItemAvatar, Avatar, ListItem, ListItemText, Typography, Divider, Card, CardHeader, CardContent } from '@material-ui/core';
+import { Theme, withStyles, List, ListItemAvatar, Avatar, ListItem, ListItemText, Typography, Divider, Card, CardHeader, CardContent, Fade, Zoom, Grow, Badge, Chip } from '@material-ui/core';
 import { stat } from 'fs';
 import color from '@material-ui/core/colors/amber';
 import { lightBlue, grey } from '@material-ui/core/colors';
@@ -81,22 +81,24 @@ class Posts extends Component<any, PostsState>{
             list.push(
             <div className={classes.rootdiv}>
                 <ListItem button onClick={event => this.clickHandler(event, item["id"])} className={classes.listItem}>
-                <Card className={classes.card}>
-                    <CardHeader
-                        avatar={
-                            <Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} />
-                        }
-                        title={item["title"]}
-                        subheader={item["number"]+" left"+" Created by "+item["userid"]+" on "+item["updated_at"]}
-                    >
-                    </CardHeader>
-                    <Divider></Divider>
-                    <CardContent className={classes.cardBody}>
-                        <div className={classes.description}>
-                            {item["description"]}
-                        </div>
-                    </CardContent>
-                </Card>
+                <Grow in={!this.state.isFetching} style={{ transitionDelay: '100ms' }}>
+                    <Card className={classes.card}>
+                        <CardHeader
+                            avatar={
+                                <Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} />
+                            }
+                            title={item["title"]}
+                            subheader={item["number"]+" left"+" Created by "+item["userid"]+" on "+item["updated_at"]}
+                            action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+item["price"]}></Chip></Zoom>}>
+                        </CardHeader>
+                        <Divider></Divider>
+                        <CardContent className={classes.cardBody}>
+                            <div className={classes.description}>
+                                {item["description"]}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </Grow>
                 </ListItem>
             </div>
             )
