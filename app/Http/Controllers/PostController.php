@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\User;
 use App\Http\Controllers\UserController;
+use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -27,10 +29,31 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        try{
+            $validator = Validator::make($request->all(),[
+                'title' => 'required|string|max:30',
+                'quantity' => 'required|integer',
+                'price' => 'required|numeric',
+                'token' => 'required',
+                'description' => 'required|string',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                // DO something
+                error_log(request("title")+" "+
+                request("quantity")+" "+
+                request("price")+" "+
+                request("token")+" "+
+                request("description"));
 
+                return response(201);
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 406);
+        }
     }
 
     /**
