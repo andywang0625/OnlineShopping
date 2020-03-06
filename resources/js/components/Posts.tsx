@@ -27,6 +27,9 @@ const styles = (theme:Theme) =>({
         flexFlow: "column",
         marginBottom: theme.spacing(2),
     },
+    card:{
+        width: "100%",
+    },
     inline: {
         display: 'inline',
     },
@@ -78,7 +81,7 @@ class Posts extends Component<any, PostsState>{
             list.push(
             <div className={classes.rootdiv}>
                 <ListItem button onClick={event => this.clickHandler(event, item["id"])} className={classes.listItem}>
-                <Card>
+                <Card className={classes.card}>
                     <CardHeader
                         avatar={
                             <Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} />

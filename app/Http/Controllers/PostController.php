@@ -34,8 +34,8 @@ class PostController extends Controller
         try{
             $validator = Validator::make($request->all(),[
                 'title' => 'required|string|max:30',
-                'quantity' => 'required|integer',
-                'price' => 'required|numeric',
+                'quantity' => 'required|integer|min:1|max:1000',
+                'price' => 'required|numeric|min:0|max:100000',
                 'token' => 'required',
                 'description' => 'required|string',
             ]);
@@ -43,12 +43,13 @@ class PostController extends Controller
                 throw new Exception($validator->messages()->first());
             }else{
                 // DO something
-                error_log(request("title")+" "+
-                request("quantity")+" "+
-                request("price")+" "+
-                request("token")+" "+
-                request("description"));
-
+                $post = new Post();
+                $post->title = Request("title");
+                $post->description = Request("description");
+                $post->price = Request("price");
+                $post->number = Request("quantity");
+                $post->userid = User::where("api_token", Request("token"))->first()->id;
+                $post->save();
                 return response(201);
             }
         }catch(Exception $e){
