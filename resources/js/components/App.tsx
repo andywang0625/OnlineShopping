@@ -21,6 +21,7 @@ import axios from "axios";
 import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
+import UploadImage from './UploadImage';
 
 interface AppState{
     token?:string;
@@ -102,6 +103,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/" exact>
                         <HomeBar token={this.state.token}></HomeBar>
+                    </Route>
+                    <Route path="/test" exact>
+                        <UploadImage></UploadImage>
                     </Route>
                 </Router>
             </Container>
