@@ -21,6 +21,7 @@ import axios from "axios";
 import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
+import Post from './Post';
 
 interface AppState{
     token?:string;
@@ -102,6 +103,8 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/" exact>
                         <HomeBar token={this.state.token}></HomeBar>
+                    </Route>
+                    <Route path="/post/:id" render={(props:any)=><Post {...props} token={this.state.token}></Post>}>
                     </Route>
                 </Router>
             </Container>

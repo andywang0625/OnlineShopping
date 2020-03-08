@@ -19,7 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register_request','UserController@register');
 Route::post('login_request','UserController@login');
 Route::post('verify_login',"UserController@isLogin");
-Route::post('posts',"PostController@index");
 Route::post("posts","PostController@showList");
 Route::post("create", "PostController@create");
 //Route::resource('posts{}', 'PostController');
