@@ -22,4 +22,6 @@ Route::post('verify_login',"UserController@isLogin");
 Route::post('posts',"PostController@index");
 Route::post("posts","PostController@showList");
 Route::post("create", "PostController@create");
+Route::GET('img/post/image', 'ImageController@imageList');
+Route::POST('img/post/upload/image', 'ImageController@imageUpload');
 //Route::resource('posts{}', 'PostController');

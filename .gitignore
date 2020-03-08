@@ -63,3 +63,4 @@ typings/
 resources/js/components/*.js
 public/js/app.js
 *.map
+public/imgs/*
