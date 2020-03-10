@@ -112,6 +112,21 @@ class PostController extends Controller
         //
     }
 
+    public function Post(Request $request)
+    {
+        if(Request("id")){
+            $the_post = Post::where("id", Request("id"))->first();
+            $data["data"] = [
+            "postBody"=>$the_post["description"],
+            "postTitle"=>$the_post["title"],
+            "postDate"=>$the_post["created_at"],
+            "owner"=>(User::where("name" ,$the_post["userid"])->first())["name"],
+            "price"=>$the_post["price"],
+            "quantity"=>$the_post["number"],
+            "ownerid"=>$the_post["userid"]];
+            return $data;
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

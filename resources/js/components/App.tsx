@@ -21,6 +21,7 @@ import axios from "axios";
 import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
+import Post from './Post';
 
 interface AppState{
     token?:string;
@@ -100,8 +101,10 @@ class App extends Component<any, AppState>{
                     <Route path="/create">
                         <Create token={this.state.token}></Create>
                     </Route>
-                    <Route path="/" exact>
+                    <Route path="/">
                         <HomeBar token={this.state.token}></HomeBar>
+                    </Route>
+                    <Route path="/post" exact component={Post}>
                     </Route>
                 </Router>
             </Container>

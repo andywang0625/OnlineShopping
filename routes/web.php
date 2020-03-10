@@ -11,4 +11,5 @@
 |
 */
 \Illuminate\Support\Facades\Route::view('/{path?}','welcome');
-Route::get('posts/{name?}', 'PostViewController@show');
+\Illuminate\Support\Facades\Route::view('/post/{path?}','welcome');
+// Route::get('posts/{name?}', 'PostViewController@show');
