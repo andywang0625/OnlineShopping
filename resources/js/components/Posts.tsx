@@ -72,7 +72,7 @@ class Posts extends Component<any, PostsState>{
     }
 
     clickHandler = (event:React.MouseEvent<HTMLDivElement, MouseEvent>,id:string) => {
-        window.location.href = "/post/"+id;
+        window.location.href = "/post?id="+id;
     }
 
     createList = (classes:any) =>{
