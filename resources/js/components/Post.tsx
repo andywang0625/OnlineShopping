@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide } from '@material-ui/core';
+import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom } from '@material-ui/core';
 import axios from "axios";
 import Loading from './Loading';
 import queryString from 'query-string'
@@ -113,8 +113,17 @@ export class Post extends Component<any, PostState> {
                             {this.state.postTitle}
                             </Typography>
                         }
-                        subheader={this.state.postDate}>
-                        <Chip label="Basic" variant="outlined" />
+                        subheader={
+                            <div>
+                                <Typography variant="h6" gutterBottom>
+                                    {this.state.postDate?.slice(0,10)}
+                                </Typography>
+                                <Zoom in style={{ transitionDelay:'600ms'}}>
+                                    <Chip label={"$"+this.state.price} variant="outlined">
+                                    </Chip>
+                                </Zoom>
+                            </div>
+                        }>
                         </CardHeader>
                         <CardContent>
                         <Divider></Divider>
