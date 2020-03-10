@@ -101,7 +101,7 @@ class App extends Component<any, AppState>{
                     <Route path="/create">
                         <Create token={this.state.token}></Create>
                     </Route>
-                    <Route path="/" exact>
+                    <Route path="/">
                         <HomeBar token={this.state.token}></HomeBar>
                     </Route>
                     <Route path="/post" exact component={Post}>
