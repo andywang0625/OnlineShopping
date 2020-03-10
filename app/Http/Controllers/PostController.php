@@ -112,6 +112,12 @@ class PostController extends Controller
         //
     }
 
+    public function Post(Request $request)
+    {
+        if(Request("id")){
+            error_log(Request("id"));
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

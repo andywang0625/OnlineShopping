@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Paper, Container, Divider } from '@material-ui/core';
 import axios from "axios";
 import Loading from './Loading';
+import queryString from 'query-string'
 
 
 interface PostState{
-    id:number;
-    token:string;
+    id?:string|string[];
+    token?:string;
     isFetching:boolean;
     postBody:any;
     postTitle?:string;
@@ -16,13 +17,14 @@ interface PostState{
     price?:string;
     quantity?:string;
     notFound?:boolean;
+    query?:any;
 }
 
 export class Post extends Component<any, PostState> {
     constructor(props:any){
         super(props);
-        console.log(this.props);
-        this.state = {id:this.props.match.params.id,
+        this.state = {
+            id:undefined,
             token:this.props.token,
             isFetching:true,
             postBody:undefined,
@@ -32,13 +34,18 @@ export class Post extends Component<any, PostState> {
             price:undefined,
             quantity:undefined,
             notFound:false,
+            query:undefined
         };
-
     }
-
     componentDidMount(){
-        axios.post('../api/post',{
-            id: this.state.id,
+        const values = queryString.parse(this.props.location.search);
+        if(values.id!=null){
+            this.setState({id:values.id});
+        }
+        else
+            this.setState({notFound:true});
+        axios.post('/api/post',{
+            id:this.state.id,
         }).then((response:any)=>{
             this.setState({
                 postBody:response.data["data"].postBody,
@@ -49,7 +56,6 @@ export class Post extends Component<any, PostState> {
                 quantity:response.data["data"].quantity,
                 isFetching:false,
             });
-
         }).catch(e=>{
             if(e=="Error: Request failed with status code 404")
                 this.setState({notFound:true});
@@ -57,21 +63,21 @@ export class Post extends Component<any, PostState> {
     }
 
     render() {
+        console.log(this.state.isFetching);
         if(this.state.notFound) return (
             <Container>
                 <h1>Item Not Found</h1>
             </Container>
         );
-        if(this.state.isFetching) return (
+        // if(this.state.isFetching)
+        //     return (<Loading></Loading>);
+        return (
             <Container>
                 <Paper>
-                    {this.state.postTitle}
                     <Divider></Divider>
                 </Paper>
             </Container>
         );
-        else
-            return (<Loading></Loading>);
     }
 }
 
