@@ -90,7 +90,7 @@ class App extends Component<any, AppState>{
                         <HomePage token={this.state.token} />
                     </Route>
                     <Route path="/login">
-                        <Login />
+                        {this.state.user? <Redirect to="/" /> : <Login />}
                     </Route>
                     <Route path="/register">
                         {this.state.user? <Redirect to="/" /> : <Register />}
