@@ -22,6 +22,7 @@ import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
 import Post from './Post';
+import EditPost from './EditPost';
 
 interface AppState{
     token?:string;
@@ -105,6 +106,9 @@ class App extends Component<any, AppState>{
                         <HomeBar token={this.state.token}></HomeBar>
                     </Route>
                     <Route path="/post" exact component={Post}>
+                    </Route>
+                    <Route path="/editPost">
+                        {this.state.user?  <EditPost></EditPost>:<Redirect to="/" />}
                     </Route>
                 </Router>
             </Container>
