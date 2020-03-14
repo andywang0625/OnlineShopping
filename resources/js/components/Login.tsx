@@ -7,6 +7,7 @@ import LockRoundedIcon from '@material-ui/icons/LockRounded';
 import FormErrorMessage from './FormErrorMessage';
 import axios from "axios";
 import Cookies from 'universal-cookie';
+import MessageBox from "./MessageBox";
 
 interface LoginState{
     userName?: string;
@@ -46,7 +47,6 @@ class Login extends Component<any, LoginState>{
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleClose = this.handleClose.bind(this);
     }
 
     handleChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -59,14 +59,6 @@ class Login extends Component<any, LoginState>{
                 this.setState({errorMessage: undefined});
             }
         });
-    }
-
-    handleClose(e: any){
-        this.setState({logdia:false});
-        //console.log("closed!");
-        this.setState({dialogReason:undefined});
-        if(this.state.loggedin)
-            return window.location.href = "/";
     }
 
     handleSubmit(e: React.FormEvent<HTMLFormElement>){
@@ -85,7 +77,7 @@ class Login extends Component<any, LoginState>{
                     this.setState({dialogMessage:"Welcome back "+this.state.userName+"!"});
                 }else{
                     this.setState({logdia:true});
-                    this.setState({dialogMessage:"Oops, an error occurred!"});
+                    this.setState({dialogMessage:"We canot log you in."});
                     this.setState({dialogReason:"Please contact support group :("});
                 }
             }).catch(error => {
@@ -101,26 +93,7 @@ class Login extends Component<any, LoginState>{
         const {classes} = this.props;
         return(
             <Container maxWidth="md">
-            <Dialog
-                open={this.state.logdia}
-                onClose={this.handleClose}
-                aria-labelledby="dtitle"
-                >
-                <DialogTitle id="dtitle">{"Registration"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                    {this.state.dialogMessage}
-                    <br></br>
-                    {this.state.dialogReason}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={this.handleClose} color="primary">
-                        Got it
-                    </Button>
-                </DialogActions>
-                </Dialog>
-
+                {this.state.logdia?<MessageBox messageTitle={this.state.dialogMessage} messageType="e" messageText={this.state.dialogReason}></MessageBox>:null}
                 <Grid container direction="column" justify="center" alignItems="center">
                 <Grow in>
                     <Paper className={classes.paper}>
