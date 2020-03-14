@@ -98,11 +98,17 @@ class EditPost extends Component<any, EditState> {
 
     handleSubmit = (e:any) =>{
         e.preventDefault();
-        //console.log(this.state);
-        // axios.post("api/create", {
-        // }).then(response =>{
-        // }).catch(error =>{
-        // });
+        axios.post('/api/postEdit',{
+
+        }).then((response:any)=>{
+
+        }).catch(e=>{
+            this.setState({
+                logdia:true,
+                dialogMessage:"Oops, an error occurred!",
+                dialogReason:e.response.data
+            })
+        });
     }
 
     componentDidMount(){
