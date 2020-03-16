@@ -108,7 +108,7 @@ class App extends Component<any, AppState>{
                     <Route path="/post" exact component={Post}>
                     </Route>
                     <Route path="/editPost">
-                        {this.state.user?  <EditPost></EditPost>:<Redirect to="/" />}
+                        {this.state.user?  <EditPost token={this.state.token}></EditPost>:<Redirect to="/" />}
                     </Route>
                 </Router>
             </Container>

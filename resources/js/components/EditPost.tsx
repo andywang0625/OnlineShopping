@@ -36,6 +36,7 @@ interface EditState{
     success?: boolean;
     isFetching:boolean;
     notFound:boolean;
+    id?:String;
 }
 
 class EditPost extends Component<any, EditState> {
@@ -54,6 +55,7 @@ class EditPost extends Component<any, EditState> {
             success:false,
             isFetching:true,
             notFound:false,
+            id:undefined,
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -99,9 +101,16 @@ class EditPost extends Component<any, EditState> {
     handleSubmit = (e:any) =>{
         e.preventDefault();
         axios.post('/api/postEdit',{
-
+            id: this.state.id,
+            token: this.props.token,
+            title: this.state.Title,
+            quantity: this.state.Quantity,
+            price: this.state.Price,
+            description: this.state.Description
         }).then((response:any)=>{
-
+            this.setState({logdia:true});
+            this.setState({dialogMessage:"Changes Saved!"});
+            this.setState({success:true});
         }).catch(e=>{
             this.setState({
                 logdia:true,
@@ -117,6 +126,7 @@ class EditPost extends Component<any, EditState> {
         let id:string|string[] = "";
         if(values.id!=null){
             id = values.id;
+            this.setState({id:id});
         }else
             this.setState({notFound:true});
         axios.post("api/post",{

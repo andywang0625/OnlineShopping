@@ -74,9 +74,9 @@ class PostController extends Controller
         return $user->name;
     }
     /**
-     * Display the specified resource.
+     * Return the list of posts
      *
-     * @param  int  $id
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function showList(Request $request)
@@ -90,28 +90,75 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update a post and save changes
      *
-     * @param  int  $id
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        try{
+            $validator = Validator::make($request->all(),[
+                'id' => 'required|integer',
+                'title' => 'required|string|max:30',
+                'quantity' => 'required|integer|min:1|max:1000',
+                'price' => 'required|numeric|min:0|max:100000',
+                'token' => 'required',
+                'description' => 'required|string',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 406);
+        }
+        $postId = Request("id");
+        $postTitle = Request("title");
+        $userToken = Request("token");
+        $postQuantity = Request("quantity");
+        $postDescription = Request("description");
+        $postPrice = Request("price");
+        try{
+            if($postId&&$postTitle&&$postDescription&&$postQuantity&&$postPrice)
+            $lePost = Post::where("id", $postId)->first();
+            if($lePost){
+                $postOwner = User::where("id", $lePost->userid)->first();
+                if($postOwner){
+                    if($postOwner->api_token==$userToken){
+                        $lePost->update([
+                            'title' => $postTitle,
+                            'number' => $postQuantity,
+                            'price' => $postQuantity,
+                            'description' => $postDescription,
+                            'price' => $postPrice
+                        ]);
+                        $data["data"] = ["result"=>"success"];
+                        $lePost->save();
+                        return Response($data, 202);
+                    }else{
+                        //handle unauthorized error
+                        throw new Exception("Unauthorized Operation");
+                    }
+                }else{
+                    //handle not found error
+                    throw new Exception("Resource Not Found");
+                }
+            }else{
+                //handle not found error
+                throw new Exception("Resource Not Found");
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 406);
+        }
+
     }
+
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * Return the information of a post
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     public function Post(Request $request)
     {
         if(Request("id")){

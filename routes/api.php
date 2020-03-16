@@ -22,4 +22,5 @@ Route::post('verify_login',"UserController@isLogin");
 Route::post("posts","PostController@showList");
 Route::post("create", "PostController@create");
 Route::post("post", "PostController@post");
+Route::post("postEdit", "PostController@edit");
 //Route::resource('posts{}', 'PostController');
