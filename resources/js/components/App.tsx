@@ -23,12 +23,14 @@ import Loading from './Loading';
 import Create from './Create';
 import Post from './Post';
 import EditPost from './EditPost';
+import MyItem from './MyItem';
 
 interface AppState{
     token?:string;
     user?:string;
     email?:string;
     isLoading?:boolean;
+    userId?:string;
 }
 
 class App extends Component<any, AppState>{
@@ -39,6 +41,7 @@ class App extends Component<any, AppState>{
             user:undefined,
             email:undefined,
             isLoading:true,
+            userId:undefined,
         }
     }
 
@@ -58,6 +61,7 @@ class App extends Component<any, AppState>{
                             user:message["name"],
                             email:message["email"],
                             isLoading:false,
+                            userId:message["id"]
                         });
                     }else{
                         throw new Error("Your session has expired");
@@ -109,6 +113,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/editPost">
                         {this.state.user?  <EditPost token={this.state.token}></EditPost>:<Redirect to="/" />}
+                    </Route>
+                    <Route path="/myItems">
+                        {this.state.user? <MyItem token={this.state.token} userId={this.state.userId}></MyItem>:<Redirect to="/"></Redirect>}
                     </Route>
                 </Router>
             </Container>
