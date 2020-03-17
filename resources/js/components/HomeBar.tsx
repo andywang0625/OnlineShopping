@@ -24,6 +24,7 @@ const styles = (theme:Theme) =>({
       appBar: {
         top: 'auto',
         bottom: 0,
+        height: 50
       },
       grow: {
         flexGrow: 1,
@@ -35,7 +36,11 @@ const styles = (theme:Theme) =>({
         top:-100,
       },
       userAva:{
-
+        top:-30,
+      },
+      userAvai:{
+        width: theme.spacing(7),
+        height: theme.spacing(7),
       }
 });
 
@@ -86,7 +91,7 @@ class HomeBar extends React.Component<any, AppBarState>{
         })
     }
     userProfile = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>, id:string|undefined) =>{
-        window.location.href = "/user/"+id;
+        window.location.href = "/user?id="+id;
     }
 
     render(){
@@ -100,10 +105,11 @@ class HomeBar extends React.Component<any, AppBarState>{
             <AppBar position="fixed" color="primary" className={classes.appBar}>
               <Toolbar>
               <ButtonBase
-              onClick={event => this.userProfile(event , this.state.userId)}>
-              <Avatar
               className={classes.userAva}
-              alt={this.state.userName} src={"/static/img/UserAvatars/"+this.state.userId}></Avatar>
+              onClick={event => this.userProfile(event , this.state.userId)}>
+                <Avatar
+                className={classes.userAvai}
+                alt={this.state.userName} src={"/static/img/UserAvatars/"+this.state.userId}></Avatar>
               </ButtonBase>
                 <div className={classes.grow} />
                 <Fab color="secondary" aria-label="add" className={classes.fabButton} onClick={() => {window.location.href = "/create"}}>
