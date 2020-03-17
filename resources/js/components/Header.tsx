@@ -103,7 +103,7 @@ export default function Header(props:any) {
                 <Divider />
                 <List>
                     {
-                        ['Home Page','My Carts', 'Logout', 'Contact Us'].map((text, index)=>(
+                        ['Home Page','My Items', 'Logout', 'Contact Us'].map((text, index)=>(
                             <ListItem button key={text} onClick={handleClickLogin(index)}>
                                 <ListItemText primary={text} />
                             </ListItem>
