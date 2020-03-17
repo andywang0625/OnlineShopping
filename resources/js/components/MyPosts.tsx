@@ -63,7 +63,6 @@ class MyPosts extends Component<any, PostsState>{
         }
     }
     componentDidMount(){
-        console.log(this.props.userId);
         axios.post("api/posts",{
             keyWord: undefined,
             class: undefined,
@@ -82,7 +81,6 @@ class MyPosts extends Component<any, PostsState>{
     createList = (classes:any) =>{
         let list:any = [];
         let listItem = this.state.posts.data;
-        console.log(this.state.posts.data);
         Object.keys(this.state.posts.data).forEach((item:any)=>{
             list.push(
             <div className={classes.rootdiv}>
@@ -94,7 +92,7 @@ class MyPosts extends Component<any, PostsState>{
                                 <Avatar alt={listItem[item]["title"]} src={"/static/imgs/productAvatars/"+listItem[item]["id"]} />
                             }
                             title={listItem[item]["title"]}
-                            subheader={listItem[item]["number"]+" Left"+"  Created"+" on "+listItem[item]["updated_at"]}
+                            subheader={listItem[item]["number"]+" Left"+"  Created"+" on "+listItem[item]["created_at"]}
                             action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
                         </CardHeader>
                         <Divider></Divider>

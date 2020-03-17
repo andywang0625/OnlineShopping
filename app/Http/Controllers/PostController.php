@@ -84,9 +84,25 @@ class PostController extends Controller
         $query = null;
         if(Request("keyWord")){
             $key = "%".Request("keyWord")."%";
-            $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->get();
+            if(Request("order")){
+                if(Request("order")=="asc"){
+                    $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "asc")->get();
+                }else{
+                    $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "desc")->get();
+                }
+            }else{
+                $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "desc")->get();
+            }
         }else{
-            $query = Post::all();
+            if(Request("order")){
+                if(Request("order")=="asc"){
+                    $query = Post::orderBy("created_at", "asc")->get();
+                }else{
+                    $query = Post::orderBy("created_at", "desc")->get();
+                }
+            }else{
+                $query = Post::orderBy("created_at", "desc")->get();
+            }
         }
         if(Request("minPrice")&&Request("maxPrice")){
             $query = $query->whereBetween('price', [Request("minPrice"),Request("maxPrice")]);
@@ -97,15 +113,6 @@ class PostController extends Controller
         }
         if(Request("userId")){
             $query = $query->where('userid',Request("userId"));
-        }
-        if(Request("order")){
-            if(Request("order")=="asc")
-            $query = $query->sortBy('created_at');
-            else{
-                $query = $query->sortByDesc('created_at');
-            }
-        }else{
-            $query = $query->sortByDesc('created_at');
         }
         $data = $query;
         foreach($data as $r){
