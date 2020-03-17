@@ -98,6 +98,15 @@ class PostController extends Controller
         if(Request("userId")){
             $query = $query->where('userid',Request("userId"));
         }
+        if(Request("order")){
+            if(Request("order")=="asc")
+            $query = $query->sortBy('created_at');
+            else{
+                $query = $query->sortByDesc('created_at');
+            }
+        }else{
+            $query = $query->sortByDesc('created_at');
+        }
         $data = $query;
         foreach($data as $r){
             $uid = $r["userid"];
