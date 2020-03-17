@@ -81,8 +81,25 @@ class PostController extends Controller
      */
     public function showList(Request $request)
     {
-        $data["data"] = Post::all();
-        foreach($data["data"] as $r){
+        $query = null;
+        if(Request("keyWord")){
+            $key = "%".Request("keyWord")."%";
+            $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->get();
+        }else{
+            $query = Post::all();
+        }
+        if(Request("minPrice")&&Request("maxPrice")){
+            $query = $query->whereBetween('price', [Request("minPrice"),Request("maxPrice")]);
+        }else if(Request("minPrice")){
+            $query = $query->where('price','>',Request("minPrice"));
+        }else if(Request("maxPrice")){
+            $query = $query->where('price','<',Request("maxPrice"));
+        }
+        if(Request("userId")){
+            $query = $query->where('userid',Request("userId"));
+        }
+        $data = $query;
+        foreach($data as $r){
             $uid = $r["userid"];
             $r["userid"] = $this->getAuthorName($uid);
         }
