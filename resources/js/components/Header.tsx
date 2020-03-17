@@ -103,7 +103,7 @@ export default function Header(props:any) {
                 <Divider />
                 <List>
                     {
-                        ['Home Page','My Carts', 'Logout', 'Contact Us'].map((text, index)=>(
+                        ['Home Page','My Items', 'Logout', 'Contact Us'].map((text, index)=>(
                             <ListItem button key={text} onClick={handleClickLogin(index)}>
                                 <ListItemText primary={text} />
                             </ListItem>
@@ -154,7 +154,7 @@ export default function Header(props:any) {
         }else if(index==0){
             window.location.href = "/";
         }else if(index==1){
-            window.location.href = "carts";
+            window.location.href = "myItems";
         }else if(index==3){
             window.location.href = "support"
         }
