@@ -20,6 +20,7 @@ const styles = (theme:Theme)=>({
     root:{
         flexGrow: 1,
         marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(4)
     },
     titleBar:{
 
