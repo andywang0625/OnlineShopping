@@ -36,7 +36,7 @@ interface EditState{
     success?: boolean;
     isFetching:boolean;
     notFound:boolean;
-    id?:String;
+    id?:String|String[];
 }
 
 class EditPost extends Component<any, EditState> {
