@@ -77,24 +77,25 @@ class Posts extends Component<any, PostsState>{
 
     createList = (classes:any) =>{
         let list:any = [];
-        this.state.posts.data["data"].forEach((item:any)=>{
+        let listItem = this.state.posts.data;
+        Object.keys(listItem).forEach((item:any)=>{
             list.push(
             <div className={classes.rootdiv}>
-                <ListItem button onClick={event => this.clickHandler(event, item["id"])} className={classes.listItem}>
+                <ListItem button onClick={event => this.clickHandler(event, listItem[item]["id"])} className={classes.listItem}>
                 <Grow in={!this.state.isFetching} style={{ transitionDelay: '100ms' }}>
                     <Card className={classes.card}>
                         <CardHeader
                             avatar={
-                                <Avatar alt={item["title"]} src={"/static/imgs/productAvatars/"+item["id"]} />
+                                <Avatar alt={listItem[item]["title"]} src={"/static/imgs/productAvatars/"+listItem[item]["id"]} />
                             }
-                            title={item["title"]}
-                            subheader={item["number"]+" left"+" Created by "+item["userid"]+" on "+item["updated_at"]}
-                            action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+item["price"]}></Chip></Zoom>}>
+                            title={listItem[item]["title"]}
+                            subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["updated_at"]}
+                            action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
                         </CardHeader>
                         <Divider></Divider>
                         <CardContent className={classes.cardBody}>
                             <div className={classes.description}>
-                                {item["description"]}
+                                {listItem[item]["description"]}
                             </div>
                         </CardContent>
                     </Card>
