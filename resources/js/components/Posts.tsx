@@ -89,7 +89,7 @@ class Posts extends Component<any, PostsState>{
                                 <Avatar alt={listItem[item]["title"]} src={"/static/imgs/productAvatars/"+listItem[item]["id"]} />
                             }
                             title={listItem[item]["title"]}
-                            subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["updated_at"]}
+                            subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["created_at"]}
                             action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
                         </CardHeader>
                         <Divider></Divider>
