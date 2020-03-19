@@ -12,6 +12,7 @@ interface PostsState{
     errorMessage?:string;
     posts?:any;
     isFetching:boolean;
+    userId?:number;
 }
 
 const styles = (theme:Theme) =>({
@@ -52,12 +53,13 @@ const styles = (theme:Theme) =>({
     }
 });
 
-class Posts extends Component<any, PostsState>{
+class MyPosts extends Component<any, PostsState>{
     constructor(props:any){
         super(props);
         this.state={
             token:undefined,
             isFetching:true,
+            userId:undefined,
         }
     }
     componentDidMount(){
@@ -66,19 +68,20 @@ class Posts extends Component<any, PostsState>{
             class: undefined,
             minPrice: undefined,
             maxPrice: undefined,
+            userId: this.props.userId
           },{withCredentials: true}).then((response)=>{
             this.setState({token:this.props.token, posts:response, isFetching:false});
           });
     }
 
     clickHandler = (event:React.MouseEvent<HTMLDivElement, MouseEvent>,id:string) => {
-        window.location.href = "/post?id="+id;
+        window.location.href = "/editPost?id="+id;
     }
 
     createList = (classes:any) =>{
         let list:any = [];
         let listItem = this.state.posts.data;
-        Object.keys(listItem).forEach((item:any)=>{
+        Object.keys(this.state.posts.data).forEach((item:any)=>{
             list.push(
             <div className={classes.rootdiv}>
                 <ListItem button onClick={event => this.clickHandler(event, listItem[item]["id"])} className={classes.listItem}>
@@ -89,7 +92,7 @@ class Posts extends Component<any, PostsState>{
                                 <Avatar alt={listItem[item]["title"]} src={"/static/imgs/productAvatars/"+listItem[item]["id"]} />
                             }
                             title={listItem[item]["title"]}
-                            subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["created_at"]}
+                            subheader={listItem[item]["number"]+" Left"+"  Created"+" on "+listItem[item]["created_at"]}
                             action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
                         </CardHeader>
                         <Divider></Divider>
@@ -118,4 +121,4 @@ class Posts extends Component<any, PostsState>{
     }
 }
 
-export default withStyles(styles)(Posts);
+export default withStyles(styles)(MyPosts);

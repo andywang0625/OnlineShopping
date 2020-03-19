@@ -22,12 +22,16 @@ import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
 import UploadImage from './UploadImage';
+import Post from './Post';
+import EditPost from './EditPost';
+import MyItem from './MyItem';
 
 interface AppState{
     token?:string;
     user?:string;
     email?:string;
     isLoading?:boolean;
+    userId?:string;
 }
 
 class App extends Component<any, AppState>{
@@ -38,6 +42,7 @@ class App extends Component<any, AppState>{
             user:undefined,
             email:undefined,
             isLoading:true,
+            userId:undefined,
         }
     }
 
@@ -57,6 +62,7 @@ class App extends Component<any, AppState>{
                             user:message["name"],
                             email:message["email"],
                             isLoading:false,
+                            userId:message["id"]
                         });
                     }else{
                         throw new Error("Your session has expired");
@@ -90,7 +96,7 @@ class App extends Component<any, AppState>{
                         <HomePage token={this.state.token} />
                     </Route>
                     <Route path="/login">
-                        <Login />
+                        {this.state.user? <Redirect to="/" /> : <Login />}
                     </Route>
                     <Route path="/register">
                         {this.state.user? <Redirect to="/" /> : <Register />}
@@ -101,11 +107,19 @@ class App extends Component<any, AppState>{
                     <Route path="/create">
                         <Create token={this.state.token}></Create>
                     </Route>
-                    <Route path="/" exact>
+                    <Route path="/">
                         <HomeBar token={this.state.token}></HomeBar>
                     </Route>
                     <Route path="/test" exact>
                         <UploadImage></UploadImage>
+                    </Route>
+                    <Route path="/post" exact component={Post}>
+                    </Route>
+                    <Route path="/editPost">
+                        {this.state.user?  <EditPost token={this.state.token}></EditPost>:<Redirect to="/" />}
+                    </Route>
+                    <Route path="/myItems">
+                        {this.state.user? <MyItem token={this.state.token} userId={this.state.userId}></MyItem>:<Redirect to="/"></Redirect>}
                     </Route>
                 </Router>
             </Container>

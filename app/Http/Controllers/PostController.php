@@ -74,15 +74,48 @@ class PostController extends Controller
         return $user->name;
     }
     /**
-     * Display the specified resource.
+     * Return the list of posts
      *
-     * @param  int  $id
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function showList(Request $request)
     {
-        $data["data"] = Post::all();
-        foreach($data["data"] as $r){
+        $query = null;
+        if(Request("keyWord")){
+            $key = "%".Request("keyWord")."%";
+            if(Request("order")){
+                if(Request("order")=="asc"){
+                    $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "asc")->get();
+                }else{
+                    $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "desc")->get();
+                }
+            }else{
+                $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "desc")->get();
+            }
+        }else{
+            if(Request("order")){
+                if(Request("order")=="asc"){
+                    $query = Post::orderBy("created_at", "asc")->get();
+                }else{
+                    $query = Post::orderBy("created_at", "desc")->get();
+                }
+            }else{
+                $query = Post::orderBy("created_at", "desc")->get();
+            }
+        }
+        if(Request("minPrice")&&Request("maxPrice")){
+            $query = $query->whereBetween('price', [Request("minPrice"),Request("maxPrice")]);
+        }else if(Request("minPrice")){
+            $query = $query->where('price','>',Request("minPrice"));
+        }else if(Request("maxPrice")){
+            $query = $query->where('price','<',Request("maxPrice"));
+        }
+        if(Request("userId")){
+            $query = $query->where('userid',Request("userId"));
+        }
+        $data = $query;
+        foreach($data as $r){
             $uid = $r["userid"];
             $r["userid"] = $this->getAuthorName($uid);
         }
@@ -90,28 +123,90 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update a post and save changes
      *
-     * @param  int  $id
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        try{
+            $validator = Validator::make($request->all(),[
+                'id' => 'required|integer',
+                'title' => 'required|string|max:30',
+                'quantity' => 'required|integer|min:1|max:1000',
+                'price' => 'required|numeric|min:0|max:100000',
+                'token' => 'required',
+                'description' => 'required|string',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 406);
+        }
+        $postId = Request("id");
+        $postTitle = Request("title");
+        $userToken = Request("token");
+        $postQuantity = Request("quantity");
+        $postDescription = Request("description");
+        $postPrice = Request("price");
+        try{
+            if($postId&&$postTitle&&$postDescription&&$postQuantity&&$postPrice)
+            $lePost = Post::where("id", $postId)->first();
+            if($lePost){
+                $postOwner = User::where("id", $lePost->userid)->first();
+                if($postOwner){
+                    if($postOwner->api_token==$userToken){
+                        $lePost->update([
+                            'title' => $postTitle,
+                            'number' => $postQuantity,
+                            'price' => $postQuantity,
+                            'description' => $postDescription,
+                            'price' => $postPrice
+                        ]);
+                        $data["data"] = ["result"=>"success"];
+                        $lePost->save();
+                        return Response($data, 202);
+                    }else{
+                        //handle unauthorized error
+                        throw new Exception("Unauthorized Operation");
+                    }
+                }else{
+                    //handle not found error
+                    throw new Exception("Resource Not Found");
+                }
+            }else{
+                //handle not found error
+                throw new Exception("Resource Not Found");
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 406);
+        }
+
     }
+
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * Return the information of a post
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function Post(Request $request)
     {
-        //
+        if(Request("id")){
+            $the_post = Post::where("id", Request("id"))->first();
+            $data["data"] = [
+            "postBody"=>$the_post["description"],
+            "postTitle"=>$the_post["title"],
+            "postDate"=>$the_post["created_at"],
+            "owner"=>(User::where("name" ,$the_post["userid"])->first())["name"],
+            "price"=>$the_post["price"],
+            "quantity"=>$the_post["number"],
+            "ownerid"=>$the_post["userid"]];
+            return $data;
+        }
     }
-
     /**
      * Remove the specified resource from storage.
      *
