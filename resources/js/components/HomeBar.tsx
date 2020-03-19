@@ -106,6 +106,7 @@ class HomeBar extends React.Component<any, AppBarState>{
               <Toolbar>
               <ButtonBase
               className={classes.userAva}
+              disableRipple={true}
               onClick={event => this.userProfile(event , this.state.userId)}>
                 <Avatar
                 className={classes.userAvai}
