@@ -21,6 +21,7 @@ import axios from "axios";
 import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
+import UploadImage from './UploadImage';
 import Post from './Post';
 import EditPost from './EditPost';
 import MyItem from './MyItem';
@@ -108,6 +109,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/">
                         <HomeBar token={this.state.token}></HomeBar>
+                    </Route>
+                    <Route path="/test" exact>
+                        <UploadImage></UploadImage>
                     </Route>
                     <Route path="/post" exact component={Post}>
                     </Route>
