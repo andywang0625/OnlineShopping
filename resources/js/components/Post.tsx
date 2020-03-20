@@ -8,6 +8,8 @@ import { withStyles } from '@material-ui/core';
 import { red, blue } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
+import AwesomeSlider from 'react-awesome-slider';
+import 'react-awesome-slider/dist/styles.css';
 
 const styles = (theme:Theme)=>({
     paper:{
@@ -40,6 +42,8 @@ interface PostState{
     notFound?:boolean;
     query?:any;
     ownerid?:string;
+    sliderLoading?:boolean;
+    sliders?:any[];
 }
 
 export class Post extends Component<any, PostState> {
@@ -56,7 +60,9 @@ export class Post extends Component<any, PostState> {
             price:undefined,
             quantity:undefined,
             notFound:false,
-            query:undefined
+            query:undefined,
+            sliderLoading:true,
+            sliders:undefined
         };
     }
     componentDidMount(){
@@ -87,7 +93,40 @@ export class Post extends Component<any, PostState> {
                     notFound:true,
                 });
             }
-        })
+        });
+
+        axios.get('/api/img/postid/'+id).then((response:any)=>{
+            let slides:any = [];
+            let imgNames: any[] = [];
+            Object.keys(response.data).forEach(function(key){
+                imgNames.push(response.data[key].filename);
+            });
+
+            imgNames.forEach(function(name){
+                slides.push(<div data-src={"/api/img/post/"+name}></div>);
+            });
+
+            this.setState({
+                sliders:slides,
+                sliderLoading:false
+            });
+        }).catch(e=>{
+
+        });
+    }
+
+    sliderMaker = () =>{
+        if(this.state.sliderLoading){
+            return (
+                    <Loading></Loading>
+            )
+        }else{
+            return(
+                <AwesomeSlider>
+                    {this.state.sliders}
+                </AwesomeSlider>
+            )
+        }
     }
 
     render() {
@@ -127,6 +166,7 @@ export class Post extends Component<any, PostState> {
                         </CardHeader>
                         <CardContent>
                         <Divider></Divider>
+                        {this.sliderMaker()}
                         <Typography paragraph className={classes.body} variant="body1">
                             {this.state.postBody}
                         </Typography>

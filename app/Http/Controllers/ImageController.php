@@ -79,6 +79,20 @@ class ImageController extends Controller
         }
     }
 
+    public function getCoverImg(Request $request)
+    {
+        try{
+            if(Request("id")){
+                $img = PostImages::where("postid", Request("id"))->first();
+                return response()->download(public_path('imgs\\products\\thumbnails\\'.$img->filename));
+            }else{
+                throw new Exception("Not Found");
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 404);
+        }
+    }
+
     public function saveItemImg(Request $request)
     {
         request()->validate([
@@ -101,7 +115,7 @@ class ImageController extends Controller
                     }
 
                     $imgUpload->save($uploadPath.time().$img->getClientOriginalName());
-                    $imgUpload->resize(250, 125);
+                    $imgUpload->resize(128, 128);
                     $imgUpload = $imgUpload->save($thumbnailPath.time().$img->getClientOriginalName());
 
                     $newImg = new PostImages();
