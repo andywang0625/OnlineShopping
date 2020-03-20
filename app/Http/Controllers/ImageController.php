@@ -10,6 +10,7 @@ use App\User;
 use Exception;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
@@ -114,13 +115,14 @@ class ImageController extends Controller
                         mkdir($thumbnailPath, 666, true);
                     }
 
-                    $imgUpload->save($uploadPath.time().$img->getClientOriginalName());
+
+                    $imgUpload->save($uploadPath.time().Str::random(12).".".$img->extension());
                     $imgUpload->resize(128, 128);
-                    $imgUpload = $imgUpload->save($thumbnailPath.time().$img->getClientOriginalName());
+                    $imgUpload = $imgUpload->save($thumbnailPath.time().Str::random(12).".".$img->extension());
 
                     $newImg = new PostImages();
                     $newImg->postid = Request("postid");
-                    $newImg->filename = time().$img->getClientOriginalName();
+                    $newImg->filename = time().Str::random(12).".".$img->extension();
                     $newImg->save();
                 }
             }else{
