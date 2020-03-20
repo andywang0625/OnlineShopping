@@ -122,7 +122,7 @@ export class Post extends Component<any, PostState> {
             )
         }else if(this.state.sliders?.length!=0){
             return(
-                <AwesomeSlider>
+                <AwesomeSlider organicArrows={true}>
                     {this.state.sliders}
                 </AwesomeSlider>
             );
