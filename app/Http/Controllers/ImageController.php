@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use App\PostImages;
 use App\Post;
+use App\User;
 use Exception;
 use Facade\FlareClient\Http\Response;
+use Illuminate\Support\Facades\File;
 
 class ImageController extends Controller
 {
@@ -18,6 +20,39 @@ class ImageController extends Controller
     // public function getUserAvatar(Request $request, $userId){
     //     return response()->download(public_path('imgs/avatar/'.$userId.".png"));
     // }
+    public function removePostImage(Request $request)
+    {
+        try{
+            $token = Request("token");
+            $imageName = Request("name");
+            $img = PostImages::where('filename',$imageName)->first();
+            $user = User::where('api_token', $token)->first();
+            $imgPost = Post::where('id', $img->postid)->first();
+            if($user->id==$imgPost->userid){
+                PostImages::where('filename',$imageName)->delete();
+                File::delete('imgs\\products\\'.$imageName, 'imgs\\products\\thumbnails\\'.$imageName);
+                return Response("success");
+            }else{
+                throw new Exception("Not match");
+            }
+        }catch(Exception $e){
+            return Response("Unauthorized Operation: ".$e->getMessage(), 406);
+        }
+    }
+    public function getImgsOfPost(Request $request)
+    {
+        try{
+            if(Request("id")){
+                $imgs = PostImages::where('postid', Request("id"))->get("filename");
+                return $imgs;
+            }else{
+                throw new Exception();
+            }
+        }catch(Exception $e){
+            return Response("Not Found", 404);
+        }
+    }
+
     public function getImage(Request $request){
         try{
             if(Request("img")){

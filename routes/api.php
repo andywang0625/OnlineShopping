@@ -26,6 +26,8 @@ Route::GET('img/post/image', 'ImageController@imageList');
 Route::POST('img/post_image', 'ImageController@saveItemImg');
 Route::GET('img/post/{img}', 'ImageController@getImage');
 Route::GET('img/tn/post/{img}', 'ImageController@getThumbnail');
+Route::GET('img/postid/{id}', 'ImageController@getImgsOfPost');
+Route::POST('img/post/rmimg', 'ImageController@removePostImage');
 //1Route::get('useravatar/{userId}', 'ImageController@getUserAvatar');
 Route::post("post", "PostController@post");
 Route::post("postEdit", "PostController@edit");
