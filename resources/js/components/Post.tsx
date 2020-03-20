@@ -120,12 +120,16 @@ export class Post extends Component<any, PostState> {
             return (
                     <Loading></Loading>
             )
-        }else{
+        }else if(this.state.sliders?.length!=0){
             return(
                 <AwesomeSlider>
                     {this.state.sliders}
                 </AwesomeSlider>
-            )
+            );
+        }else{
+            return(
+                <Typography align="center" gutterBottom>Oops, The Owner Did Not Provide a Photo</Typography>
+            );
         }
     }
 
@@ -167,6 +171,7 @@ export class Post extends Component<any, PostState> {
                         <CardContent>
                         <Divider></Divider>
                         {this.sliderMaker()}
+                        <Divider></Divider>
                         <Typography paragraph className={classes.body} variant="body1">
                             {this.state.postBody}
                         </Typography>
