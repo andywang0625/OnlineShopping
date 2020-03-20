@@ -80,12 +80,27 @@ class ImageController extends Controller
         }
     }
 
+    public function getCoverImg(Request $request)
+    {
+        try{
+            if(Request("id")){
+                $img = PostImages::where("postid", Request("id"))->first();
+                return response()->download(public_path('imgs\\products\\thumbnails\\'.$img->filename));
+            }else{
+                throw new Exception("Not Found");
+            }
+        }catch(Exception $e){
+            return response($e->getMessage(), 404);
+        }
+    }
+
     public function saveItemImg(Request $request)
     {
         request()->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
             'postid' => 'required|string',
         ]);
+        $rname = Str::random(20);
         try{
             $post = Post::where('id',Request("postid"))->first();
             if($post){
@@ -101,13 +116,14 @@ class ImageController extends Controller
                         mkdir($thumbnailPath, 666, true);
                     }
 
-                    $imgUpload->save($uploadPath.time().Str::random(12).".".$img->extension());
-                    $imgUpload->resize(250, 125);
-                    $imgUpload = $imgUpload->save($thumbnailPath.time().Str::random(12).".".$img->extension());
+
+                    $imgUpload->save($uploadPath.time().$rname.".".$img->extension());
+                    $imgUpload->resize(128, 128);
+                    $imgUpload = $imgUpload->save($thumbnailPath.time().$rname.".".$img->extension());
 
                     $newImg = new PostImages();
                     $newImg->postid = Request("postid");
-                    $newImg->filename = time().Str::random(12).".".$img->extension();
+                    $newImg->filename = time().$rname.".".$img->extension();
                     $newImg->save();
                 }
             }else{

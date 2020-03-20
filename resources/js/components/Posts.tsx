@@ -86,7 +86,7 @@ class Posts extends Component<any, PostsState>{
                     <Card className={classes.card}>
                         <CardHeader
                             avatar={
-                                <Avatar alt={listItem[item]["title"]} src={"/static/imgs/productAvatars/"+listItem[item]["id"]} />
+                                <Avatar alt={listItem[item]["title"]} src={"/api/img/post/cover/"+listItem[item]["id"]} />
                             }
                             title={listItem[item]["title"]}
                             subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["created_at"]}
