@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Theme, withStyles, TextField, Grid, Divider, Button, InputAdornment, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@material-ui/core';
+import { Container, Theme, withStyles, TextField, Grid, Divider, Button, InputAdornment, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, Collapse } from '@material-ui/core';
 import { number, string } from 'prop-types';
 import axios from "axios";
 
@@ -95,11 +95,11 @@ class Create extends React.Component<any, CreateState>{
             price: this.state.Price,
             description: this.state.Description,
         }).then(response =>{
-            this.props.postback();
+            this.props.postback(response.data.toString());
         }).catch(error =>{
             this.setState({logdia:true});
             this.setState({dialogMessage:"Oops, an error occurred!"});
-            this.setState({dialogReason: error.response.data});
+            this.setState({dialogReason: error.response.data.toString()});
         });
     }
 
@@ -109,7 +109,7 @@ class Create extends React.Component<any, CreateState>{
     render(){
         const {classes} = this.props;
         return (
-            <Container className={classes.root}>
+            <div>
                 <Dialog
                 open={this.state.logdia}
                 onClose={this.handleClose}
@@ -172,7 +172,7 @@ class Create extends React.Component<any, CreateState>{
                         </Grid>
                     </Grid>
                 </form>
-            </Container>
+                </div>
         );
     }
 

@@ -9,8 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Create from './Create';
 import MessageBox from './MessageBox';
-import { Snackbar, IconButton } from '@material-ui/core';
+import { Snackbar, IconButton, Collapse, Grow } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import UploadImage from './UploadImage';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: theme.spacing(4),
         marginBottom: theme.spacing(8),
         width: '100%',
+        padding: 0,
     },
     button: {
         marginTop: theme.spacing(1),
@@ -30,6 +32,13 @@ const useStyles = makeStyles((theme: Theme) =>
     resetContainer: {
         padding: theme.spacing(3),
     },
+    sb: {
+        marginBottom: theme.spacing(10),
+    },
+    stepper:{
+        margin: theme.spacing(0),
+        padding: 0,
+    }
   }),
 );
 
@@ -58,11 +67,15 @@ export default function VerticalLinearStepper(props:any) {
           case 0:
             return <Create token={token} postback={handleSave}></Create>;
           case 1:
-            return <div>Upload Images</div>;
+            if(postId==""){
+                return null;
+            }else{
+                return <UploadImage postid={postId}></UploadImage>
+            }
           case 2:
-            return <Typography variant="h5">You Are All Set!</Typography>;
+            return <Typography component={'span'} variant="h5">You Are All Set!</Typography>;
           default:
-            return <Typography variant="h5">Unknow Error</Typography>;
+            return <Typography component={'span'} variant="h5">Unknow Error</Typography>;
         }
       }
 
@@ -77,7 +90,8 @@ export default function VerticalLinearStepper(props:any) {
         setMsgBox(false);
     }
 
-    const handleSave = () =>{
+    const handleSave = (id:string) =>{
+        setPostId(id);
         setActiveStep(prevActiveStep => prevActiveStep + 1);
         hanleSaveMsg(0);
     }
@@ -92,6 +106,10 @@ export default function VerticalLinearStepper(props:any) {
         }
     };
 
+    const handleNextF = () => {
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
+    };
+
     const handleBack = () => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
@@ -100,15 +118,14 @@ export default function VerticalLinearStepper(props:any) {
         return window.location.href = "/";
     };
 
-    const handleSnackbarClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-        if (reason === 'clickaway') {
-          return;
-        }
+    const handleSnackbarClose = () => {
+        setSnackbar(false);
     }
 
     return (
         <div className={classes.root}>
         <Snackbar
+            className={classes.sb}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',
@@ -116,7 +133,7 @@ export default function VerticalLinearStepper(props:any) {
             open={snackbar}
             autoHideDuration={6000}
             onClose={handleSnackbarClose}
-            message="Note archived"
+            message="Post Saved!"
             action={
               <React.Fragment>
                 <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
@@ -126,39 +143,38 @@ export default function VerticalLinearStepper(props:any) {
             }
           />
         {msgBox?<MessageBox callback={closeMesBox} messageType="e" messageText="You must finish step one first."></MessageBox>:null}
-            <Stepper activeStep={activeStep} orientation="vertical">
+            <Stepper className={classes.stepper} activeStep={activeStep} orientation="vertical">
                 {steps.map((label, index) => (
                 <Step key={label}>
                     <StepLabel>{label}</StepLabel>
                     <StepContent>
-                    <Typography>{getStepContent(index, props.token)}</Typography>
+                    <Typography component={'span'} >{getStepContent(index, props.token)}</Typography>
                     <div className={classes.actionsContainer}>
                         <div>
+
                         <Button
-                            disabled={activeStep === 0}
                             onClick={handleBack}
                             className={classes.button}
                         >
                             Back
                         </Button>
                         <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleNext}
+                            onClick={handleNextF}
                             className={classes.button}
-                        >
-                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                        </Button>
+                        >Next</Button>
+
                         </div>
                     </div>
                     </StepContent>
                 </Step>
                 ))}
             </Stepper>
-            {activeStep === steps.length && (
+            {activeStep === steps.length -1 && (
                 <Paper square elevation={0} className={classes.resetContainer}>
-                <Typography>Your post has been posted</Typography>
-                <Button onClick={handleFinish} className={classes.button}>
+                <Button onClick={handleFinish}
+                variant="contained"
+                color="primary"
+                className={classes.button}>
                     Return to Home Page
                 </Button>
                 </Paper>
