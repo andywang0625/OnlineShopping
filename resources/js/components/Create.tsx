@@ -17,11 +17,7 @@ interface CreateState{
 }
 
 const styles = (theme:Theme)=>({
-    root:{
-        flexGrow: 1,
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(8)
-    },
+
     titleBar:{
 
     },
@@ -84,9 +80,9 @@ class Create extends React.Component<any, CreateState>{
         this.setState({logdia:false});
         //console.log("closed!");
         this.setState({dialogReason:undefined});
-        if(this.state.success){
-            return window.location.href = "/";
-        }
+        // if(this.state.success){
+        //     return window.location.href = "/";
+        // }
     }
 
     handleSubmit = (e:any) =>{
@@ -99,9 +95,7 @@ class Create extends React.Component<any, CreateState>{
             price: this.state.Price,
             description: this.state.Description,
         }).then(response =>{
-            this.setState({logdia:true});
-            this.setState({dialogMessage:"Succeed!"});
-            this.setState({success:true});
+            this.props.postback();
         }).catch(error =>{
             this.setState({logdia:true});
             this.setState({dialogMessage:"Oops, an error occurred!"});

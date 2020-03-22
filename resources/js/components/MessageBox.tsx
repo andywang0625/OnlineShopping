@@ -6,11 +6,13 @@ export default function MessageBox(props:any){
     let messageTitle = props.messageTitle;
     let messageType = props.messageType;
     let messageText = props.messageText;
+    let closeCallback = props.callback;
     const [dialog, setDialog] = useState(true);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
     const handleClose = () =>{
+        closeCallback();
         setDialog(false);
     }
 
