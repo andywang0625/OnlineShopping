@@ -50,7 +50,7 @@ class PostController extends Controller
                 $post->number = Request("quantity");
                 $post->userid = User::where("api_token", Request("token"))->first()->id;
                 $post->save();
-                return response(201);
+                return response($post->id, 201);
             }
         }catch(Exception $e){
             return response($e->getMessage(), 406);
