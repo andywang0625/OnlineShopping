@@ -12,18 +12,21 @@ import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
 
 const styles = (theme:Theme)=>({
+    root:{
+        padding:0
+    },
     paper:{
         marginTop: theme.spacing(3),
         height: "60%",
         marginBottom: theme.spacing(10),
     },
     body:{
-        padding: theme.spacing(1),
+        padding: theme.spacing(0),
         paddingTop: theme.spacing(5),
         paddingBottom: theme.spacing(5),
     },
     header:{
-        padding: theme.spacing(1),
+        padding: theme.spacing(0),
     },
     avatar: {
         backgroundColor: blue[500],
@@ -143,7 +146,7 @@ export class Post extends Component<any, PostState> {
         if(this.state.isFetching)
             return (<Loading></Loading>);
         return (
-            <Container>
+            <Container className={classes.root}>
                 <Slide direction="up" in style={{ transitionDelay: '300ms'}}>
                     <Paper className={classes.paper}>
                     <Card className={classes.header}>
