@@ -25,6 +25,7 @@ import UploadImage from './UploadImage';
 import Post from './Post';
 import EditPost from './EditPost';
 import MyItem from './MyItem';
+import VerticalLinearStepper from './CreateStepper';
 
 interface AppState{
     token?:string;
@@ -105,7 +106,7 @@ class App extends Component<any, AppState>{
                         <Logout msg={this.state.token} />
                     </Route>
                     <Route path="/create">
-                        <Create token={this.state.token}></Create>
+                        <VerticalLinearStepper token={this.state.token}></VerticalLinearStepper>
                     </Route>
                     <Route path="/">
                         <HomeBar token={this.state.token}></HomeBar>
