@@ -110,9 +110,6 @@ class App extends Component<any, AppState>{
                     <Route path="/">
                         <HomeBar token={this.state.token}></HomeBar>
                     </Route>
-                    <Route path="/test" exact>
-                        <UploadImage></UploadImage>
-                    </Route>
                     <Route path="/post" exact component={Post}>
                     </Route>
                     <Route path="/editPost">

@@ -29,12 +29,14 @@ const styles = (theme:Theme) =>({
     },
     card:{
         width: "100%",
+        margin: 0
     },
     inline: {
         display: 'inline',
     },
     listItem:{
         width: "95%",
+        padding: 0
     },
     description:{
         width: "100%",
