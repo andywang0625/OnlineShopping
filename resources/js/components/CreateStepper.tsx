@@ -70,7 +70,7 @@ export default function VerticalLinearStepper(props:any) {
             if(postId==""){
                 return null;
             }else{
-                return <UploadImage postid={postId}></UploadImage>
+                return <UploadImage token={token} postid={postId}></UploadImage>
             }
           case 2:
             return <Typography component={'span'} variant="h5">You Are All Set!</Typography>;
@@ -97,21 +97,9 @@ export default function VerticalLinearStepper(props:any) {
     }
 
     const handleNext = () => {
-        if(activeStep==0){
-            if(step1Clear){
-                setActiveStep(prevActiveStep => prevActiveStep + 1);
-            }else{
-                setMsgBox(true);
-            }
+        if(postId){
+            setActiveStep(prevActiveStep => prevActiveStep + 1);
         }
-    };
-
-    const handleNextF = () => {
-        setActiveStep(prevActiveStep => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
     const handleFinish = () => {
@@ -152,16 +140,10 @@ export default function VerticalLinearStepper(props:any) {
                     <div className={classes.actionsContainer}>
                         <div>
 
-                        <Button
-                            onClick={handleBack}
+                        {activeStep===1?<Button
+                            onClick={handleNext}
                             className={classes.button}
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            onClick={handleNextF}
-                            className={classes.button}
-                        >Next</Button>
+                        >Next</Button>:null}
 
                         </div>
                     </div>
