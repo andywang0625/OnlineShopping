@@ -97,7 +97,7 @@ class ImageController extends Controller
     public function saveItemImg(Request $request)
     {
         request()->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:40960',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif',
             'postid' => 'required|string',
         ]);
         $rname = Str::random(20);

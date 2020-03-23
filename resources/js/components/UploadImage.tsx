@@ -62,10 +62,9 @@ class UploadImage extends Component<any, UploadImageState> {
                 imgList: [...this.state.imgList, response.data["filename"]]
             });
         }).catch((e:any)=>{
-            alert(JSON.stringify(e.response.data));
             this.setState({
                 msgBox:true,
-                failedR:e.response.data,
+                failedR:e.response.data["message"],
             })
         });
     }
