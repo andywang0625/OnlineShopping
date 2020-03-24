@@ -12,6 +12,7 @@ interface PostsState{
     errorMessage?:string;
     posts?:any;
     isFetching:boolean;
+    searchKey:string;
 }
 
 const styles = (theme:Theme) =>({
@@ -55,20 +56,49 @@ const styles = (theme:Theme) =>({
 });
 
 class Posts extends Component<any, PostsState>{
+    cancel:any;
     constructor(props:any){
         super(props);
         this.state={
             token:undefined,
             isFetching:true,
+            searchKey:this.props.searchKey,
+        }
+        this.cancel = "";
+    }
+
+    componentDidUpdate(prevProps:any){
+        if(prevProps.searchKey!==this.props.searchKey){
+            if(this.cancel){
+                this.cancel.cancel();
+            }
+            this.cancel = axios.CancelToken.source();
+            axios.post("api/posts",{
+                keyWord: this.props.searchKey,
+                class: undefined,
+                minPrice: undefined,
+                maxPrice: undefined,
+            },{
+                cancelToken: this.cancel.token
+            }).then((response)=>{
+                this.setState({token:this.props.token, posts:response, isFetching:false});
+            }).catch((e)=>{
+                if(axios.isCancel(e)){
+                    //console.log("Request Cancelled");
+                }else{
+                    console.log("Internal Error");
+                }
+            });
         }
     }
+
     componentDidMount(){
         axios.post("api/posts",{
             keyWord: undefined,
             class: undefined,
             minPrice: undefined,
             maxPrice: undefined,
-          },{withCredentials: true}).then((response)=>{
+          }).then((response)=>{
             this.setState({token:this.props.token, posts:response, isFetching:false});
           });
     }
@@ -80,32 +110,38 @@ class Posts extends Component<any, PostsState>{
     createList = (classes:any) =>{
         let list:any = [];
         let listItem = this.state.posts.data;
-        Object.keys(listItem).forEach((item:any)=>{
-            list.push(
-            <div className={classes.rootdiv}>
-                <ListItem button onClick={event => this.clickHandler(event, listItem[item]["id"])} className={classes.listItem}>
-                <Grow in={!this.state.isFetching} style={{ transitionDelay: '100ms' }}>
-                    <Card className={classes.card}>
-                        <CardHeader
-                            avatar={
-                                <Avatar alt={listItem[item]["title"]} src={"/api/img/post/cover/"+listItem[item]["id"]} />
-                            }
-                            title={listItem[item]["title"]}
-                            subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["created_at"]}
-                            action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
-                        </CardHeader>
-                        <Divider></Divider>
-                        <CardContent className={classes.cardBody}>
-                            <div className={classes.description}>
-                                {listItem[item]["description"]}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </Grow>
-                </ListItem>
-            </div>
-            )
-        });
+        console.log(listItem);
+        if(listItem.length!=0){
+            Object.keys(listItem).forEach((item:any)=>{
+                list.push(
+                <div className={classes.rootdiv}>
+                    <ListItem button onClick={event => this.clickHandler(event, listItem[item]["id"])} className={classes.listItem}>
+                    <Grow in={!this.state.isFetching} style={{ transitionDelay: '100ms' }}>
+                        <Card className={classes.card}>
+                            <CardHeader
+                                avatar={
+                                    <Avatar alt={listItem[item]["title"]} src={"/api/img/post/cover/"+listItem[item]["id"]} />
+                                }
+                                title={listItem[item]["title"]}
+                                subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["created_at"]}
+                                action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
+                            </CardHeader>
+                            <Divider></Divider>
+                            <CardContent className={classes.cardBody}>
+                                <div className={classes.description}>
+                                    {listItem[item]["description"]}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Grow>
+                    </ListItem>
+                </div>
+                )
+            });
+        }else{
+            return <Typography align="center">No related items found! :(</Typography>
+        }
+
         return list;
     }
 

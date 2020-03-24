@@ -82,11 +82,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Header(props:any) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [searchText, setSearchText] = React.useState("");
 
     // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     //     setAnchorEl(event.currentTarget);
     // };
     let sideList;
+    const keyWordHandler = props.keyWordHandler;
+    const searchBoxHandler = (e:any) =>{
+        setSearchText(e.target.value);
+        keyWordHandler(e.target.value);
+    }
     if(props.user&&props.email){
         sideList = () =>(
             <div
@@ -213,6 +219,8 @@ export default function Header(props:any) {
                         <SearchIcon />
                     </div>
                     <InputBase
+                        value={searchText}
+                        onChange={searchBoxHandler}
                         placeholder="Search..."
                         classes={{
                             root: classes.inputRoot,
