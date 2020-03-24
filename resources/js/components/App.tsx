@@ -33,6 +33,7 @@ interface AppState{
     email?:string;
     isLoading?:boolean;
     userId?:string;
+    keyWord:string;
 }
 
 class App extends Component<any, AppState>{
@@ -44,6 +45,7 @@ class App extends Component<any, AppState>{
             email:undefined,
             isLoading:true,
             userId:undefined,
+            keyWord:"",
         }
     }
 
@@ -51,7 +53,9 @@ class App extends Component<any, AppState>{
         const cookies = new Cookies();
         const token = cookies.get("token");
         if(token){
-            this.state={token:token};
+            this.setState({
+                token:token,
+            });
             axios.post("api/verify_login",{
                 token: token,
             }).then(response =>{
@@ -81,6 +85,12 @@ class App extends Component<any, AppState>{
         }
     }
 
+    handleKeyWord = (keyWord:string) =>{
+        this.setState({
+            keyWord:keyWord,
+        });
+    }
+
     changeLoadingState = (isLoading:boolean=true) =>{
         this.setState({
             isLoading:isLoading
@@ -92,9 +102,9 @@ class App extends Component<any, AppState>{
         return(
             <Container fixed>
                 <Router>
-                <Header user={this.state.user} email={this.state.email} />
+                <Header user={this.state.user} email={this.state.email} keyWordHandler={this.handleKeyWord.bind(this)} />
                     <Route exact path="/">
-                        <HomePage token={this.state.token} />
+                        <HomePage token={this.state.token} searchKey={this.state.keyWord} />
                     </Route>
                     <Route path="/login">
                         {this.state.user? <Redirect to="/" /> : <Login />}

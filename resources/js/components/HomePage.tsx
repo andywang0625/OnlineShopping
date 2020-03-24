@@ -21,13 +21,14 @@ class HomePage extends Component<any, HomeState>{
         super(props);
         this.state={
             token:props.token
-        }
+        };
     }
+
     render(){
         const {classes} = this.props;
         return (
             <Paper className={classes.paper}>
-                <Posts token={this.state.token} />
+                <Posts token={this.state.token} searchKey={this.props.searchKey} />
             </Paper>
         );
     }
