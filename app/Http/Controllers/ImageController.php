@@ -63,7 +63,7 @@ class ImageController extends Controller
                 throw new Exception();
             }
         }catch(Exception $e){
-            return Response("Not Found", 404);
+            return Response("Not Found".$e->getMessage(), 404);
         }
     }
 
@@ -116,14 +116,14 @@ class ImageController extends Controller
                         mkdir($thumbnailPath, 666, true);
                     }
 
-
-                    $imgUpload->save($uploadPath.time().$rname.".".$img->extension());
+                    $time = time();
+                    $imgUpload->save($uploadPath.$time.$rname.".".$img->extension());
                     $imgUpload->resize(128, 128);
-                    $imgUpload = $imgUpload->save($thumbnailPath.time().$rname.".".$img->extension());
+                    $imgUpload = $imgUpload->save($thumbnailPath.$time.$rname.".".$img->extension());
 
                     $newImg = new PostImages();
                     $newImg->postid = Request("postid");
-                    $newImg->filename = time().$rname.".".$img->extension();
+                    $newImg->filename = $time.$rname.".".$img->extension();
                     $newImg->save();
                 }
             }else{

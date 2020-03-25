@@ -81,7 +81,7 @@ class UploadImage extends Component<any, UploadImageState> {
                         }}
                     >
                     <div onClick={()=>this.rmImgHandler(tile)}>
-                    <img height="100" width="100"  src={"/api/img/post/"+tile} alt={tile} />
+                    <img height="100" width="100"  src={"/api/img/tn/post/"+tile} alt={tile} />
                     </div>
                     </ButtonBase>
                 )
