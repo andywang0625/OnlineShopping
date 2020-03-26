@@ -109,9 +109,7 @@ class EditPost extends Component<any, EditState> {
             price: this.state.Price,
             description: this.state.Description
         }).then((response:any)=>{
-            this.setState({logdia:true});
-            this.setState({dialogMessage:"Changes Saved!"});
-            this.setState({success:true});
+            this.props.postback(response.data.toString());
         }).catch(e=>{
             this.setState({
                 logdia:true,

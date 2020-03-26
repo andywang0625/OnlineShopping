@@ -26,6 +26,7 @@ import Post from './Post';
 import EditPost from './EditPost';
 import MyItem from './MyItem';
 import VerticalLinearStepper from './CreateStepper';
+import EditPostStepper from './EditPostStepper';
 
 interface AppState{
     token?:string;
@@ -124,7 +125,7 @@ class App extends Component<any, AppState>{
                     <Route path="/post" exact component={Post}>
                     </Route>
                     <Route path="/editPost">
-                        {this.state.user?  <EditPost token={this.state.token}></EditPost>:<Redirect to="/" />}
+                        {this.state.user?  <EditPostStepper token={this.state.token}></EditPostStepper>:<Redirect to="/" />}
                     </Route>
                     <Route path="/myItems">
                         {this.state.user? <MyItem token={this.state.token} userId={this.state.userId}></MyItem>:<Redirect to="/"></Redirect>}
