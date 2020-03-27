@@ -109,7 +109,7 @@ class EditPost extends Component<any, EditState> {
             price: this.state.Price,
             description: this.state.Description
         }).then((response:any)=>{
-            this.props.postback(response.data.toString());
+            this.props.postback(this.state.id);
         }).catch(e=>{
             this.setState({
                 logdia:true,

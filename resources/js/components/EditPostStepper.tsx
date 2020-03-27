@@ -13,6 +13,7 @@ import { Snackbar, IconButton, Collapse, Grow } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import UploadImage from './UploadImage';
 import EditPost from './EditPost';
+import EditImage from './EditImage';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,7 +72,7 @@ export default function EditPostStepper(props:any) {
             if(postId==""){
                 return null;
             }else{
-                return <UploadImage token={token} postid={postId}></UploadImage>
+                return <EditImage token={token} postid={postId}></EditImage>
             }
           case 2:
             return <Typography component={'span'} variant="h5">You Are All Set!</Typography>;
