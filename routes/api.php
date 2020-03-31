@@ -32,4 +32,6 @@ Route::GET('img/post/cover/{id}', 'ImageController@getCoverImg');
 //1Route::get('useravatar/{userId}', 'ImageController@getUserAvatar');
 Route::post("post", "PostController@post");
 Route::post("postEdit", "PostController@edit");
+
+Route::post("post/delete", "PostController@delPost");
 //Route::resource('posts{}', 'PostController');
