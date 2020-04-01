@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
+use App\PostImages;
 use App\Http\Controllers\UserController;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+
 
 class PostController extends Controller
 {
@@ -22,6 +25,32 @@ class PostController extends Controller
         error_log(UserController::logedin(request("token")));
         $data = Post::all();
         return response()->json($data, 200);
+    }
+
+    public function delPost(Request $request)
+    {
+        if(request("token")){
+            if(request("id")){
+                $post = Post::where("id", request("id"))->first();
+                if(!$post){
+                    return Response()->json("No Post Found", 400);
+                }else{
+                    $user = User::where('api_token', request("token"))->first();
+                    if($user && $post->userid == $user->id){
+                        foreach($post->images->all() as $img){
+                            File::delete('imgs\\products\\'.$img->filename, 'imgs\\products\\thumbnails\\'.$img->filename);
+                        }
+                        $post->delete();
+                    }else{
+                        return Response()->json("Unauthorized Operation", 400);
+                    }
+                }
+            }else{
+                return Response()->json("No Post Id Provided", 400);
+            }
+        }else{
+            return Response()->json("No User Token Provided", 400);
+        }
     }
 
     /**
