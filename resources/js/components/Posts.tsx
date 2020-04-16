@@ -107,6 +107,15 @@ class Posts extends Component<any, PostsState>{
         window.location.href = "/post?id="+id;
     }
 
+    shortenDescription = (description:string) =>{
+        if(description.length>120){
+            return description.substr(0,description.lastIndexOf(' ', 120))+"...";
+        }else{
+            return description;
+        }
+
+    }
+
     createList = (classes:any) =>{
         let list:any = [];
         let listItem = this.state.posts.data;
@@ -128,7 +137,7 @@ class Posts extends Component<any, PostsState>{
                             <Divider></Divider>
                             <CardContent className={classes.cardBody}>
                                 <div className={classes.description}>
-                                    {listItem[item]["description"]}
+                                    {this.shortenDescription(listItem[item]["description"])}
                                 </div>
                             </CardContent>
                         </Card>
