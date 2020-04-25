@@ -95,4 +95,43 @@ class UserController extends Controller
         }
     }
 
+    public function EditUser(Request $request){
+        try{
+            $validator = Validator::make($request->all(),[
+                'name' => 'required|string|max:50',
+                'email' => 'required|email',
+                'password' => 'max:50',
+                'token' => 'required'
+                ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $user = User::where("api_token", request("token"))->first();
+                if($user){
+                    $emailUser = User::where("email", 'like', request("email"))->first();
+                    if($emailUser&&$emailUser->id!=$user->id){
+                        throw new Exception("The Email has been taken");
+                    }
+                    if(!request("password")){
+                        $user->name = request("name");
+                        $user->email = request("email");
+                        $user->save();
+                    }else{
+                        $user->password = sha1(request("password"));
+                        $user->name = request("name");
+                        $user->email = request("email");
+                        $user->save();
+                    }
+                    $message["error"] = null;
+                    return response()->json($message, 200);
+                }else{
+                    throw new Exception("User not found");
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
+
 }
