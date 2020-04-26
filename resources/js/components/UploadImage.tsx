@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, GridList, GridListTile, IconButton, withStyles, GridListTileBar, makeStyles, Theme, ButtonBase } from '@material-ui/core';
+import { Button, GridList, GridListTile, IconButton, withStyles, GridListTileBar, makeStyles, Theme, ButtonBase, createStyles } from '@material-ui/core';
 import axios from 'axios';
 import MessageBox from './MessageBox';
 
@@ -10,25 +10,6 @@ interface UploadImageState{
     imgList:string[];
     failedR:string;
 }
-const styles = (theme:Theme) =>({
-    root: {
-        marginTop: theme.spacing(4),
-      },
-      imgListRoot:{
-      },
-      gridList: {
-        transform: 'translateZ(0)',
-        width:500,
-        height:450,
-      },
-      title: {
-        color: theme.palette.primary.light,
-      },
-      titleBar: {
-        background:
-          'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-      },
-});
 
 class UploadImage extends Component<any, UploadImageState> {
     constructor(props:any){
@@ -120,4 +101,22 @@ class UploadImage extends Component<any, UploadImageState> {
         )
     }
 }
-export default withStyles(styles)(UploadImage);
+export default withStyles(({spacing, palette}:Theme)=>createStyles({
+    root: {
+        marginTop: spacing(4),
+      },
+      imgListRoot:{
+      },
+      gridList: {
+        transform: 'translateZ(0)',
+        width:500,
+        height:450,
+      },
+      title: {
+        color: palette.primary.light,
+      },
+      titleBar: {
+        background:
+          'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+      },
+}))(UploadImage);

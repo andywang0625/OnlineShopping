@@ -20,23 +20,6 @@ interface UserProfileState{
     passwordv?:string;
 }
 
-const styles = (theme:Theme) => ({
-    paper:{
-        width:"100%",
-        marginTop: "10%",
-        paddingTop: "20px",
-    },
-    textField:{
-        marginBottom:"20px",
-    },
-    button:{
-        marginBottom:"20px",
-        width:"220px",
-    },
-    error:{
-        width:"220px",
-    }
-});
 
 class UserProfile extends Component<any, UserProfileState> {
     constructor(props:any){
@@ -194,4 +177,20 @@ class UserProfile extends Component<any, UserProfileState> {
     }
 }
 
-export default withStyles(styles)(UserProfile);
+export default withStyles({
+    paper:{
+        width:"100%",
+        marginTop: "10%",
+        paddingTop: "20px",
+    },
+    textField:{
+        marginBottom:"20px",
+    },
+    button:{
+        marginBottom:"20px",
+        width:"220px",
+    },
+    error:{
+        width:"220px",
+    }
+})(UserProfile);

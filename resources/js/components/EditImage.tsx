@@ -4,6 +4,7 @@ import axios from 'axios';
 import MessageBox from './MessageBox';
 import queryString from 'query-string'
 import { Redirect, withRouter } from 'react-router-dom';
+import { createStyles } from '@material-ui/core';
 
 
 interface EditImageState{
@@ -13,25 +14,6 @@ interface EditImageState{
     failedR:string;
     id:string|string[];
 }
-const styles = (theme:Theme) =>({
-    root: {
-        marginTop: theme.spacing(4),
-      },
-      imgListRoot:{
-      },
-      gridList: {
-        transform: 'translateZ(0)',
-        width:500,
-        height:450,
-      },
-      title: {
-        color: theme.palette.primary.light,
-      },
-      titleBar: {
-        background:
-          'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-      },
-});
 
 class EditImage extends Component<any, EditImageState> {
     constructor(props:any){
@@ -141,4 +123,22 @@ class EditImage extends Component<any, EditImageState> {
         )
     }
 }
-export default withStyles(styles)(withRouter(EditImage));
+export default withStyles(({palette, spacing}:Theme)=>createStyles({
+    root: {
+        marginTop: spacing(4),
+      },
+      imgListRoot:{
+      },
+      gridList: {
+        transform: 'translateZ(0)',
+        width:500,
+        height:450,
+      },
+      title: {
+        color: palette.primary.light,
+      },
+      titleBar: {
+        background:
+          'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+      },
+}))(withRouter(EditImage));

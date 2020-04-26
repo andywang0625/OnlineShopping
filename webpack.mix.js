@@ -10,6 +10,23 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 mix.react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+   .sass('resources/sass/app.scss', 'public/css')
+   .webpackConfig({
+       module:{
+           rules:[
+               {
+                   test: /\.tsx?$/,
+                   loader: "ts-loader",
+               }
+           ]
+       },
+       resolve:{
+            extensions: [".js", ".json", ".ts", ".tsx"],
+       },
+       plugins: [
+           new LiveReloadPlugin()
+       ]
+   });

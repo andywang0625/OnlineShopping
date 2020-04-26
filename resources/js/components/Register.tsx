@@ -18,21 +18,6 @@ interface RegState{
     dialogReason?: string;
 }
 
-const styles = (theme:Theme) => ({
-    margin:{
-        marginTop: theme.spacing(2),
-        width: "100%",
-    },
-    submitbtn:{
-        marginTop: theme.spacing(4),
-        width: "100%",
-    },
-    paper:{
-        padding: theme.spacing(3),
-        marginTop: "10%",
-        width:"80%"
-    },
-});
 
 class Register extends Component<any, RegState>{
     constructor(props:any){
@@ -197,4 +182,18 @@ class Register extends Component<any, RegState>{
         );
     }
 }
-export default withStyles(styles)(Register);
+export default withStyles(({spacing}:Theme)=>createStyles({
+    margin:{
+        marginTop: spacing(2),
+        width: "100%",
+    },
+    submitbtn:{
+        marginTop: spacing(4),
+        width: "100%",
+    },
+    paper:{
+        padding: spacing(3),
+        marginTop: "10%",
+        width:"80%"
+    },
+}))(Register);
