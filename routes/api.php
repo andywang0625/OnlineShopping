@@ -1,4 +1,12 @@
 <?php
+/*
+ * @Author: your name
+ * @Date: 2020-03-25 03:00:10
+ * @LastEditTime: 2020-04-26 04:12:30
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \OnlineShopping\routes\api.php
+ */
 
 use Illuminate\Http\Request;
 
@@ -36,3 +44,5 @@ Route::post("postEdit", "PostController@edit");
 
 Route::post("post/delete", "PostController@delPost");
 //Route::resource('posts{}', 'PostController');
+
+Route::post("message/send", "MessageController@store");

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Exception;
+use Throwable;
+use App\User;
 
 class MessageController extends Controller
 {
@@ -35,7 +39,36 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validator = Validator::make($request->all(), [
+                'token' => 'required',
+                'message' => 'required|max:200|string',
+                'reciever' => 'required',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $sender = User::where("api_token", request("token"))->first();
+                if(!$sender){
+                    throw new Exception("User not found");
+                }else{
+                    if($sender->id==request("reciever")){
+                        throw new Exception("You cannot send message to yourself");
+                    }else{
+                        $message = new Message;
+                        $message->content = request("message");
+                        $message->senderid = $sender->id;
+                        $message->targetid = request("reciever");
+                        $message->save();
+                        $response["error"] = null;
+                        return response()->json($response, 200);
+                    }
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
     }
 
     /**
