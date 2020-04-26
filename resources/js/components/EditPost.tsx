@@ -5,23 +5,7 @@ import axios from "axios";
 import queryString from 'query-string'
 import { Redirect, withRouter } from 'react-router-dom';
 import Loading from './Loading';
-
-const styles = (theme:Theme)=>({
-    root:{
-        flexGrow: 1,
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(8),
-    },
-    titleBar:{
-
-    },
-    inputfield:{
-        width:"100%",
-    },
-    submitbtn:{
-
-    }
-});
+import { createStyles } from '@material-ui/core';
 
 
 interface EditState{
@@ -222,4 +206,19 @@ class EditPost extends Component<any, EditState> {
     }
 }
 
-export default withStyles(styles)(withRouter(EditPost));
+export default withStyles(({spacing}:Theme)=>createStyles({
+    root:{
+        flexGrow: 1,
+        marginTop: spacing(4),
+        marginBottom: spacing(8),
+    },
+    titleBar:{
+
+    },
+    inputfield:{
+        width:"100%",
+    },
+    submitbtn:{
+
+    }
+}))(withRouter(EditPost));

@@ -3,18 +3,11 @@ import * as React from 'react';
 import {Component} from 'react';
 import Posts from './Posts';
 import { Theme, withStyles, Paper } from '@material-ui/core';
+import { createStyles } from '@material-ui/core';
 
 interface HomeState{
     token?:string;
 }
-
-const styles = (theme:Theme) => ({
-    paper:{
-        width:"100%",
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(10),
-    }
-});
 
 class HomePage extends Component<any, HomeState>{
     constructor(props:any){
@@ -33,4 +26,10 @@ class HomePage extends Component<any, HomeState>{
         );
     }
 }
-export default withStyles(styles)(HomePage);
+export default withStyles(({spacing}:Theme)=>createStyles({
+    paper:{
+        width:"100%",
+        marginTop: spacing(3),
+        marginBottom: spacing(10),
+    }
+}))(HomePage);

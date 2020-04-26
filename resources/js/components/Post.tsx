@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom } from '@material-ui/core';
+import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom, createStyles } from '@material-ui/core';
 import axios from "axios";
 import Loading from './Loading';
 import queryString from 'query-string'
@@ -10,28 +10,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
-
-const styles = (theme:Theme)=>({
-    root:{
-        padding:0
-    },
-    paper:{
-        marginTop: theme.spacing(3),
-        height: "60%",
-        marginBottom: theme.spacing(10),
-    },
-    body:{
-        padding: theme.spacing(0),
-        paddingTop: theme.spacing(5),
-        paddingBottom: theme.spacing(5),
-    },
-    header:{
-        padding: theme.spacing(0),
-    },
-    avatar: {
-        backgroundColor: blue[500],
-    },
-});
 
 interface PostState{
     token?:string;
@@ -196,4 +174,24 @@ export class Post extends Component<any, PostState> {
     }
 }
 
-export default withStyles(styles)(Post);
+export default withStyles(({spacing}:Theme)=>createStyles({
+    root:{
+        padding:0
+    },
+    paper:{
+        marginTop: spacing(3),
+        height: "60%",
+        marginBottom: spacing(10),
+    },
+    body:{
+        padding: spacing(0),
+        paddingTop: spacing(5),
+        paddingBottom: spacing(5),
+    },
+    header:{
+        padding: spacing(0),
+    },
+    avatar: {
+        backgroundColor: blue[500],
+    },
+}))(Post);

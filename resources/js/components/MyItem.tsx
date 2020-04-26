@@ -1,19 +1,11 @@
 import React, { Component } from 'react'
 import Loading from './Loading';
-import { Theme, Paper, withStyles } from '@material-ui/core';
+import { Theme, Paper, withStyles, createStyles } from '@material-ui/core';
 import MyPosts from './MyPosts';
 
 interface MyItemState{
     notFound:boolean;
 }
-
-const styles = (theme:Theme) => ({
-    paper:{
-        width:"100%",
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(10),
-    }
-});
 
 class MyItem extends Component<any, MyItemState> {
     constructor(props:any){
@@ -36,4 +28,10 @@ class MyItem extends Component<any, MyItemState> {
         }
     }
 }
-export default withStyles(styles)(MyItem);
+export default withStyles(({spacing}:Theme)=>createStyles({
+    paper:{
+        width:"100%",
+        marginTop: spacing(3),
+        marginBottom: spacing(10),
+    }
+}))(MyItem);

@@ -1,48 +1,13 @@
 import * as React from 'react';
-import { makeStyles, Theme, createStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, withStyles } from '@material-ui/core/styles';
 import axios  from 'axios';
-import { Toolbar, Fab, IconButton, AppBar, CssBaseline, Paper, Typography, List, ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, ButtonBase } from '@material-ui/core';
+import { Toolbar, Fab, IconButton, AppBar, CssBaseline, Paper, Typography, List, ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, ButtonBase, Theme } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { positions } from '@material-ui/system';
 
-const styles = (theme:Theme) =>({
-    text: {
-        padding: theme.spacing(2, 2, 0),
-      },
-      paper: {
-        paddingBottom: 50,
-      },
-      list: {
-        marginBottom: theme.spacing(2),
-      },
-      subheader: {
-        backgroundColor: theme.palette.background.paper,
-      },
-      appBar: {
-        top: 'auto',
-        bottom: 0,
-        height: 50
-      },
-      grow: {
-        flexGrow: 1,
-      },
-      fabButton: {
-        position: 'absolute' as 'absolute', //
-        zIndex: 1,
-        right:50,
-        top:-100,
-      },
-      userAva:{
-        top:-30,
-      },
-      userAvai:{
-        width: theme.spacing(7),
-        height: theme.spacing(7),
-      }
-});
 
 interface AppBarState{
     isFetching?:boolean;
@@ -126,4 +91,38 @@ class HomeBar extends React.Component<any, AppBarState>{
     }
 }
 
-export default withStyles(styles)(HomeBar);
+export default withStyles(({spacing, palette}:Theme)=> createStyles({
+    text: {
+        padding: spacing(2, 2, 0),
+      },
+      paper: {
+        paddingBottom: 50,
+      },
+      list: {
+        marginBottom: spacing(2),
+      },
+      subheader: {
+        backgroundColor: palette.background.paper,
+      },
+      appBar: {
+        top: 'auto',
+        bottom: 0,
+        height: 50
+      },
+      grow: {
+        flexGrow: 1,
+      },
+      fabButton: {
+        position: 'absolute' as 'absolute', //
+        zIndex: 1,
+        right:50,
+        top:-100,
+      },
+      userAva:{
+        top:-30,
+      },
+      userAvai:{
+        width: spacing(7),
+        height: spacing(7),
+      }
+}))(HomeBar);

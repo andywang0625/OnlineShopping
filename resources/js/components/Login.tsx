@@ -18,21 +18,6 @@ interface LoginState{
     loggedin?: boolean;
 }
 
-const styles = (theme:Theme) => ({
-    margin:{
-        marginTop: theme.spacing(2),
-        width: "100%",
-    },
-    submitbtn:{
-        marginTop: theme.spacing(4),
-        width: "100%",
-    },
-    paper:{
-        padding: theme.spacing(3),
-        marginTop: "10%",
-        width:"80%"
-    },
-});
 
 class Login extends Component<any, LoginState>{
     constructor(props:any){
@@ -177,4 +162,18 @@ class Login extends Component<any, LoginState>{
         );
     }
 }
-export default withStyles(styles)(Login);
+export default withStyles(({spacing}:Theme)=>createStyles({
+    margin:{
+        marginTop: spacing(2),
+        width: "100%",
+    },
+    submitbtn:{
+        marginTop: spacing(4),
+        width: "100%",
+    },
+    paper:{
+        padding: spacing(3),
+        marginTop: "10%",
+        width:"80%"
+    },
+}))(Login);
