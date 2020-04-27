@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2020-04-26 08:26:03
- * @LastEditTime: 2020-04-27 02:38:27
+ * @LastEditTime: 2020-04-27 04:37:15
  * @Description:
  */
 
@@ -150,11 +150,40 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Message  $message
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Message $message)
+    public function destroy(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'token'=>'required',
+            'id' => 'required',
+        ]);
+        try{
+            if($validator->fails())
+                throw new Exception($validator->messages()->first());
+            else{
+                $user = User::where("api_token",request("token"))->first();
+                if(!$user){
+                    throw new Exception("User not found");
+                }else{
+                    $theMessage = Message::where("id", request("id"))->first();
+                    if(!$theMessage)
+                        throw new Exception("Message not found");
+                    else{
+                        if($theMessage->senderid == $user->id){
+                            $theMessage->delete();
+                            $message["error"] = null;
+                            return Response()->json($message, 200);
+                        }else{
+                            throw new Exception("Method not allowed");
+                        }
+                    }
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 406);
+        }
     }
 }
