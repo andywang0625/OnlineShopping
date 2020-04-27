@@ -1,4 +1,10 @@
 <?php
+/*
+ * @Author: Kanade
+ * @Date: 2020-04-26 08:26:03
+ * @LastEditTime: 2020-04-27 02:38:27
+ * @Description:
+ */
 
 namespace App\Http\Controllers;
 
@@ -13,22 +19,58 @@ class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexS(Request $request)
     {
-        //
+        try{
+            $validator = Validator::make($request->all(), [
+                "token" => 'required',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $user = User::where("api_token", request("token"))->first();
+                if(!$user)
+                    throw new Exception("User not found");
+                else{
+                    $messages["messages"] = $user->messagesSent;
+                    return Response()->json($messages, 200);
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 404);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
+        /**
+     * Display a listing of the resource.
+     * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function indexR(Request $request)
     {
-        //
+        try{
+            $validator = Validator::make($request->all(), [
+                "token" => 'required',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $user = User::where("api_token", request("token"))->first();
+                if(!$user)
+                    throw new Exception("User not found");
+                else{
+                    $messages["messages"] = $user->messagesReceived;
+                    return Response()->json($messages, 200);
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 404);
+        }
     }
 
     /**

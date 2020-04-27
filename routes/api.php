@@ -2,7 +2,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-25 03:00:10
- * @LastEditTime: 2020-04-26 04:12:30
+ * @LastEditTime: 2020-04-27 02:37:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \OnlineShopping\routes\api.php
@@ -46,3 +46,6 @@ Route::post("post/delete", "PostController@delPost");
 //Route::resource('posts{}', 'PostController');
 
 Route::post("message/send", "MessageController@store");
+Route::get("messages/sent", "MessageController@indexS");
+Route::get("messages/received", "MessageController@indexR");
+
