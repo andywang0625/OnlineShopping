@@ -29,6 +29,7 @@ import VerticalLinearStepper from './CreateStepper';
 import EditPostStepper from './EditPostStepper';
 import EditImage from './EditImage';
 import UserProfile from './UserProfile';
+import MessageWindow from './MessageWindow';
 
 interface AppState{
     token?:string;
@@ -137,6 +138,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/user">
                         {this.state.user? <UserProfile token={this.state.token}></UserProfile>:<Redirect to="/"></Redirect>}
+                    </Route>
+                    <Route path="/chat">
+                        {this.state.user? <MessageWindow token={this.state.token}></MessageWindow>:<Redirect to="/"></Redirect>}
                     </Route>
                 </Router>
             </Container>

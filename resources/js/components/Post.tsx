@@ -10,6 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
+import MessageAvatar from './MessageAvatar';
 
 interface PostState{
     token?:string;
@@ -61,6 +62,7 @@ export class Post extends Component<any, PostState> {
                 postTitle:response.data["data"].postTitle,
                 postDate:response.data["data"].postDate,
                 owner:response.data["data"].owner,
+                ownerid:response.data["data"].ownerid,
                 price:response.data["data"].price,
                 quantity:response.data["data"].quantity,
                 isFetching:false,
@@ -130,7 +132,7 @@ export class Post extends Component<any, PostState> {
                     <Card className={classes.header}>
                         <CardHeader
                         avatar={
-                            <Avatar aria-label="Owner" className={classes.avatar}></Avatar>
+                            <MessageAvatar userid={this.state.ownerid}></MessageAvatar>
                         }
                         title={
                             <Typography variant="h5" gutterBottom>
