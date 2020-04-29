@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 interface MessageWindowState{
     message?:string;
@@ -9,7 +10,7 @@ interface MessageWindowState{
 class MessageWindow extends Component<any, MessageWindowState> {
     constructor(props){
         super(props);
-        console.log(this.props.targetid);
+        //console.log(this.props.location.targetid);
         this.state = {
             message:undefined,
         }
@@ -25,4 +26,4 @@ class MessageWindow extends Component<any, MessageWindowState> {
 
 export default withStyles({
 
-})(MessageWindow);
+})(withRouter(MessageWindow));

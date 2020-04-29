@@ -10,7 +10,8 @@ class MessageAvatar extends Component<any> {
         super(props);
     }
     handleClick = () =>{
-        this.props.history.push("/chat", {
+        this.props.history.push({
+            pathname: '/chat',
             targetid: this.props.userid,
         });
     }
