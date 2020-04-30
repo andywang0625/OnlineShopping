@@ -30,6 +30,7 @@ import EditPostStepper from './EditPostStepper';
 import EditImage from './EditImage';
 import UserProfile from './UserProfile';
 import MessageWindow from './MessageWindow';
+import Conversations from './Conversations';
 
 interface AppState{
     token?:string;
@@ -38,6 +39,7 @@ interface AppState{
     isLoading?:boolean;
     userId?:string;
     keyWord:string;
+    hideHomeBar:boolean;
 }
 
 class App extends Component<any, AppState>{
@@ -50,6 +52,7 @@ class App extends Component<any, AppState>{
             isLoading:true,
             userId:undefined,
             keyWord:"",
+            hideHomeBar:false,
         }
     }
 
@@ -101,6 +104,12 @@ class App extends Component<any, AppState>{
         });
     }
 
+    hideHomeBar = (hidden:boolean=true) =>{
+        this.setState({
+            hideHomeBar:hidden,
+        });
+    }
+
     render(){
         if(this.state.isLoading) return (<Loading></Loading>)
         return(
@@ -123,9 +132,10 @@ class App extends Component<any, AppState>{
                         <VerticalLinearStepper token={this.state.token}></VerticalLinearStepper>
                     </Route>
                     <Route path="/">
-                        <HomeBar token={this.state.token}></HomeBar>
+                        <HomeBar hide={this.state.hideHomeBar} token={this.state.token}></HomeBar>
                     </Route>
-                    <Route path="/post" exact component={Post}>
+                    <Route path="/post" exact>
+                        <Post userid={this.state.userId}></Post>
                     </Route>
                     <Route path="/editPost">
                         {this.state.user?  <EditPostStepper token={this.state.token}></EditPostStepper>:<Redirect to="/" />}
@@ -140,7 +150,10 @@ class App extends Component<any, AppState>{
                         {this.state.user? <UserProfile token={this.state.token}></UserProfile>:<Redirect to="/"></Redirect>}
                     </Route>
                     <Route path="/chat">
-                        {this.state.user? <MessageWindow token={this.state.token}></MessageWindow>:<Redirect to="/"></Redirect>}
+                        {this.state.user? <MessageWindow hideHomeBar={this.hideHomeBar} userId={this.state.userId} token={this.state.token}></MessageWindow>:<Redirect to="/login"></Redirect>}
+                    </Route>
+                    <Route path="/conversations">
+                        {this.state.user? <Conversations userId={this.state.userId} token={this.state.token}></Conversations>:<Redirect to="/login"></Redirect>}
                     </Route>
                 </Router>
             </Container>

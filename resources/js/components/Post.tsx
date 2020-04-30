@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, withRouter } from 'react-router-dom';
 import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom, createStyles } from '@material-ui/core';
 import axios from "axios";
 import Loading from './Loading';
@@ -117,6 +117,7 @@ export class Post extends Component<any, PostState> {
     }
 
     render() {
+        console.log(this.props);
         const {classes} = this.props;
         if(this.state.notFound) return (
             <Container>
@@ -131,9 +132,7 @@ export class Post extends Component<any, PostState> {
                     <Paper className={classes.paper}>
                     <Card className={classes.header}>
                         <CardHeader
-                        avatar={
-                            <MessageAvatar userid={this.state.ownerid}></MessageAvatar>
-                        }
+                        avatar={this.state.ownerid!=this.props.userid?<MessageAvatar userid={this.state.ownerid}></MessageAvatar>: <Avatar aria-label="Start Chat" className={classes.avatar} src={"/static/img/UserAvatars/"+this.state.ownerid}></Avatar>}
                         title={
                             <Typography variant="h5" gutterBottom>
                             {this.state.postTitle}
@@ -196,4 +195,4 @@ export default withStyles(({spacing}:Theme)=>createStyles({
     avatar: {
         backgroundColor: blue[500],
     },
-}))(Post);
+}))(withRouter(Post));

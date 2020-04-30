@@ -109,7 +109,7 @@ export default function Header(props:any) {
                 <Divider />
                 <List>
                     {
-                        ['Home Page','My Items', 'Logout', 'Contact Us'].map((text, index)=>(
+                        ['Home Page','My Items', 'Conversations', 'Logout', 'Contact Us'].map((text, index)=>(
                             <ListItem button key={text} onClick={handleClickLogin(index)}>
                                 <ListItemText primary={text} />
                             </ListItem>
@@ -155,14 +155,16 @@ export default function Header(props:any) {
 
 
     const handleClickLogin = (index:number)=> (event: React.MouseEvent<HTMLElement>) => {
-        if(index==2){
+        if(index==3){
             window.location.href = "logout";
         }else if(index==0){
             window.location.href = "/";
         }else if(index==1){
             window.location.href = "myItems";
-        }else if(index==3){
-            window.location.href = "support"
+        }else if(index==4){
+            window.location.href = "support";
+        }else if(index==2){
+            window.location.href = "conversations";
         }
     };
 

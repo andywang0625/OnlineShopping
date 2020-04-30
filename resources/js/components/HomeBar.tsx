@@ -60,33 +60,37 @@ class HomeBar extends React.Component<any, AppBarState>{
     }
 
     render(){
-        const {classes} = this.props;
-        if(this.state.isFetching){
-            return (<div></div>);
-        }
-        if(this.state.userId) return (
-            <React.Fragment>
-            <CssBaseline />
-            <AppBar position="fixed" color="primary" className={classes.appBar}>
-              <Toolbar>
-              <ButtonBase
-              className={classes.userAva}
-              disableRipple={true}
-              onClick={event => this.userProfile(event , this.state.userId)}>
-                <Avatar
-                className={classes.userAvai}
-                alt={this.state.userName} src={"/static/img/UserAvatars/"+this.state.userId}></Avatar>
-              </ButtonBase>
-                <div className={classes.grow} />
-                <Fab color="secondary" aria-label="add" className={classes.fabButton} onClick={() => {window.location.href = "/create"}}>
-                <AddIcon />
-                </Fab>
-              </Toolbar>
-            </AppBar>
-          </React.Fragment>
-        );
-        else{
-            return (<div></div>);
+        if(this.props.hide){
+            return null;
+        }else{
+            const {classes} = this.props;
+            if(this.state.isFetching){
+                return (<div></div>);
+            }
+            if(this.state.userId) return (
+                <React.Fragment>
+                <CssBaseline />
+                <AppBar position="fixed" color="primary" className={classes.appBar}>
+                  <Toolbar>
+                  <ButtonBase
+                  className={classes.userAva}
+                  disableRipple={true}
+                  onClick={event => this.userProfile(event , this.state.userId)}>
+                    <Avatar
+                    className={classes.userAvai}
+                    alt={this.state.userName} src={"/static/img/UserAvatars/"+this.state.userId}></Avatar>
+                  </ButtonBase>
+                    <div className={classes.grow} />
+                    <Fab color="secondary" aria-label="add" className={classes.fabButton} onClick={() => {window.location.href = "/create"}}>
+                    <AddIcon />
+                    </Fab>
+                  </Toolbar>
+                </AppBar>
+              </React.Fragment>
+            );
+            else{
+                return (<div></div>);
+            }
         }
     }
 }

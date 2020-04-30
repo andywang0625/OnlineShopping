@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2020-03-06 06:07:00
- * @LastEditTime: 2020-04-27 02:23:50
+ * @LastEditTime: 2020-04-29 22:16:51
  * @Description:
  */
 
@@ -19,7 +19,14 @@ class User extends Authenticatable
     public function posts(){
         return $this->hasMany('App\Post', "userid", "id");
     }
-
+    public function messagesReceivedFromTarget($targetId)
+    {
+        return $this->messagesReceived->where("senderid", $targetId)->toArray();
+    }
+    public function messagesSentToTarget($targetId)
+    {
+        return $this->messagesSent->where("targetid", $targetId)->toArray();
+    }
     public function messagesSent()
     {
         return $this->hasMany("App\Message", "senderid", "id");

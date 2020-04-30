@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2020-04-26 08:26:03
- * @LastEditTime: 2020-04-27 04:37:15
+ * @LastEditTime: 2020-04-29 22:51:36
  * @Description:
  */
 
@@ -22,7 +22,8 @@ class MessageController extends Controller
      * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function indexS(Request $request)
+
+    public function getConversations(Request $request)
     {
         try{
             $validator = Validator::make($request->all(), [
@@ -35,7 +36,44 @@ class MessageController extends Controller
                 if(!$user)
                     throw new Exception("User not found");
                 else{
-                    $messages["messages"] = $user->messagesSent;
+                    $receivers = [];
+                    $conversations = [];
+                    $messages = $user->messagesReceived->sortByDesc('created_at');
+                    // Low performance method
+                    foreach($messages as $theMessage){
+                        $newConversation = array();
+                        if(!in_array($theMessage->senderid, $receivers)){
+                            array_push($receivers, $theMessage->senderid);
+                            $newConversation["senderid"] = $theMessage->senderid;
+                            $newConversation["sendername"] = User::where('id', $theMessage->senderid)->first()->name;
+                            $newConversation["lasttime"] = $theMessage->created_at->format("Y-m-d  H:i");
+                            array_push($conversations, (object)$newConversation);
+                        }
+                    }
+                    $message["conversations"] = array_values($conversations);
+                    return Response()->json($message, 200);
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 404);
+        }
+    }
+    public function indexS(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                "token" => 'required',
+                "targetId" => 'required',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $user = User::where("api_token", request("token"))->first();
+                if(!$user)
+                    throw new Exception("User not found");
+                else{
+                    $messages["messages"] = array_values($user->messagesSentToTarget(request("targetId")));
                     return Response()->json($messages, 200);
                 }
             }
@@ -55,6 +93,7 @@ class MessageController extends Controller
         try{
             $validator = Validator::make($request->all(), [
                 "token" => 'required',
+                "targetId" => 'required',
             ]);
             if($validator->fails()){
                 throw new Exception($validator->messages()->first());
@@ -63,8 +102,8 @@ class MessageController extends Controller
                 if(!$user)
                     throw new Exception("User not found");
                 else{
-                    $messages["messages"] = $user->messagesReceived;
-                    return Response()->json($messages, 200);
+                    $data["messages"] = array_values($user->messagesReceivedFromTarget(request("targetId")));
+                    return Response()->json($data, 200);
                 }
             }
         }catch(Exception $e){
