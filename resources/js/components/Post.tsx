@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, withRouter } from 'react-router-dom';
 import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom, createStyles } from '@material-ui/core';
 import axios from "axios";
 import Loading from './Loading';
@@ -10,6 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
+import MessageAvatar from './MessageAvatar';
 
 interface PostState{
     token?:string;
@@ -61,6 +62,7 @@ export class Post extends Component<any, PostState> {
                 postTitle:response.data["data"].postTitle,
                 postDate:response.data["data"].postDate,
                 owner:response.data["data"].owner,
+                ownerid:response.data["data"].ownerid,
                 price:response.data["data"].price,
                 quantity:response.data["data"].quantity,
                 isFetching:false,
@@ -115,6 +117,7 @@ export class Post extends Component<any, PostState> {
     }
 
     render() {
+        console.log(this.props);
         const {classes} = this.props;
         if(this.state.notFound) return (
             <Container>
@@ -129,9 +132,7 @@ export class Post extends Component<any, PostState> {
                     <Paper className={classes.paper}>
                     <Card className={classes.header}>
                         <CardHeader
-                        avatar={
-                            <Avatar aria-label="Owner" className={classes.avatar}></Avatar>
-                        }
+                        avatar={this.state.ownerid!=this.props.userid?<MessageAvatar userid={this.state.ownerid}></MessageAvatar>: <Avatar aria-label="Start Chat" className={classes.avatar} src={"/static/img/UserAvatars/"+this.state.ownerid}></Avatar>}
                         title={
                             <Typography variant="h5" gutterBottom>
                             {this.state.postTitle}
@@ -194,4 +195,4 @@ export default withStyles(({spacing}:Theme)=>createStyles({
     avatar: {
         backgroundColor: blue[500],
     },
-}))(Post);
+}))(withRouter(Post));
