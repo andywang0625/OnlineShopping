@@ -54,8 +54,35 @@ class PostController extends Controller
     }
 
     /**
+     * Return all tags of a post.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getTags(Request $request)
+    {
+        try{
+            if(!request("id"))
+                throw new Exception("id field is required");
+            else{
+                $thePost = Post::where("id",request("id"))->first();
+                if(!$thePost)
+                    throw new Exception("Post not found");
+                else{
+                    $message["tags"] = $thePost->tags;
+                    return Response()->json($message, 200);
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 400);
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -84,17 +111,6 @@ class PostController extends Controller
         }catch(Exception $e){
             return response($e->getMessage(), 406);
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
 
@@ -235,15 +251,5 @@ class PostController extends Controller
             "ownerid"=>$the_post["userid"]];
             return $data;
         }
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

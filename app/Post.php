@@ -1,4 +1,10 @@
 <?php
+/*
+ * @Author: Kanade
+ * @Date: 2020-03-20 05:21:57
+ * @LastEditTime: 2020-05-01 16:15:52
+ * @Description:
+ */
 
 namespace App;
 
@@ -14,6 +20,10 @@ class Post extends Model
     }
     public function images(){
         return $this->hasMany('App\PostImages', 'postid', 'id');
+    }
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag', 'post_tags');
     }
     public static function boot(){
         parent::boot();

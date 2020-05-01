@@ -2,7 +2,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-25 03:00:10
- * @LastEditTime: 2020-04-29 20:02:43
+ * @LastEditTime: 2020-05-01 16:12:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \OnlineShopping\routes\api.php
@@ -21,15 +21,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::post('register_request','UserController@register');
 Route::post('login_request','UserController@login');
 Route::post('verify_login',"UserController@isLogin");
-Route::post("posts","PostController@showList");
-Route::post("create", "PostController@create");
 Route::post("user/edit", "UserController@EditUser");
+
 
 Route::GET('img/post/image', 'ImageController@imageList');
 Route::POST('img/post_image', 'ImageController@saveItemImg');
@@ -38,12 +34,15 @@ Route::GET('img/tn/post/{img}', 'ImageController@getThumbnail');
 Route::GET('img/postid/{id}', 'ImageController@getImgsOfPost');
 Route::POST('img/post/rmimg', 'ImageController@removePostImage');
 Route::GET('img/post/cover/{id}', 'ImageController@getCoverImg');
-//1Route::get('useravatar/{userId}', 'ImageController@getUserAvatar');
+
+
+Route::post("posts","PostController@showList");
+Route::post("create", "PostController@create");
 Route::post("post", "PostController@post");
 Route::post("postEdit", "PostController@edit");
-
 Route::post("post/delete", "PostController@delPost");
-//Route::resource('posts{}', 'PostController');
+Route::get("post/tags", "PostController@getTags");
+
 
 Route::post("message/send", "MessageController@store");
 Route::get("messages/sent", "MessageController@indexS");
