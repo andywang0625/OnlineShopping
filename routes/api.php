@@ -2,7 +2,7 @@
 /*
  * @Author: your name
  * @Date: 2020-03-25 03:00:10
- * @LastEditTime: 2020-05-01 16:12:13
+ * @LastEditTime: 2020-05-02 04:13:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \OnlineShopping\routes\api.php
@@ -42,6 +42,7 @@ Route::post("post", "PostController@post");
 Route::post("postEdit", "PostController@edit");
 Route::post("post/delete", "PostController@delPost");
 Route::get("post/tags", "PostController@getTags");
+Route::post("post/tags/add", "PostController@addTags");
 
 
 Route::post("message/send", "MessageController@store");

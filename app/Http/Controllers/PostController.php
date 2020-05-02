@@ -7,10 +7,13 @@ use App\Post;
 use App\User;
 use App\PostImages;
 use App\Http\Controllers\UserController;
+use App\Tag;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\QueryException;
 
 
 class PostController extends Controller
@@ -73,6 +76,37 @@ class PostController extends Controller
                     return Response()->json($message, 200);
                 }
             }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 400);
+        }
+    }
+    /**
+     * Add new tags to a post
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addTags(Request $request)
+    {
+        try{
+            if(!request("id"))
+                throw new Exception("id field is required");
+            else if(!request("tag"))
+                throw new Exception("tag field is required");
+            else{
+                $thePost = Post::findOrFail(request("id"));
+                $theTag = Tag::findOrFail(request("tag"));
+                $thePost->tags()->attach($theTag);
+                $message["error"] = null;
+                return Response()->json($message, 200);
+            }
+        }catch(ModelNotFoundException $e){
+            $message["error"] = "post or tag not found";
+            return Response()->json($message, 400);
+        }catch(QueryException $e){
+            $message["error"] = "The tag already exists or Database error";
+            return Response()->json($message, 400);
         }catch(Exception $e){
             $message["error"] = $e->getMessage();
             return Response()->json($message, 400);
