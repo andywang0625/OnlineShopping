@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useParams, useLocation, withRouter } from 'react-router-dom';
-import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom, createStyles } from '@material-ui/core';
+import { Paper, Container, Divider, Chip, Typography, Theme, Card, CardHeader, Avatar, CardContent, IconButton, CardActions, Slide, Zoom, createStyles, Popover } from '@material-ui/core';
 import axios from "axios";
 import Loading from './Loading';
 import queryString from 'query-string'
@@ -26,6 +26,9 @@ interface PostState{
     ownerid?:string;
     sliderLoading?:boolean;
     sliders?:any[];
+    tags?:any[];
+    anchorEl:any;
+    open:object;
 }
 
 export class Post extends Component<any, PostState> {
@@ -44,7 +47,10 @@ export class Post extends Component<any, PostState> {
             notFound:false,
             query:undefined,
             sliderLoading:true,
-            sliders:undefined
+            sliders:undefined,
+            tags:undefined,
+            anchorEl:null,
+            open:{},
         };
     }
     componentDidMount(){
@@ -67,6 +73,37 @@ export class Post extends Component<any, PostState> {
                 quantity:response.data["data"].quantity,
                 isFetching:false,
             });
+            axios({
+                method:"GET",
+                url:"/api/post/tags",
+                params:{
+                    id:id,
+                }
+            }).then((response)=>{
+                this.setState({
+                    tags:response.data.tags,
+                });
+            }).catch(e=>{
+                throw e;
+            })
+            axios.get('/api/img/postid/'+id).then((response:any)=>{
+                let slides:any = [];
+                let imgNames: any[] = [];
+                Object.keys(response.data).forEach(function(key){
+                    imgNames.push(response.data[key].filename);
+                });
+
+                imgNames.forEach(function(name){
+                    slides.push(<div data-src={"/api/img/post/"+name}></div>);
+                });
+
+                this.setState({
+                    sliders:slides,
+                    sliderLoading:false
+                });
+            }).catch(e=>{
+                throw e;
+            });
         }).catch(e=>{
             if(e=="Error: Request failed with status code 404")
                 this.setState({notFound:true});
@@ -76,25 +113,6 @@ export class Post extends Component<any, PostState> {
                     notFound:true,
                 });
             }
-        });
-
-        axios.get('/api/img/postid/'+id).then((response:any)=>{
-            let slides:any = [];
-            let imgNames: any[] = [];
-            Object.keys(response.data).forEach(function(key){
-                imgNames.push(response.data[key].filename);
-            });
-
-            imgNames.forEach(function(name){
-                slides.push(<div data-src={"/api/img/post/"+name}></div>);
-            });
-
-            this.setState({
-                sliders:slides,
-                sliderLoading:false
-            });
-        }).catch(e=>{
-
         });
     }
 
@@ -116,8 +134,49 @@ export class Post extends Component<any, PostState> {
         }
     }
 
+    handleClose = ()=>{
+        this.setState({
+            anchorEl:null,
+            open:{},
+        });
+    }
+
+    handleTagsClick = (e, index)=>{
+        this.setState({
+            anchorEl:e.currentTarget,
+            open:{
+                [index]:true
+            },
+        });
+    }
+    tagsMaker = (currentValue, index) =>{
+        const {classes} = this.props;
+        return(
+            <>
+                <Chip aria-describedby={index}
+                    className={classes.tag}
+                    color="primary"
+                    label={currentValue.tag}
+                    onClick={(e)=>this.handleTagsClick(e, index)}></Chip>
+                <Popover
+                    id={index}
+                    open={this.state.open[index]}
+                    onClose={this.handleClose}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    ><Typography className={classes.tagCaption} variant="caption">{currentValue.description}</Typography></Popover>
+            </>
+        );
+    }
+
     render() {
-        console.log(this.props);
         const {classes} = this.props;
         if(this.state.notFound) return (
             <Container>
@@ -151,6 +210,8 @@ export class Post extends Component<any, PostState> {
                         }>
                         </CardHeader>
                         <CardContent>
+                        <Divider></Divider>
+                        {this.state.tags?(this.state.tags.map(this.tagsMaker)):null}
                         <Divider></Divider>
                         {this.sliderMaker()}
                         <Divider></Divider>
@@ -195,4 +256,11 @@ export default withStyles(({spacing}:Theme)=>createStyles({
     avatar: {
         backgroundColor: blue[500],
     },
+    tag:{
+        margin:spacing(1),
+    },
+    tagCaption:{
+        marginTop:spacing(2),
+        marginBottom:spacing(2),
+    }
 }))(withRouter(Post));
