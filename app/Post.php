@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2020-03-20 05:21:57
- * @LastEditTime: 2020-05-01 16:15:52
+ * @LastEditTime: 2020-05-03 14:52:45
  * @Description:
  */
 
@@ -16,7 +16,7 @@ class Post extends Model
     protected $primaryKey = 'id';
     protected $guarded = ['id'];
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', "userid", "id");
     }
     public function images(){
         return $this->hasMany('App\PostImages', 'postid', 'id');

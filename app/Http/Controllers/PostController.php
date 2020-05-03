@@ -94,8 +94,12 @@ class PostController extends Controller
                 throw new Exception("id field is required");
             else if(!request("tag"))
                 throw new Exception("tag field is required");
+            else if(!request("token"))
+                throw new Exception("token field is required");
             else{
                 $thePost = Post::findOrFail(request("id"));
+                if($thePost->user->api_token != request("token"))
+                    throw new Exception("token is invalid");
                 $theTag = Tag::findOrFail(request("tag"));
                 $thePost->tags()->attach($theTag);
                 $message["error"] = null;
@@ -112,7 +116,39 @@ class PostController extends Controller
             return Response()->json($message, 400);
         }
     }
-
+    /**
+     * Del tags from a post
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delTags(Request $request)
+    {
+        try{
+            if(!request("id"))
+                throw new Exception("id field is required");
+            else if(!request("tag"))
+                throw new Exception("tag field is required");
+            else if(!request("token"))
+                throw new Exception("token field is required");
+            else{
+                $thePost = Post::where("id", request("id"))->first();
+                if($thePost->user->api_token != request("token"))
+                    throw new Exception("token is invalid");
+                if(!$thePost)
+                    throw new Exception("post not found");
+                $theTag = Tag::where("id", request("tag"))->first();
+                if(!$theTag)
+                    throw new Exception("tag not found");
+                $thePost->tags()->detach($theTag);
+                $message["error"] = null;
+                return Response()->json($message, 200);
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 400);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
