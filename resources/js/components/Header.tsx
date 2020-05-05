@@ -143,7 +143,7 @@ export default function Header(props:any) {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button key={text} onClick={()=>window.location.href="categories"}>
+                    <ListItem button onClick={()=>window.location.href="categories"}>
                         <ListItemText primary="All Categories" />
                     </ListItem>
                 </List>

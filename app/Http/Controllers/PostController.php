@@ -189,6 +189,38 @@ class PostController extends Controller
         return $user->name;
     }
     /**
+     * Return the list of posts by tags=>array
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showListByTag(Request $request)
+    {
+        try{
+            if(request("tags")){
+                $tags = request("tags");
+                if(!is_array($tags))
+                    throw new Exception("invalid request format");
+                $results = [];
+                foreach($tags as $tag){
+                    $theTag = Tag::where("id", $tag)->first();
+                    if($theTag){
+                        $results = array_merge($results,$theTag->posts->all());
+                        $results = array_unique($results);
+                    }
+                }
+                $message["results"] = $results;
+                return Response()->json($message, 200);
+            }else{
+                throw new Exception("tags field is required");
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 400);
+        }
+
+    }
+    /**
      * Return the list of posts
      *
      * @param  Request  $request

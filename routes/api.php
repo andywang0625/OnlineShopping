@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2020-03-25 03:00:10
- * @LastEditTime: 2020-05-03 14:43:21
+ * @LastEditTime: 2020-05-05 05:53:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \OnlineShopping\routes\api.php
@@ -39,11 +39,13 @@ Route::GET('img/post/cover/{id}', 'ImageController@getCoverImg');
 Route::post("posts","PostController@showList");
 Route::post("create", "PostController@create");
 Route::post("post", "PostController@post");
+Route::post("post/getByTags", "PostController@showListByTag");
 Route::post("postEdit", "PostController@edit");
 Route::post("post/delete", "PostController@delPost");
 Route::get("post/tags", "PostController@getTags");
 Route::post("post/tags/add", "PostController@addTags");
 Route::post("post/tags/del", "PostController@delTags");
+Route::get("tags", "TagController@index");
 
 
 Route::post("message/send", "MessageController@store");
