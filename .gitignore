@@ -12,6 +12,8 @@ public/storage
 public/hot
 storage/*.key
 .env
+.vscode/*
+.idea/*
 Homestead.yaml
 Homestead.json
 /.vagrant
