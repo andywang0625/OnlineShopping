@@ -66,3 +66,4 @@ resources/js/components/*.js
 public/js/app.js
 *.map
 public/imgs/*
+public/js/App.js
