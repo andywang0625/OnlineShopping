@@ -31,6 +31,7 @@ import EditImage from './EditImage';
 import UserProfile from './UserProfile';
 import MessageWindow from './MessageWindow';
 import Conversations from './Conversations';
+import Categories from './Categories';
 
 interface AppState{
     token?:string;
@@ -154,6 +155,9 @@ class App extends Component<any, AppState>{
                     </Route>
                     <Route path="/conversations">
                         {this.state.user? <Conversations userId={this.state.userId} token={this.state.token}></Conversations>:<Redirect to="/login"></Redirect>}
+                    </Route>
+                    <Route path="/categories">
+                        <Categories></Categories>
                     </Route>
                 </Router>
             </Container>

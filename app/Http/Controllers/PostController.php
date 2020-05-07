@@ -7,10 +7,13 @@ use App\Post;
 use App\User;
 use App\PostImages;
 use App\Http\Controllers\UserController;
+use App\Tag;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\QueryException;
 
 
 class PostController extends Controller
@@ -54,8 +57,102 @@ class PostController extends Controller
     }
 
     /**
+     * Return all tags of a post.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getTags(Request $request)
+    {
+        try{
+            if(!request("id"))
+                throw new Exception("id field is required");
+            else{
+                $thePost = Post::where("id",request("id"))->first();
+                if(!$thePost)
+                    throw new Exception("Post not found");
+                else{
+                    $message["tags"] = $thePost->tags;
+                    return Response()->json($message, 200);
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 400);
+        }
+    }
+    /**
+     * Add new tags to a post
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addTags(Request $request)
+    {
+        try{
+            if(!request("id"))
+                throw new Exception("id field is required");
+            else if(!request("tag"))
+                throw new Exception("tag field is required");
+            else if(!request("token"))
+                throw new Exception("token field is required");
+            else{
+                $thePost = Post::findOrFail(request("id"));
+                if($thePost->user->api_token != request("token"))
+                    throw new Exception("token is invalid");
+                $theTag = Tag::findOrFail(request("tag"));
+                $thePost->tags()->attach($theTag);
+                $message["error"] = null;
+                return Response()->json($message, 200);
+            }
+        }catch(ModelNotFoundException $e){
+            $message["error"] = "post or tag not found";
+            return Response()->json($message, 400);
+        }catch(QueryException $e){
+            $message["error"] = "The tag already exists or Database error";
+            return Response()->json($message, 400);
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 400);
+        }
+    }
+    /**
+     * Del tags from a post
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delTags(Request $request)
+    {
+        try{
+            if(!request("id"))
+                throw new Exception("id field is required");
+            else if(!request("tag"))
+                throw new Exception("tag field is required");
+            else if(!request("token"))
+                throw new Exception("token field is required");
+            else{
+                $thePost = Post::where("id", request("id"))->first();
+                if($thePost->user->api_token != request("token"))
+                    throw new Exception("token is invalid");
+                if(!$thePost)
+                    throw new Exception("post not found");
+                $theTag = Tag::where("id", request("tag"))->first();
+                if(!$theTag)
+                    throw new Exception("tag not found");
+                $thePost->tags()->detach($theTag);
+                $message["error"] = null;
+                return Response()->json($message, 200);
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return Response()->json($message, 400);
+        }
+    }
+    /**
      * Show the form for creating a new resource.
      *
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -86,21 +183,42 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
 
     public function getAuthorName($id){
         $user = User::where('id',$id)->first();
         return $user->name;
+    }
+    /**
+     * Return the list of posts by tags=>array
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showListByTag(Request $request)
+    {
+        try{
+            if(request("tags")){
+                $tags = request("tags");
+                if(!is_array($tags))
+                    throw new Exception("invalid request format");
+                $results = [];
+                foreach($tags as $tag){
+                    $theTag = Tag::where("id", $tag)->first();
+                    if($theTag){
+                        $results = array_merge($results,$theTag->posts->all());
+                        $results = array_unique($results);
+                    }
+                }
+                $message["results"] = $results;
+                return Response()->json($message, 200);
+            }else{
+                throw new Exception("tags field is required");
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 400);
+        }
+
     }
     /**
      * Return the list of posts
@@ -235,15 +353,5 @@ class PostController extends Controller
             "ownerid"=>$the_post["userid"]];
             return $data;
         }
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

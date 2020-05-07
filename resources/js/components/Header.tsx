@@ -143,11 +143,9 @@ export default function Header(props:any) {
                 </List>
                 <Divider />
                 <List>
-                    {['All Categories', 'Daily', 'Tech'].map((text, index)=>(
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                        ))}
+                    <ListItem button onClick={()=>window.location.href="categories"}>
+                        <ListItemText primary="All Categories" />
+                    </ListItem>
                 </List>
             </div>
         );
