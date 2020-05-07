@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import UploadImage from './UploadImage';
 import EditPost from './EditPost';
 import EditImage from './EditImage';
+import EditTags from './EditTags';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -155,12 +156,13 @@ export default function EditPostStepper(props:any) {
             </Stepper>
             {activeStep === steps.length -1 && (
                 <Paper square elevation={0} className={classes.resetContainer}>
-                <Button onClick={handleFinish}
-                variant="contained"
-                color="primary"
-                className={classes.button}>
-                    Return to Home Page
-                </Button>
+                  <EditTags PostId={Number(postId)} Token={props.token}></EditTags>
+                  <Button onClick={handleFinish}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}>
+                      Return to Home Page
+                  </Button>
                 </Paper>
             )}
             </div>

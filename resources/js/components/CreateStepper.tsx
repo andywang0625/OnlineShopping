@@ -12,6 +12,7 @@ import MessageBox from './MessageBox';
 import { Snackbar, IconButton, Collapse, Grow } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import UploadImage from './UploadImage';
+import EditTags from './EditTags';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -153,12 +154,13 @@ export default function VerticalLinearStepper(props:any) {
             </Stepper>
             {activeStep === steps.length -1 && (
                 <Paper square elevation={0} className={classes.resetContainer}>
-                <Button onClick={handleFinish}
-                variant="contained"
-                color="primary"
-                className={classes.button}>
-                    Return to Home Page
-                </Button>
+                  <EditTags PostId={Number(postId)} Token={props.token}></EditTags>
+                  <Button onClick={handleFinish}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}>
+                      Return to Home Page
+                  </Button>
                 </Paper>
             )}
             </div>
