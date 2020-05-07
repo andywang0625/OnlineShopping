@@ -31,7 +31,7 @@ class ImageController extends Controller
             $imgPost = Post::where('id', $img->postid)->first();
             if($user->id==$imgPost->userid){
                 PostImages::where('filename',$imageName)->delete();
-                File::delete('imgs\\products\\'.$imageName, 'imgs\\products\\thumbnails\\'.$imageName);
+                File::delete('imgs/products/'.$imageName, 'imgs/products/thumbnails/'.$imageName);
                 return Response("success");
             }else{
                 throw new Exception("Not match");
@@ -58,7 +58,7 @@ class ImageController extends Controller
         try{
             if(Request("img")){
                 $img = Request("img");
-                return response()->download(public_path('imgs\\products\\'.$img));
+                return response()->download(public_path('imgs/products/'.$img));
             }else{
                 throw new Exception();
             }
@@ -71,7 +71,7 @@ class ImageController extends Controller
         try{
             if(Request("img")){
                 $img = Request("img");
-                return response()->download(public_path('imgs\\products\\thumbnails\\'.$img));
+                return response()->download(public_path('imgs/products/thumbnails/'.$img));
             }else{
                 throw new Exception();
             }
@@ -85,7 +85,7 @@ class ImageController extends Controller
         try{
             if(Request("id")){
                 $img = PostImages::where("postid", Request("id"))->first();
-                return response()->download(public_path('imgs\\products\\thumbnails\\'.$img->filename));
+                return response()->download(public_path('imgs/products/thumbnails/'.$img->filename));
             }else{
                 throw new Exception("Not Found");
             }
@@ -106,14 +106,14 @@ class ImageController extends Controller
             if($post){
                 if($img = $request->file('photo')){
                     $imgUpload = Image::make($img);
-                    $uploadPath = 'imgs\\products\\';
-                    $thumbnailPath = 'imgs\\products\\thumbnails\\';
+                    $uploadPath = 'imgs/products/';
+                    $thumbnailPath = 'imgs/products/thumbnails/';
 
                     if (!file_exists($uploadPath)) {
-                        mkdir($uploadPath, 666, true);
+                        mkdir($uploadPath, 0777, true);
                     }
                     if (!file_exists($thumbnailPath)) {
-                        mkdir($thumbnailPath, 666, true);
+                        mkdir($thumbnailPath, 0777, true);
                     }
 
                     $time = time();

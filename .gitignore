@@ -12,6 +12,8 @@ public/storage
 public/hot
 storage/*.key
 .env
+.vscode/*
+.idea/*
 Homestead.yaml
 Homestead.json
 /.vagrant
@@ -64,3 +66,4 @@ resources/js/components/*.js
 public/js/app.js
 *.map
 public/imgs/*
+public/js/App.js
