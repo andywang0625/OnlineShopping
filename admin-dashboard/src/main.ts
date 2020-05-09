@@ -12,5 +12,10 @@ Vue.use(ElementUI);
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  data: function(){
+    return {
+      token: "",
+    }
+  }
 }).$mount('#app')

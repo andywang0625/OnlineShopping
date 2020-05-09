@@ -53,3 +53,6 @@ Route::get("messages/sent", "MessageController@indexS");
 Route::get("messages/received", "MessageController@indexR");
 Route::post("message/remove", "MessageController@destroy");
 Route::get("messages/conversations", "MessageController@getConversations");
+
+Route::post("admin/register", "AdminsController@register");
+Route::post("admin/login", "AdminsController@login");
