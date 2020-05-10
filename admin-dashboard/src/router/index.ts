@@ -30,13 +30,14 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-router.beforeEach((to, from, next)=>{
+router.beforeResolve((to, from, next)=>{
     if(to.name !== 'Login'){
         const userInfo = UserModule.userInfo;
         if(userInfo.token&&userInfo.email&&userInfo.name)
             next();
-        else
+        else{
             next("/login");
+        }
     }else{
         next();
     }

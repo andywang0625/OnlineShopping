@@ -4,7 +4,7 @@
     <el-header>
         <Header v-show="showHeader" :name="name" :token="token"></Header>
     </el-header>
-    <router-view :token="token" :adminEmail="email" :adminName="name" />
+    <router-view v-if="!isLoading" :token="token" :adminEmail="email" :adminName="name" />
     </el-container>
   </div>
 </template>
@@ -37,7 +37,6 @@
                     }
                 }).then((response: any)=>{
                     if(!response.data.error){
-                        console.log("app.vue request good",response.data);
                         this.name = response.data.name;
                         this.email = response.data.email;
                         //update user info
