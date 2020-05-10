@@ -75,4 +75,28 @@ class AdminsController extends Controller
             return response()->json($message, 406);
         }
     }
+    /**
+     * Verify if an admin token is valid or not
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function isLogin(Request $request)
+    {
+        if(request("token")){
+            $admin = Admin::where("api_token", request("token"))->first();
+            if($admin){
+                $message["error"] = null;
+                $message["name"] = $admin->name;
+                $message["email"] = $admin->email;
+                return response()->json($message, 200);
+            }else{
+                $message["error"] = "Admin user not found";
+                return response()->json($message, 406);
+            }
+        }else{
+            $message["error"] = "Token field is required";
+            return response()->json($message, 406);
+        }
+    }
 }

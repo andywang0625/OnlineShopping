@@ -8,6 +8,7 @@
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "sourceMap": true,
     "noImplicitAny": false,
+    "importHelpers":true,
   },
   "exclude": [
     "node_modules",

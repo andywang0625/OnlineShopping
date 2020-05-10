@@ -56,3 +56,4 @@ Route::get("messages/conversations", "MessageController@getConversations");
 
 Route::post("admin/register", "AdminsController@register");
 Route::post("admin/login", "AdminsController@login");
+Route::post("admin/islogin", "AdminsController@isLogin");
