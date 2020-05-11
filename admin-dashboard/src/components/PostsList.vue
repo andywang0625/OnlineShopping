@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue, Prop} from "vue-property-decorator";
+    import {Component, Vue, Prop, Watch} from "vue-property-decorator";
     import axios from "axios";
 
     @Component
@@ -78,6 +78,28 @@
         showError = false;
         errorMessage = "";
         search = "";
+        cancel: any;
+        @Watch("search")
+        handleSearchChange(){
+            if(this.cancel)
+                this.cancel.cancel();
+            this.cancel = axios.CancelToken.source();
+            this.isLoading = true;
+            axios({
+                url: `${process.env.VUE_APP_HOST}:8000/api/posts`,
+                method: 'post',
+                data:{
+                    keyWord:this.search,
+                },
+                cancelToken: this.cancel.token,
+            }).then((response)=>{
+                this.posts = response.data;
+                this.isLoading = false;
+            }).catch((e)=>{
+                this.errorMessage = e.response;
+                this.showError = true;
+            })
+        }
         created(){
             axios({
                 url: `${process.env.VUE_APP_HOST}:8000/api/posts`,
