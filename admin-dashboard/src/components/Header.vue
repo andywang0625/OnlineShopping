@@ -1,5 +1,5 @@
 <template>
-    <el-row class="header">
+    <el-row class="header" v-if="isLogin">
         <el-col :span="12">Admin Dashboard</el-col>
         <el-col :span="12"><div class="greetings" style="text-align:right;margin-right:10px;">Hi, {{this.name}}! <router-link to="/logout">Logout</router-link></div></el-col>
     </el-row>
@@ -7,11 +7,16 @@
 
 <script lang="ts">
     import {Component, Vue, Prop} from "vue-property-decorator";
+    import {UserModule} from "@/store/module/user.ts";
 
     @Component
     export default class Header extends Vue{
-        @Prop(String) token?: string;
-        @Prop(String) name?: string;
+        private name?: string = "";
+        private isLogin = false;
+        created(){
+            this.isLogin = UserModule.isLogin;
+            this.name = UserModule.userInfo.name;
+        }
     }
 </script>
 

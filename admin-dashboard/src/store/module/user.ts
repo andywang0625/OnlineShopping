@@ -20,6 +20,9 @@ export default class User extends VuexModule{
             email: this.email,
         };
     }
+    get isLogin (): any{
+        return (this.email&&this.name&&this.token)?true:false;
+    }
     @Mutation
     updateToken(token: string|null|object){
         this.token = token;

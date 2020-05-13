@@ -1,4 +1,5 @@
 <template>
+        <el-container>
         <el-main>
         <el-row class="root" type="flex" align="middle">
             <el-col>
@@ -25,6 +26,7 @@
             </el-col>
         </el-row>
         </el-main>
+        </el-container>
 </template>
 
 <script lang="ts">
@@ -43,6 +45,9 @@
                 this.errorMessage="Password Cannot be Empty"
                 this.showError=true;
             }
+        }
+        created(){
+            //console.log("Login", "Created");
         }
         handleSubmit(){
             if(this.password){

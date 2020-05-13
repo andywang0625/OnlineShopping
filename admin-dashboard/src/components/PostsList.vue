@@ -60,7 +60,7 @@
                 </template>
                 <!-- eslint-disable-next-line -->
                 <template slot-scope="scope">
-                    <el-button size="small">Edit</el-button>
+                    <el-button @click="handleEdit(scope.$index, scope.row)" size="small">Edit</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -79,6 +79,9 @@
         errorMessage = "";
         search = "";
         cancel: any;
+        handleEdit(index: number, row: any){
+            this.$router.push("/edit/"+row.id);
+        }
         @Watch("search")
         handleSearchChange(){
             if(this.cancel)

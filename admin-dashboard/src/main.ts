@@ -12,7 +12,7 @@ Vue.prototype.axios = axios;
 Vue.use(ElementUI);
 Vue.use(VueCookies);
 new Vue({
-  router,
   store,
+  router,
   render: h => h(App),
 }).$mount('#app');
