@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Dirape\Token\Token;
 use Exception;
 use App\User;
+use App\Post;
 use Illuminate\Support\Facades\Validator;
 
 class AdminsController extends Controller
@@ -96,6 +97,47 @@ class AdminsController extends Controller
             }
         }else{
             $message["error"] = "Token field is required";
+            return response()->json($message, 406);
+        }
+    }
+    /**
+     * Editing post api for admins
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function EditPost(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer',
+                'title' => 'required|string|max:30',
+                'number' => 'required|integer|min:1|max:1000',
+                'price' => 'required|numeric|min:0|max:100000',
+                'token' => 'required',
+                'description' => 'required|string',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }
+            if(Admin::where("api_token", request("token"))->first()){
+                $thePost = Post::where("id", request("id"))->first();
+                if($thePost){
+                    $thePost->update([
+                        'title' => request("title"),
+                        'number' => request("number"),
+                        'price' => request("price"),
+                        'description' => request("description"),
+                    ]);
+                    $thePost->save();
+                    $message["error"] = null;
+                    return response()->json($message, 200);
+                }else
+                    throw new Exception("Post not found");
+            }else
+                throw new Exception("Authentication failed");
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
             return response()->json($message, 406);
         }
     }

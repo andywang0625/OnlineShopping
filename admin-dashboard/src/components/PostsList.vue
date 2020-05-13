@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue, Prop, Watch} from "vue-property-decorator";
+    import {Component, Vue, Watch} from "vue-property-decorator";
     import axios from "axios";
 
     @Component
