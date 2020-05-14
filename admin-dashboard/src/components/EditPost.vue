@@ -128,6 +128,15 @@
         handleCloseSuccessMessage(){
             this.successShow = false;
         }
+        mounted(){
+            if(window.history && window.history.pushState){
+                history.pushState("", "", document.URL);
+                window.addEventListener("popstate", ()=>{
+                    history.pushState("", "", document.URL);
+                    this.$router.push("/");
+                }, false);
+            }
+        }
     }
 </script>
 

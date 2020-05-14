@@ -141,4 +141,102 @@ class AdminsController extends Controller
             return response()->json($message, 406);
         }
     }
+    /**
+     * Return a list of all users for admin
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function UserIndex(Request $request)
+    {
+        try{
+            if(request("token")){
+                if(Admin::where("api_token", request("token"))->first()){
+                    return response()->json(User::all(), 200);
+                }else{
+                    throw new Exception("Authentication failed");
+                }
+            }else{
+                throw new Exception("the token field is required");
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
+    /**
+     * Return the information of a user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function User(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+               'token' => "required",
+               'id' => "required|integer",
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }
+            if(Admin::where("api_token", request("token"))->first()){
+                $theUser = User::where("id", request("id"))->first();
+                if($theUser){
+                    return response()->json($theUser, 200);
+                }else{
+                    throw new Exception("User not found");
+                }
+            }else
+                throw new Exception("Authentication failed");
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
+    /**
+     * Update a user's info
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function UserUpdate(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(),[
+                'id' => 'required|integer',
+                'name' => 'required|string|max:50',
+                'email' => 'required|email',
+                'password' => 'max:50',
+                'token' => 'required'
+                ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $user = User::where("id", request("id"))->first();
+                if($user&& Admin::where("api_token", request("token"))->first()){
+                    $emailUser = User::where("email", 'like', request("email"))->first();
+                    if($emailUser&&$emailUser->id!=$user->id){
+                        throw new Exception("The Email has been taken");
+                    }
+                    if(!request("password")){
+                        $user->name = request("name");
+                        $user->email = request("email");
+                        $user->save();
+                    }else{
+                        $user->password = sha1(request("password"));
+                        $user->name = request("name");
+                        $user->email = request("email");
+                        $user->save();
+                    }
+                    $message["error"] = null;
+                    return response()->json($message, 200);
+                }else{
+                    throw new Exception("User not found or Authentication failed");
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
 }
