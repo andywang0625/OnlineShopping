@@ -20,7 +20,14 @@ mix.react('resources/js/App.js', 'public/js')
                {
                    test: /\.tsx?$/,
                    loader: "ts-loader",
-               }
+                   include: [
+                       path.resolve(__dirname, "resources/js"),
+                   ],
+                   exclude: [
+                    /admin-dashboard/,
+                    /node_modules/,
+                   ],
+               },
            ]
        },
        resolve:{

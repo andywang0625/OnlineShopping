@@ -354,4 +354,7 @@ class PostController extends Controller
             return $data;
         }
     }
+    /**
+     * Admin
+     */
 }
