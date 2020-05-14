@@ -1,4 +1,6 @@
 # Online Shopping
+![](https://github.com/andywang0625/OnlineShopping/workflows/React%20Frontend%20CI/badge.svg)
+![](https://github.com/andywang0625/OnlineShopping/workflows/Laravel/badge.svg)
 ### Summary
 
 -------------------------------------------------
