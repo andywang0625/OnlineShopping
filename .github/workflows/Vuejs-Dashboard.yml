@@ -1,0 +1,30 @@
+name: VueJs Dashboard CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./admin-dashboard
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Install NPM modules
+      run: npm ci
+      working-directory: ${{env.working-directory}}
+    - name: Run NPM build script
+      run: npm run build
+      working-directory: ${{env.working-directory}}
