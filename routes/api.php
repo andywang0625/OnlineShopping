@@ -61,3 +61,5 @@ Route::post("admin/post/edit", "AdminsController@EditPost");
 Route::post("admin/users", "AdminsController@UserIndex");
 Route::get("admin/user", "AdminsController@User");
 Route::post("admin/user/update", "AdminsController@UserUpdate");
+Route::post("admin/tag/create", "AdminsController@CreateTag");
+Route::post("admin/tag/delete", "AdminsController@DeleteTag");

@@ -3,7 +3,7 @@
         <el-tabs tab-position="right" v-model="activeTab" @tab-click="handleSelect" style="overflow: hidden;">
             <el-tab-pane name="1" label="Posts"><PostList></PostList></el-tab-pane>
             <el-tab-pane name="2" label="Users"><UsersList></UsersList></el-tab-pane>
-            <el-tab-pane name="3" label="Tags"></el-tab-pane>
+            <el-tab-pane name="3" label="Tags"><TagsList></TagsList></el-tab-pane>
             <el-tab-pane name="4" label="Admins">Admins</el-tab-pane>
         </el-tabs>
     </el-main>
@@ -13,11 +13,13 @@
     import {Component, Vue, Prop} from "vue-property-decorator";
     import PostList from "./PostsList.vue";
     import UsersList from "./UsersList.vue";
+    import TagsList from "./TagsList.vue";
 
     @Component({
         components:{
             PostList,
             UsersList,
+            TagsList,
         }
     })
 

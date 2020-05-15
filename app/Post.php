@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
+    public function __toString()
+    {
+        return $this->attributes["id"];
+    }
     protected $primaryKey = 'id';
     protected $guarded = ['id'];
     public function user(){
