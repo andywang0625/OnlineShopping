@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2020-03-25 03:00:10
- * @LastEditTime: 2020-05-05 05:53:42
+ * @LastEditTime: 2020-05-16 08:06:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \OnlineShopping\routes\api.php
@@ -61,3 +61,9 @@ Route::post("admin/post/edit", "AdminsController@EditPost");
 Route::post("admin/users", "AdminsController@UserIndex");
 Route::get("admin/user", "AdminsController@User");
 Route::post("admin/user/update", "AdminsController@UserUpdate");
+Route::post("admin/tag/create", "AdminsController@CreateTag");
+Route::post("admin/tag/delete", "AdminsController@DeleteTag");
+Route::get("admins", "AdminsController@Index");
+Route::get("admin/get", "AdminsController@GetAdmin");
+Route::post("admin/edit", "AdminsController@AdminUpdate");
+Route::post("admin/delete", "AdminsController@DelAdmin");
