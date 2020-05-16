@@ -1,3 +1,9 @@
+/*
+ * @Author: Kanade
+ * @Date: 2020-05-14 07:41:40
+ * @LastEditTime: 2020-05-16 07:06:18
+ * @Description:
+ */
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue';
@@ -5,6 +11,7 @@ import Login from "../views/Login.vue";
 import Logout from "../components/Logout.vue";
 import EditPost from "@/views/EditPostPage.vue";
 import EditUser from "@/views/EditUserPage.vue";
+import EditAdmin from '@/views/EditAdminPage.vue';
 import axios from "axios";
 import {UserModule} from "@/store/module/user";
 
@@ -39,6 +46,12 @@ const routes: Array<RouteConfig> = [
       path: '/edituser/:id',
       name: "Edituser",
       component: EditUser,
+      props: true,
+  },
+  {
+      path: '/editadmin/:id',
+      name: "EditAdmin",
+      component: EditAdmin,
       props: true,
   },
 ]

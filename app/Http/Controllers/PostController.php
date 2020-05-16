@@ -205,8 +205,8 @@ class PostController extends Controller
                 foreach($tags as $tag){
                     $theTag = Tag::where("id", $tag)->first();
                     if($theTag){
-                        $results = array_merge($results,$theTag->posts->all());
-                        $results = array_unique($results);
+                        $results = array_merge($results, $theTag->posts->all());
+                        $results = array_values(array_unique($results));
                     }
                 }
                 $message["results"] = $results;

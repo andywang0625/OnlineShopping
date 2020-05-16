@@ -98,6 +98,7 @@
             }).then((response)=>{
                 this.posts = response.data;
                 this.isLoading = false;
+                this.showError = false;
             }).catch((e)=>{
                 this.errorMessage = e.response;
                 this.showError = true;

@@ -1,3 +1,9 @@
+<!--
+ * @Author: Kanade
+ * @Date: 2020-05-13 23:55:08
+ * @LastEditTime: 2020-05-16 08:28:09
+ * @Description:
+-->
 <template>
         <el-container>
         <el-main>
@@ -7,7 +13,7 @@
                     <el-col :xs="24" :sm="8" :xl="4"><el-input class="login-input" placeholder="User Name" v-model="username" prefix-icon="el-icon-user"></el-input></el-col>
                 </el-row>
                 <el-row type="flex" justify="center">
-                    <el-col :xs="24" :sm="8" :xl="4"><el-input class="login-input" placeholder="Password" v-model="password" @change="handlePasswordChange" show-password prefix-icon="el-icon-lock"></el-input></el-col>
+                    <el-col :xs="24" :sm="8" :xl="4"><el-input class="login-input" @keyup.enter.native="handleSubmit" placeholder="Password" v-model="password" @change="handlePasswordChange" show-password prefix-icon="el-icon-lock"></el-input></el-col>
                 </el-row>
                 <el-row type="flex"  justify="center">
                     <el-col :xs="24" :sm="8" :xl="4">
