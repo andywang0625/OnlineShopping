@@ -1,10 +1,16 @@
+<!--
+ * @Author: Kanade
+ * @Date: 2020-05-15 01:00:22
+ * @LastEditTime: 2020-05-16 06:20:33
+ * @Description:
+-->
 <template>
     <el-main>
         <el-tabs tab-position="right" v-model="activeTab" @tab-click="handleSelect" style="overflow: hidden;">
             <el-tab-pane name="1" label="Posts"><PostList></PostList></el-tab-pane>
             <el-tab-pane name="2" label="Users"><UsersList></UsersList></el-tab-pane>
             <el-tab-pane name="3" label="Tags"><TagsList></TagsList></el-tab-pane>
-            <el-tab-pane name="4" label="Admins">Admins</el-tab-pane>
+            <el-tab-pane name="4" label="Admins"><AdminList></AdminList></el-tab-pane>
         </el-tabs>
     </el-main>
 </template>
@@ -14,12 +20,14 @@
     import PostList from "./PostsList.vue";
     import UsersList from "./UsersList.vue";
     import TagsList from "./TagsList.vue";
+    import AdminList from "./AdminsList.vue";
 
     @Component({
         components:{
             PostList,
             UsersList,
             TagsList,
+            AdminList,
         }
     })
 

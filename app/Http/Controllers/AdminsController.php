@@ -307,4 +307,137 @@ class AdminsController extends Controller
             return response()->json($message, 406);
         }
     }
+    /**
+     * Return all admin users
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function Index(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                'token' => 'required',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                if(Admin::where("api_token", request("token"))->first()){
+                    return response()->json(Admin::select("id", "name", "email")->get(), 200);
+                }else
+                    throw new Exception("Authentication failed");
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
+    /**
+     * Return info for a certain admin user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function GetAdmin(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                'token' => 'required',
+                'id' => 'required|integer',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                if(Admin::where("api_token", request("token"))->first()){
+                    $theAdmin = Admin::select("id", "name", "email")->where("id", request("id"))->first();
+                    if($theAdmin)
+                        return response()->json($theAdmin, 200);
+                    else
+                        throw new Exception("Admin not found");
+                }else
+                    throw new Exception("Authentication failed");
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
+        /**
+     * Return info for a certain admin user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function AdminUpdate(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer',
+                'name' => 'required|string|max:50',
+                'email' => 'required|email',
+                'password' => 'max:50',
+                'token' => 'required'
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                $admin = Admin::where("id", request("id"))->first();
+                if($admin&& Admin::where("api_token", request("token"))->first()){
+                    $emailAdmin = Admin::where("email", 'like', request("email"))->first();
+                    if($emailAdmin&&$emailAdmin->id!=$admin->id){
+                        throw new Exception("The Email has been taken");
+                    }
+                    if(!request("password")){
+                        $admin->name = request("name");
+                        $admin->email = request("email");
+                        $admin->save();
+                    }else{
+                        $admin->password = sha1(request("password"));
+                        $admin->name = request("name");
+                        $admin->email = request("email");
+                        $admin->save();
+                    }
+                    $message["error"] = null;
+                    return response()->json($message, 200);
+                }else{
+                    throw new Exception("Admin not found or Authentication failed");
+                }
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
+    /**
+     * Return info for a certain admin user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function DelAdmin(Request $request)
+    {
+        try{
+            $validator = Validator::make($request->all(), [
+                'token' => 'required',
+                'id' => 'required|integer',
+            ]);
+            if($validator->fails()){
+                throw new Exception($validator->messages()->first());
+            }else{
+                if(Admin::where("api_token", request("token"))->first()){
+                    $theAdmin = Admin::where("id", request("id"))->first();
+                    if($theAdmin){
+                        $theAdmin->delete();
+                        return response()->json("Deleted", 200);
+                    }
+                    else
+                        throw new Exception("Admin not found");
+                }else
+                    throw new Exception("Authentication failed");
+            }
+        }catch(Exception $e){
+            $message["error"] = $e->getMessage();
+            return response()->json($message, 406);
+        }
+    }
 }
