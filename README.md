@@ -53,7 +53,7 @@ The following list is what's going to be implement in the future iterations.
 
 ---------------------------------------
 
-![Demo of Front-end Interface](https://github.com/andywang0625/OnlineShopping/preview/demo1.gif)
-![Demo of User Profile](https://github.com/andywang0625/OnlineShopping/preview/useredit.png)
-![Demo of Chatting](https://github.com/andywang0625/OnlineShopping/preview/demo3.gif)
-![Demo of Admin Dashboard](https://github.com/andywang0625/OnlineShopping/preview/demo2.gif)
+![Demo of Front-end Interface](https://github.com/andywang0625/OnlineShopping/blob/master/preview/demo1.gif?raw=true)
+![Demo of User Profile](https://github.com/andywang0625/OnlineShopping/blob/master/preview/useredit.png?raw=true)
+![Demo of Chatting](https://github.com/andywang0625/OnlineShopping/blob/master/preview/demo3.gif?raw=true)
+![Demo of Admin Dashboard](https://github.com/andywang0625/OnlineShopping/blob/master/preview/demo2.gif?raw=true)
