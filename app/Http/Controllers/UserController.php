@@ -80,7 +80,7 @@ class UserController extends Controller
     public function isLogin(Request $request){
         if(!request("token")){
             $message["status"] = false;
-            return response()->json($message, 200);
+            return response()->json($message, 401);
         }
         $user = User::where('api_token', request("token"))->first();
         if($user){

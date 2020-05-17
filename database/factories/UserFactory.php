@@ -1,4 +1,10 @@
 <?php
+/*
+ * @Author: Kanade
+ * @Date: 2020-03-06 06:07:00
+ * @LastEditTime: 2020-05-17 12:01:13
+ * @Description:
+ */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
@@ -19,8 +25,8 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'user_name' => $faker->unique()->userName(),
-        'user_email' => $faker->unique()->safeEmail,
-        'user_password' => 'passwd',
+        'name' => $faker->unique()->userName(),
+        'email' => $faker->unique()->safeEmail,
+        'password' => sha1('passwd'),
     ];
 });
