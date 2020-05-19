@@ -2,7 +2,7 @@
 /*
  * @Author: Kanade
  * @Date: 2019-09-26 18:09:47
- * @LastEditTime: 2020-05-17 13:02:26
+ * @LastEditTime: 2020-05-19 06:12:46
  * @Description:
  */
 
@@ -17,6 +17,6 @@ $factory->define(Post::class, function (Faker $faker) {
         'description'=>$faker->paragraph,
         'price'=>rand(10, 100000),
         'number'=>rand(0, 1000),
-        'userid'=>rand(1,20),
+        'userid'=>rand(1,300),
     ];
 });
