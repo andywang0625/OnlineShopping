@@ -233,37 +233,61 @@ class PostController extends Controller
             $key = "%".Request("keyWord")."%";
             if(Request("order")){
                 if(Request("order")=="asc"){
-                    $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "asc")->get();
+                    $query = Post::Where('title', 'like', $key)
+                    ->orWhere("description", "like", $key)
+                    ->orderBy("created_at", "asc")
+                    ->get();
                 }else{
-                    $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "desc")->get();
+                    $query = Post::Where('title', 'like', $key)
+                    ->orWhere("description", "like", $key)
+                    ->orderBy("created_at", "desc")
+                    ->get();
                 }
             }else{
-                $query = Post::Where('title', 'like', $key)->orWhere("description", "like", $key)->orderBy("created_at", "desc")->get();
+                $query = Post::Where('title', 'like', $key)
+                ->orWhere("description", "like", $key)
+                ->orderBy("created_at", "desc")
+                ->limit(10)
+                ->offset((request("page")*10))
+                ->get();
             }
         }else{
             if(Request("order")){
                 if(Request("order")=="asc"){
-                    $query = Post::orderBy("created_at", "asc")->get();
+                    $query = Post::orderBy("created_at", "asc")
+                    ->get();
                 }else{
-                    $query = Post::orderBy("created_at", "desc")->get();
+                    $query = Post::orderBy("created_at", "desc")
+                    ->get();
                 }
             }else{
-                $query = Post::orderBy("created_at", "desc")->get();
+                $query = Post::orderBy("created_at", "desc")
+                ->limit(10)
+                ->offset((request("page")*10))
+                ->get();
             }
         }
         if(Request("minPrice")&&Request("maxPrice")){
-            $query = $query->whereBetween('price', [Request("minPrice"),Request("maxPrice")]);
+            $query = $query
+            ->whereBetween('price', [Request("minPrice"),Request("maxPrice")]);
         }else if(Request("minPrice")){
-            $query = $query->where('price','>',Request("minPrice"));
+            $query = $query
+            ->where('price','>',Request("minPrice"));
         }else if(Request("maxPrice")){
-            $query = $query->where('price','<',Request("maxPrice"));
+            $query = $query
+            ->where('price','<',Request("maxPrice"));
         }
         if(Request("userId")){
-            $query = $query->where('userid',Request("userId"));
+            $query = $query
+            ->where('userid',Request("userId"));
         }
         $data = $query;
         foreach($data as $r){
             $uid = $r["userid"];
+            if(count($r->images))
+                $r["image"] = true;
+            else
+                $r["image"] = false;
             $r["userid"] = $this->getAuthorName($uid);
         }
         return response()->json($data, 200);

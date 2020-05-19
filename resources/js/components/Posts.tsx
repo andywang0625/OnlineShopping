@@ -2,28 +2,48 @@ import * as React from 'react';
 import {Component} from 'react';
 import axios from "axios";
 import { Theme, withStyles, List, ListItemAvatar, Avatar, ListItem, ListItemText, Typography, Divider, Card, CardHeader, CardContent, Fade, Zoom, Grow, Badge, Chip, createStyles } from '@material-ui/core';
-import { stat } from 'fs';
-import color from '@material-ui/core/colors/amber';
-import { lightBlue, grey } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import { grey } from '@material-ui/core/colors';
+import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import Loading from './Loading';
 
 interface PostsState{
-    token?:string;
-    errorMessage?:string;
-    posts?:any;
-    isFetching:boolean;
-    searchKey:string;
+    token?: string;
+    errorMessage?: string;
+    posts?: any;
+    isFetching: boolean;
+    isLoadingMore: boolean;
+    searchKey: string;
+    page: number;
+    noMore: boolean;
 }
 
 class Posts extends Component<any, PostsState>{
-    cancel:any;
+    cancel: any;
+    observer: any;
+    lastItem: any;
+    private pageTop = React.createRef<HTMLDivElement>();
     constructor(props:any){
         super(props);
         this.state={
             token:undefined,
             isFetching:true,
             searchKey:this.props.searchKey,
+            page:0,
+            noMore:false,
+            isLoadingMore:false,
         }
+        this.observer = React.createRef();
+        this.lastItem = (item)=>{
+            if(this.state.isFetching) return;
+            if(this.observer.current) this.observer.current.disconnect();
+            this.observer.current = new IntersectionObserver(entries=>{
+                if(entries[0].isIntersecting){
+                    this.setState({page:this.state.page+1}, ()=>this.handleLoading());
+                }
+            });
+            if(item) this.observer.current.observe(item);
+        };
         this.cancel = "";
     }
 
@@ -41,7 +61,7 @@ class Posts extends Component<any, PostsState>{
             },{
                 cancelToken: this.cancel.token
             }).then((response)=>{
-                this.setState({token:this.props.token, posts:response, isFetching:false});
+                this.setState({token:this.props.token, posts:response.data, isFetching:false, page:0, noMore:false});
             }).catch((e)=>{
                 if(axios.isCancel(e)){
                     //console.log("Request Cancelled");
@@ -59,7 +79,7 @@ class Posts extends Component<any, PostsState>{
             minPrice: undefined,
             maxPrice: undefined,
           }).then((response)=>{
-            this.setState({token:this.props.token, posts:response, isFetching:false});
+            this.setState({token:this.props.token, posts:response.data, isFetching:false});
           });
     }
 
@@ -76,32 +96,55 @@ class Posts extends Component<any, PostsState>{
 
     }
 
+    handleLoading = ()=>{
+        this.setState({
+            isLoadingMore:true,
+        });
+        axios.post("api/posts",{
+            keyWord: this.props.searchKey,
+            class: undefined,
+            minPrice: undefined,
+            maxPrice: undefined,
+            page: this.state.page,
+          }).then((response)=>{
+            if(response.data.length)
+                this.setState({token:this.props.token, posts: this.state.posts.concat(response.data), isLoadingMore:false});
+            else{
+                this.setState({noMore:true, isLoadingMore:false});
+            }
+          });
+    }
+
+    handleScrollToTop = () =>{
+        this.pageTop.current.scrollIntoView({behavior:"smooth"});
+    }
+
     createList = (classes:any) =>{
         let list:any = [];
-        let listItem = this.state.posts.data;
+        let listItem = this.state.posts;
         if(listItem.length!=0){
-            Object.keys(listItem).forEach((item:any)=>{
+            listItem.map((item:any, index:number)=>{
                 list.push(
                 <div className={classes.rootdiv}>
-                    <ListItem button onClick={event => this.clickHandler(event, listItem[item]["id"])} className={classes.listItem}>
-                    <Grow in={!this.state.isFetching} style={{ transitionDelay: '100ms' }}>
+                    <ListItem ref={listItem.length === index+1?this.lastItem:null} button onClick={event => this.clickHandler(event, item["id"])} className={classes.listItem}>
+                    <Fade in={!this.state.isFetching} style={{ transitionDelay: '100ms' }}>
                         <Card className={classes.card}>
                             <CardHeader
                                 avatar={
-                                    <Avatar alt={listItem[item]["title"]} src={"/api/img/post/cover/"+listItem[item]["id"]} />
+                                    <Avatar alt={item["title"]} src={item.image?"/api/img/post/cover/"+item["id"]:null} />
                                 }
-                                title={listItem[item]["title"]}
-                                subheader={listItem[item]["number"]+" left"+" Created by "+listItem[item]["userid"]+" on "+listItem[item]["created_at"]}
-                                action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+listItem[item]["price"]}></Chip></Zoom>}>
+                                title={item["title"]}
+                                subheader={item["number"]+" left"+" Created by "+item["userid"]+" on "+item["created_at"]}
+                                action={<Zoom in={!this.state.isFetching} style={{ transitionDelay: '300ms'}}><Chip color="primary" size="small" label={"$"+item["price"]}></Chip></Zoom>}>
                             </CardHeader>
                             <Divider></Divider>
                             <CardContent className={classes.cardBody}>
                                 <div className={classes.description}>
-                                    {this.shortenDescription(listItem[item]["description"])}
+                                    {this.shortenDescription(item["description"])}
                                 </div>
                             </CardContent>
                         </Card>
-                    </Grow>
+                    </Fade>
                     </ListItem>
                 </div>
                 )
@@ -117,9 +160,19 @@ class Posts extends Component<any, PostsState>{
         if(this.state.isFetching) return <Loading />;
         const {classes} = this.props;
         return(
+            <>
+                <div className={classes.pageTop} ref={this.pageTop}></div>
                 <List className={classes.root}>
                     {this.createList(classes)}
                 </List>
+                {this.state.isLoadingMore?<Loading></Loading>:null}
+                {this.state.noMore?<Typography align="center">
+                    That's the last one.
+                    <IconButton color="primary" aria-label="go page top" onClick={this.handleScrollToTop}>
+                        <VerticalAlignTopIcon></VerticalAlignTopIcon>
+                    </IconButton>
+                </Typography>:null}
+            </>
         )
     }
 }
@@ -161,5 +214,9 @@ export default withStyles(({spacing, palette}:Theme)=>createStyles({
     },
     cardBody:{
         backgroundColor: grey[100],
+    },
+    pageTop:{
+        position: "absolute",
+        top: -100,
     }
 }))(Posts);
