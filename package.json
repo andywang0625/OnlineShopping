@@ -43,6 +43,7 @@
         "typeface-roboto": "0.0.75",
         "typescript": "^3.8.3",
         "universal-cookie": "^4.0.3",
+        "webpack-bundle-analyzer": "^3.8.0",
         "yarn": "^1.22.4"
     }
 }

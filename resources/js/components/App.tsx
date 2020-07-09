@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Component} from 'react';
+import {Component, Suspense, lazy} from 'react';
 import * as ReactDOM from 'react-dom';
-import Header from './Header';
 import {
     BrowserRouter as Router,
     Switch,
@@ -9,29 +8,41 @@ import {
     Link,
     Redirect
   } from "react-router-dom";
-import HomePage from './HomePage';
 import {LocalizeProvider} from "react-localize-redux";
-import Login from './Login';
-import Logout from './Logout';
-import Container from "@material-ui/core/Container";
-import Register from './Register';
-import { positions } from '@material-ui/system';
-import Cookies from 'universal-cookie';
-import axios from "axios";
+import Header from './Header';
+import MessageWindow from './MessageWindow';
+import Conversations from './Conversations';
+import Categories from './Categories';
 import HomeBar from './HomeBar';
 import Loading from './Loading';
 import Create from './Create';
 import UploadImage from './UploadImage';
-import Post from './Post';
-import EditPost from './EditPost';
-import MyItem from './MyItem';
-import VerticalLinearStepper from './CreateStepper';
-import EditPostStepper from './EditPostStepper';
-import EditImage from './EditImage';
+import Container from "@material-ui/core/Container";
+import { positions } from '@material-ui/system';
+import Cookies from 'universal-cookie';
+import axios from "axios";
 import UserProfile from './UserProfile';
-import MessageWindow from './MessageWindow';
-import Conversations from './Conversations';
-import Categories from './Categories';
+// import HomePage from './HomePage';
+// import Post from './Post';
+// import EditPost from './EditPost';
+// import Login from './Login';
+// import Logout from './Logout';
+// import Register from './Register';
+// import MyItem from './MyItem';
+// import VerticalLinearStepper from './CreateStepper';
+// import EditPostStepper from './EditPostStepper';
+// import EditImage from './EditImage';
+
+
+const HomePage = lazy(()=>import('./HomePage'));
+const Login = lazy(()=>import('./Login'));
+const Logout = lazy(()=>import('./Logout'));
+const Register = lazy(()=>import('./Register'));
+const Post = lazy(()=>import('./Post'));
+const MyItem = lazy(()=>import('./MyItem'));
+const VerticalLinearStepper = lazy(()=>import('./CreateStepper'));
+const EditPostStepper = lazy(()=>import('./EditPostStepper'));
+const EditPost = lazy(()=>import('./EditPost'));
 
 interface AppState{
     token?:string;
@@ -116,6 +127,7 @@ class App extends Component<any, AppState>{
         return(
             <Container fixed>
                 <Router>
+                <Suspense fallback={<Loading></Loading>}>
                 <Header user={this.state.user} email={this.state.email} keyWordHandler={this.handleKeyWord.bind(this)} />
                     <Route exact path="/">
                         <HomePage token={this.state.token} searchKey={this.state.keyWord} />
@@ -144,9 +156,6 @@ class App extends Component<any, AppState>{
                     <Route path="/myItems">
                         {this.state.user? <MyItem token={this.state.token} userId={this.state.userId}></MyItem>:<Redirect to="/"></Redirect>}
                     </Route>
-                    <Route path="/test">
-                        <EditImage token={this.state.token}></EditImage>
-                    </Route>
                     <Route path="/user">
                         {this.state.user? <UserProfile token={this.state.token}></UserProfile>:<Redirect to="/"></Redirect>}
                     </Route>
@@ -159,6 +168,7 @@ class App extends Component<any, AppState>{
                     <Route path="/categories">
                         <Categories></Categories>
                     </Route>
+                </Suspense>
                 </Router>
             </Container>
         )

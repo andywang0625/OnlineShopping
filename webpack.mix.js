@@ -1,3 +1,9 @@
+/*
+ * @Author: Kanade
+ * @Date: 2020-06-08 23:05:32
+ * @LastEditTime: 2020-07-09 01:48:03
+ * @Description:
+ */
 const mix = require('laravel-mix');
 
 /*
@@ -10,7 +16,7 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-var LiveReloadPlugin = require('webpack-livereload-plugin');
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 mix.react('resources/js/App.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
@@ -34,6 +40,6 @@ mix.react('resources/js/App.js', 'public/js')
             extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
        },
        plugins: [
-           new LiveReloadPlugin()
+           //new BundleAnalyzerPlugin(),
        ]
    });
