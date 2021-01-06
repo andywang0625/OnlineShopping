@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "and": "0.0.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "element-ui": "^2.13.1",
     "eslint-loader": "^4.0.2",
